@@ -4,7 +4,7 @@
 package dw317.hotel;
 
 /**
- * @author Daniel Bezerra
+ * @author Daniel Bezerra, Lyrene
  *
  */
 public class Teste {
