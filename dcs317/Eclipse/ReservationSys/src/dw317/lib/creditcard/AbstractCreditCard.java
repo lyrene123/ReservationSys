@@ -7,6 +7,7 @@ package dw317.lib.creditcard;
  * The AbstractCreditCard is an abstract class that holds general data about a credit card.
  * This class is used as a superclass or a parent class for classes representing specific 
  * credit cards that extend to this class in order to inherit its state and behavior.
+ * The AbstractCreditCart class implements the CreditCard interface
  * @author Pengkim Sy
  * @version September 2016
  */
