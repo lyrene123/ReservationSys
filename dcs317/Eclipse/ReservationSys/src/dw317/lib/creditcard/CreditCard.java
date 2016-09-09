@@ -3,11 +3,15 @@ package dw317.lib.creditcard;
 import java.io.Serializable;
 
 /**
+ * The CreditCard class is an interface class containing abstract methods that define
+ * the behavior of classes related to credit cards. When a class implements this interface,
+ * it has to provide all the interface's abstract methods.   
  * @author Daniel Bezerra
- *
+ * @version September 2016
  */
 
 public interface CreditCard extends Serializable {
+	//abstract methods
 	String getNumber();
 	CardType getType();
 
@@ -27,6 +31,7 @@ public interface CreditCard extends Serializable {
 		return card;
 	}
 
+	//enum of type CardType containing constants for MasterCard, Visa and Amex
 	public enum CardType {
 		MASTERCARD, VISA, AMEX;
 		public String toString() {
