@@ -6,7 +6,7 @@ import java.io.Serializable;
  * The CreditCard class is an interface class containing abstract methods that define
  * the behavior of classes related to credit cards. When a class implements this interface,
  * it has to provide all the interface's abstract methods.   
- * @author Daniel Bezerra
+ * @author provided by teacher
  * @version September 2016
  */
 

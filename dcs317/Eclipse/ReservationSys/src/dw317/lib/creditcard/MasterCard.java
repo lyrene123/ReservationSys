@@ -1,4 +1,4 @@
-/**
+  /**
  * 
  */
 package dw317.lib.creditcard;
@@ -35,6 +35,10 @@ public final class MasterCard extends AbstractCreditCard  {
 	 */
 	private static String validateNumber(String number)throws IllegalArgumentException
 	{
+		if(number==null){
+			throw new IllegalArgumentException("A credit card of type MasterCard must"
+					+ " exists with 16 digits only");
+		}
 		//check if card number has only 16 digits
 		int numberLength = number.length();
 		if(numberLength!=16){
