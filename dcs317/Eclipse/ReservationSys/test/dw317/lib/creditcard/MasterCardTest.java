@@ -44,6 +44,8 @@ public class MasterCardTest {
 				"    ", false);
 		caseValidation("case 10 - invalid data card number is null",
 				null, false);
+		caseValidation("case 11 - invalid data card number contains spaces",
+				"53263853 0239456", false);
 
 	}
 	
