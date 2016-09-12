@@ -1,6 +1,4 @@
-  /**
- * 
- */
+
 package dw317.lib.creditcard;
 
 /**
@@ -35,26 +33,35 @@ public final class MasterCard extends AbstractCreditCard  {
 	 */
 	private static String validateNumber(String number)throws IllegalArgumentException
 	{
-		if(number==null){
+		//if number is null or empty, throw an exception
+		if(number==null || number==""){
 			throw new IllegalArgumentException("A credit card of type MasterCard must"
 					+ " exists with 16 digits only");
 		}
+		
+		String trimmedNum = number.trim(); //trim any spaces contained in the number
+		if(trimmedNum.isEmpty()){
+			//throw an exception if number is empty
+			throw new IllegalArgumentException("A credit card of type MasterCard must"
+					+ " exists with 16 digits only");
+		}
+		
 		//check if card number has only 16 digits
-		int numberLength = number.length();
+		int numberLength = trimmedNum.length();
 		if(numberLength!=16){
 			throw new IllegalArgumentException("A credit card of type MasterCard must"
 					+ " have 16 digits only");
 		}
 		
 		//check if card number starts with digits between 51-55
-		String subDigits = number.substring(0, 2);
-		int firstDigits = Integer.parseInt(subDigits);
-		if(!(firstDigits>=51 && firstDigits<=55)){
+		String firstTwoDigits = trimmedNum.substring(0, 2);
+		int startingDigits = Integer.parseInt(firstTwoDigits);
+		if(!(startingDigits>=51 && startingDigits<=55)){
 			throw new IllegalArgumentException("A credit card of type MasterCard must"
 					+ " have starting digits between 51 to 55");
 		}
 		
-		return number;
+		return trimmedNum;
 	}//end of validateNumber method
 	
 	
