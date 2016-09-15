@@ -7,6 +7,7 @@ public class AmexTest {
 		System.out.println("Testing Amex class");
 		System.out.println();
 		
+		
 		//Case0: Valid Amex Card
 		Amex case0 = new Amex("344322624384908");
 		System.out.println("Case0 : " +case0.toString() + "is a valid credit card number.");
@@ -30,74 +31,39 @@ public class AmexTest {
 		System.out.println("Second Card : " + card1.toString());
 		System.out.println();
 		
-		//Case3: number is null	
-		System.out.println("Case 3 : Check if the parameter is null.");
+		caseValidation("Case 3 : check if the number is null", null, false);
+		caseValidation("Case 4 : check if the Card is not 15 digits", "3440559123809864", false);
+		caseValidation("Case 5 : check if the card is a valid credit card", "345165798412345"
+				, false);
+		caseValidation("Case 6 : check if the parameter is a digit only", "344322a2438490d", false);
+		caseValidation("Case 7 : check if the parameter contain space", "344322 62438490", false);
+		caseValidation("Case 8 : check if the parameter is a non-decimal number", "344322.62438490"
+				, false);
+		caseValidation("Case 9 : check if there is no parameter", "", false);
+	}
+	
+	public static void caseValidation(String testCase, String number, boolean expectedResult){
+		System.out.println(testCase);
 		try{
-			Amex case3 = new Amex(null);
-		} catch(IllegalArgumentException e){
-			System.out.println("The Amex card can't be null!");
+			Amex card = new Amex(number);
+			System.out.println("\tThe Amex instance has been created: " + card);
+			
+			if(!expectedResult){
+				System.out.print("\n\tError! You expected this case to fail but it didn't. ");
+			}
 		}
-		System.out.println();
-		
-		//Case4: Check if the Card is not 15 digits
-		System.out.println("Case4 : Check when the card is not 15 digits only.");
-		System.out.println("Amex*3440559123809864");
-		try{
-			Amex case4 = new Amex("3440559123809864");
-		} catch(IllegalArgumentException e){
-			System.out.println(e.getMessage());
+		catch(IllegalArgumentException e){
+			System.out.print("\t"+ e.getMessage());
+			if (expectedResult)
+				System.out.print("\n\tError! You expected this case to succeed but it didnt. ");
 		}
-		System.out.println();
-		
-		//Case5: Check if the card is a valid credit card
-		//base on Luhn Algorithm
-		System.out.println("Case5 : Check the invalid card base on luhn algorithm.");
-		System.out.println("Amex*345165798412345");
-		try{
-			Amex case5 = new Amex("345165798412345");
-		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
+		catch(Exception x){
+			System.out.print("\n\tError! There was an unexpected exception type " + x.getClass() +  " "  + 				
+		x.getMessage());
+			if (expectedResult)
+				System.out.print("\n\tYou expected this case to succeed but it didn't ");
 		}
-		System.out.println();
-		
-		//Case6: The parameter must be digits only
-		System.out.println("Case6 : The parameter must only be number");
-		System.out.println("Amex*344322a2438490d");
-		try{
-			Amex case6 = new Amex("344322a2438490d");
-		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
-		}
-		System.out.println();
-		
-		//Case7: The parameter must not contain space
-		System.out.println("Case7 : The parameter must not contain space");
-		System.out.println("Amex*344322 62438490");
-		try{
-			Amex case7 = new Amex("344322 62438490");
-		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
-		}
-		System.out.println();
-		
-		//Case8: The parameter must be non-decimal number
-		System.out.println("Case8 : The parameter must be non-decimal number");
-		System.out.println("Amex*344322.62438490");
-		try{
-			Amex case8 = new Amex("344322.62438490");
-		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
-		}
-		System.out.println();
-		
-		//Case9: There's no parameter
-		System.out.println("Case9 : The parameter is an empty string");
-		try{
-			Amex case9 = new Amex("");
-		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
-		}
-
+		System.out.println("\n");
 	}
 
 }

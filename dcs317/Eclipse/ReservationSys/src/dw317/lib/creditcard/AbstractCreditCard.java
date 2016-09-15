@@ -187,7 +187,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 			num = Long.parseLong(number);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("The credit card number must be a non-decimal "
-					+ "numeric value containing no spaces");
+					+ "numeric value containing no spaces.");
 		}
 
 		//pass the value of num to the digitSum method and 
