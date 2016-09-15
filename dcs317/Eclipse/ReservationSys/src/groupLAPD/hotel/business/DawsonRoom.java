@@ -2,7 +2,8 @@
  * 
  */
 package groupLAPD.hotel.business;
-import dw317.hotel.business.interfaces.Room;;
+import dw317.hotel.business.interfaces.Room;
+import dw317.hotel.business.*;
 
 /**
  * The DawsonRoom class implements the Room interface and inherits 
