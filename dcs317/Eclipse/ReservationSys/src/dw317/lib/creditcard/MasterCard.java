@@ -3,9 +3,10 @@ package dw317.lib.creditcard;
 
 /**
  * The MasterCard class is a final implementation class that extends from the
- * AbstractCreditCard class. As a specific credit card class and a subclass
- * of the AbstractCreditCard, the MasterCard class inherits the general 
- * data and behavior of a credit card from AbstractCreditCard.
+ * AbstractCreditCard class. As a specific credit card class , 
+ * the MasterCard class inherits the general data and behavior of a credit 
+ * card from AbstractCreditCard.
+ * 
  * @author Lyrene Labor
  * @version September 2016
  */

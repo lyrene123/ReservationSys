@@ -40,7 +40,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 
 	}// end of constructor
 
-	/**
+	/** 
 	 * The overridden equals method checks if two credit card objects are the same. Two
 	 * credit card objects are considered equal if they both belong to the same
 	 * class and they both have the same credit card type and credit card
@@ -50,36 +50,39 @@ public abstract class AbstractCreditCard implements CreditCard {
 	 *            The credit card object
 	 * @return A boolean value representing if two credit card objects are
 	 *         equals or not
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object object) {
-		// if both objects point to the same reference, they are both equals
-		if (this == object) {
+	public boolean equals(Object obj) {
+		//if both objects have the same reference address, return true
+		if (this == obj) {
 			return true;
 		}
-
-		// if object is null or not from the same class, return false
-		if (object == null || this.getClass() != object.getClass()) {
+		//if object is null, return false
+		if (obj == null) {
 			return false;
-		} 
-		else 
-		{
-			// if false, cast the object to a CreditCard type
-			CreditCard otherCard = (CreditCard) object;
-			// check if the two credit card objects have the same type and
-			// number
-			if (this.getNumber().equals(otherCard.getNumber()) && 
-					this.getType().equals(otherCard.getType())) {
-				return true; // if same type and number, return true
-			} 
-			else 
-			{
-				return false; // if not the same type and number, return false
-			}
-
 		}
-
-	}// end of equals method
+		//if both objects are not from the same class, return false
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		//cast the object 
+		AbstractCreditCard other = (AbstractCreditCard) obj;
+		//check if both object have the same cardType
+		if (this.cardType != other.cardType) {
+			return false;
+		}
+		//check if both objects have the same number
+		if (this.number == null) {
+			if (other.number != null) {
+				return false;
+			}
+		} else if (!this.number.equals(other.number)) {
+			return false;
+		}
+		return true;
+	}//end of equals method
+	
 
 	/**
 	 * The overridden getNumber method returns a String containing the credit card number
@@ -101,6 +104,22 @@ public abstract class AbstractCreditCard implements CreditCard {
 		return this.cardType;
 	} // end of getType method
 
+	
+	/**
+	 * The overridden hashCode method calculates the hash integer of each field
+	 * and returns it
+	 * @return an integer value representing the hash code
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cardType == null) ? 0 : cardType.hashCode());
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		return result;
+	}//end of hashCode method
+
 	/**
 	 * The overridden toString method returns a String containing a credit card data
 	 * 
@@ -110,55 +129,8 @@ public abstract class AbstractCreditCard implements CreditCard {
 	public String toString() {
 		return this.cardType.toString() + "*" + this.number;
 	} // end of toString method
-
-	/*
-	 * @Override public int hashCode(){ final int prime = 37; int result = 1;
-	 * result = prime*result+((number==null) ? 0 : number.hashCode()); return
-	 * result; }
-	 */
-	
 	
 
-
-	/**
-	 * The validateLuhnAlgorithm method uses the Luhn Algorithm in order to
-	 * check if a credit card number is a valid one.
-	 * 
-	 * @param number
-	 *            The credit card number
-	 * @return A reference to a String containing the validated credit card
-	 *         number
-	 * @throws IllegalArgumentException
-	 *             if credit card number is invalid
-	 */
-	private static String validateLuhnAlgorithm(String number) throws IllegalArgumentException {
-
-		// check if the credit card number is numeric by parsing it
-		long num = 0;
-		try {
-			num = Long.parseLong(number);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("The credit card number must be a non-decimal "
-					+ "numeric value containing less than 18 digits");
-		}
-
-		//pass the value of num to the digitSum method and 
-		//assign returned value to variable sum
-		int sum = digitSum(num);
-
-		// the following code checks if the total sum is multiple of ten
-		if (sum % 10 == 0) {
-			return number; // return valid number
-		}
-		else {
-			throw new IllegalArgumentException(
-					"The credit card number is not a valid number " + "for a credit card "
-							+ "based on the Luhn Algorithm");
-		}
-
-	} // end of validateLuhnAlgorithm method
-	
-	
 	/**
 	 * The digitSum method will process each digit of the credit card number
 	 * and sum all of the digits and return the value
@@ -194,5 +166,46 @@ public abstract class AbstractCreditCard implements CreditCard {
 		
 		return sum; //return value of sum
 	}//end of digitSum method
+
+
+	/**
+	 * The validateLuhnAlgorithm method uses the Luhn Algorithm in order to
+	 * check if a credit card number is a valid one.
+	 * 
+	 * @param number
+	 *            The credit card number
+	 * @return A reference to a String containing the validated credit card
+	 *         number
+	 * @throws IllegalArgumentException
+	 *             if credit card number is invalid
+	 */
+	private static String validateLuhnAlgorithm(String number) throws IllegalArgumentException {
+
+		// check if the credit card number is numeric by parsing it
+		long num = 0;
+		try {
+			num = Long.parseLong(number);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("The credit card number must be a non-decimal "
+					+ "numeric value containing no spaces");
+		}
+
+		//pass the value of num to the digitSum method and 
+		//assign returned value to variable sum
+		int sum = digitSum(num);
+
+		// the following code checks if the total sum is multiple of ten
+		if (sum % 10 == 0) {
+			return number; // return valid number
+		}
+		else {
+			throw new IllegalArgumentException(
+					"The credit card number is not a valid number " + "for a credit card "
+							+ "based on the Luhn Algorithm");
+		}
+
+	} // end of validateLuhnAlgorithm method
+	
+	
 
 }

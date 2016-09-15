@@ -32,7 +32,8 @@ public class MasterCardTest {
 		caseValidation("Case 4 - invalid data MasterCard number not a valid credit card "
 				+ "number based on Luhn Algorithm",
 				"5326385350239440",false);
-		caseValidation("Case 5 - invalid data card number not numeric",
+		caseValidation("Case 5 - invalid data card b  "
+				+ "number not numeric",
 				"5326c85350239456",false);
 		caseValidation("Case 6 - valid data card number contains trailing spaces",
 				" 5326385350239456", true);
@@ -46,6 +47,7 @@ public class MasterCardTest {
 				null, false);
 		caseValidation("case 11 - invalid data card number contains spaces",
 				"53263853 0239456", false);
+		
 
 	}
 	
