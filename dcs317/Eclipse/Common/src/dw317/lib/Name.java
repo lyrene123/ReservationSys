@@ -89,7 +89,7 @@ public class Name implements Serializable {
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
-	
+
 	/*
 	@Override
 	 */
