@@ -16,114 +16,53 @@ public class DawsonRoom implements Room {
 	
 	//declaring class fields
 	private static final long serialVersionUID = 42031768871L; //for serializable
-	private int roomNumber; //the room number
-	private RoomType roomType; //the room type
+	private final int roomNumber; //the room number
+	private final RoomType roomType; //the room type
 	
 	/**
 	 * The 2-parameter constructor method accepts input values and assigns them to the
 	 * room number and room type fields of the DawsonRoom class 
 	 * @param roomNumber The room number
-	 * @param roomType The room type
+	 * @param roomType The room type 
 	 * @throws IllegalArgumentException If roomNumber is invalid
 	 */
 	public DawsonRoom(int roomNumber, RoomType roomType)throws IllegalArgumentException{
 		//validate if the input value for the room number is valid
 		//before assigning it to the field
 		this.roomNumber = validateRoomNumber(roomNumber);
+		if(roomType==null){
+			throw new IllegalArgumentException("Invalid room type - must exist and must "
+					+ "not be null");
+		}
+		
 		this.roomType = roomType;
 	}//end of constructor
 	
-	
 	/**
-	 * The validateRoomNumber will accept a room number value as input and 
-	 * will checks if it is a valid dawson hotel room number
+	 * The compareTo method compares two room objects based on
+	 * their room number and returns an integer 1,-1 or 0 if
+	 * the current room object's room number bigger, smaller or equal
+	 * than the compared room object's room number
 	 * @param roomNumber The room number
-	 * @return an integer value representing the validated room number
-	 * @throws IllegalArgumentException If the room number value is invalid
+	 * @return an integer value of 1, -1 or 0
 	 */
-	private static int validateRoomNumber(int roomNumber)throws IllegalArgumentException{
+	public int compareTo(Room roomNumber){
 		
-		//check if the room number has 3 digits only
-		int length = String.valueOf(roomNumber).length();
-		if(length!=3){
-			//throw an exception if not a 3-digit number
-			throw new IllegalArgumentException("Invalid room number value - must be a three digit "
-					+ " number");
+		if(this.roomNumber > roomNumber.getRoomNumber()){
+			//if the current room number is bigger, return 1
+			return 1;
 		}
-		
-		
-		//check if the 1st digit is between 1 to 8
-		int floorNum = roomNumber/100; //get 1st digit
-		if(!(floorNum>=1 && floorNum<=8)){
-			//throw an exception if 1st digit not between 1-8
-			throw new IllegalArgumentException("Invalid room number value - the first digit "
-					+ "representing the floor number must be between 1 to 8");
+		else if (this.roomNumber < roomNumber.getRoomNumber()){
+			//if the current room number is smaller, return -1
+			return -1;
 		}
-		
-		//check if the last two number is between 01-08 
-		int doorNumber = roomNumber%100;
-		if(!(doorNumber>=0.01 && doorNumber<=0.08)){
-			//throw an exception if last 2 digits not between 01-08
-			throw new IllegalArgumentException("Invalid room number value - the last two digits "
-					+ "representing the door number must be between 01 to 08");
+		else {
+			//if the current number is equals to the compared object
+			//return 0
+			return 0;
 		}
-		
-		return roomNumber;//return validated roomNumber
+	}
 	
-	}//end of validateRoomNumber
-	
-
-	/**
-	 * The getRoomNumber method  returns the integer value od the room number
-	 * @return the roomNumber - int value
-	 */
-	public int getRoomNumber() {
-		return this.roomNumber;
-	}//end of getRoomNumber method
-
-	/**
-	 * The getRoomType method returns the room type enum value
-	 * @return the roomType - enum roomType
-	 */
-	public RoomType getRoomType() {
-		return this.roomType;
-	}//end of getRoomType method
-	
-	/**
-	 * The getFloor method returns the value of the floor number
-	 *  where the room is located
-	 * @return an integer value representing the floor number
-	 */
-	public int getFloor(){
-		return this.roomNumber / 100;
-	}//end of getFloor method
-	
-	/**
-	 * The getNumber method returns the number the room on a particular floor
-	 * @return an integer value representing the number of the room 
-	 *        
-	 */
-	public int getNumber(){
-		return this.roomNumber % 10;
-	}//end of getNumber method
-
-
-	/**
-	 * The overridden final hashCode method returns an value representing 
-	 * the hash code of the room number
-	 * @return int value representing a hash code 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public final int hashCode() {
-		final int prime = 31; 
-		int result = 1;
-		//calculate the hash code for integer room number 
-		result = prime * result + this.roomNumber;
-		return result;//return the hash code
-	}//end of hashCode method
-
-
 	/**
 	 * The overridden final equals method will compare two room objects
 	 * if they are instance of the same class and if they have the same
@@ -155,9 +94,73 @@ public class DawsonRoom implements Room {
 		if (this.roomNumber != other.roomNumber) {
 			return false;
 		}
+		
+		//if roomType is set to null, check if other is null as well
+		if (this.roomType==null){
+			if(other.roomType!=null){
+				return false;
+			}
+		}
+		else{
+			//check if both objects don't have the same room type
+			if(!(this.roomType.equals(other.roomType))){
+				return false;
+			}
+		}
 		return true; //if none of the above if statements are true,
 		//return true
 	} //end of equals method
+	
+
+	/**
+	 * The getFloor method returns the value of the floor number
+	 *  where the room is located
+	 * @return an integer value representing the floor number
+	 */
+	public int getFloor(){
+		return this.roomNumber / 100;
+	}//end of getFloor method
+	
+	/**
+	 * The getNumber method returns the number the room on a particular floor
+	 * @return an integer value representing the number of the room 
+	 *        
+	 */
+	public int getNumber(){
+		return this.roomNumber % 10;
+	}//end of getNumber method
+	
+	/**
+	 * The getRoomNumber method  returns the integer value od the room number
+	 * @return the roomNumber - int value
+	 */
+	public int getRoomNumber() {
+		return this.roomNumber;
+	}//end of getRoomNumber method
+
+	/**
+	 * The getRoomType method returns the room type enum value
+	 * @return the roomType - enum roomType
+	 */
+	public RoomType getRoomType() {
+		return this.roomType;
+	}//end of getRoomType method
+
+	/**
+	 * The overridden final hashCode method returns an value representing 
+	 * the hash code of the room number
+	 * @return int value representing a hash code 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public final int hashCode() {
+		final int prime = 31; 
+		int result = 1;
+		//calculate the hash code for integer room number 
+		result = prime * result + this.roomNumber;
+		return result;//return the hash code
+	}//end of hashCode method
+
 	
 	/**
 	 * The toString method returns a formatted string containing
@@ -172,29 +175,52 @@ public class DawsonRoom implements Room {
 	
 	
 	/**
-	 * The compareTo method compares two room objects based on
-	 * their room number and returns an integer 1,-1 or 0 if
-	 * the current room object's room number bigger, smaller or equal
-	 * than the compared room object's room number
+	 * The validateRoomNumber will accept a room number value as input and 
+	 * will checks if it is a valid dawson hotel room number
 	 * @param roomNumber The room number
-	 * @return an integer value of 1, -1 or 0
+	 * @return an integer value representing the validated room number
+	 * @throws IllegalArgumentException If the room number value is invalid
 	 */
-	public int compareTo(Room roomNumber){
+	private static int validateRoomNumber(int roomNumber)throws IllegalArgumentException{
 		
-		if(this.roomNumber > roomNumber.getRoomNumber()){
-			//if the current room number is bigger, return 1
-			return 1;
+		
+		//check if the room number has 3 digits only
+		int length = String.valueOf(roomNumber).length();
+		if(length!=3){
+			//throw an exception if not a 3-digit number
+			throw new IllegalArgumentException("Invalid room number value - must be a three digit "
+					+ " number. 1st digit must be the floor number from 1 to 8 and the "
+					+ "last two digits must be the number of the room from"
+					+ "01 to 08");
 		}
-		else if (this.roomNumber < roomNumber.getRoomNumber()){
-			//if the current room number is smaller, return -1
-			return -1;
+		
+		
+		//check if the 1st digit is between 1 to 8 and followed 
+		int floorNum = roomNumber/100; //get 1st digit
+		if(!(floorNum>=1 && floorNum<=8)){
+			//throw an exception if 1st digit not between 1-8
+			throw new IllegalArgumentException("Invalid room number value - the first digit "
+					+ "representing the floor number must be between 1 to 8");
 		}
-		else {
-			//if the current number is equals to the compared object
-			//return 0
-			return 0;
+		
+		//check if the middle value of the room number is 0 or not
+		if((roomNumber/10)%10 != 0){
+			throw new IllegalArgumentException("Invalid room number value - the last two digits "
+					+ "representing the door number must be between 01 to 08");
 		}
-	}
+		
+		
+		//check if the last two number is between 1-8 
+		int doorNumber = roomNumber%10;
+		if(!(doorNumber>=1 && doorNumber<=8)){
+			//throw an exception if last 2 digits not between 1-8
+			throw new IllegalArgumentException("Invalid room number value - the last digit "
+					+ "representing the door number must be between 1 to 8");
+		}
+		
+		return roomNumber;//return validated roomNumber
+	
+	}//end of validateRoomNumber
 	
 	
 
