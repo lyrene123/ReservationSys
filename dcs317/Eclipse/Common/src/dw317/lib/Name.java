@@ -22,8 +22,8 @@ public class Name implements Serializable {
 	 * @param lastName
 	 */
 	public Name(String firstName, String lastName){
-		this.firstName = validateExist(firstName);
-		this.lastName = validateExist(lastName);
+		this.firstName = validateExistance("First Name", firstName);
+		this.lastName = validateExistance("First Name", lastName);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class Name implements Serializable {
  	 * @param firstName
 	 */
 	public void setFirstName(String firstName) {
-		this.firstName = validateExist(firstName);
+		this.firstName = validateExistance("First Name", firstName);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class Name implements Serializable {
 	 */
 	public void setLastName(String lastName)
 	{
-		this.lastName = validateExist(lastName);
+		this.lastName = validateExistance("Last Name", lastName);
 	}
 
 	/**
@@ -116,56 +116,28 @@ public class Name implements Serializable {
 	}
 	
 	/**
-	 * Validate name, checks if name is null, empty or invalid
+	 * Validate fieldValue, checks if fieldValue is null, empty or invalid
 	 * @return a boolean true if the name is Valid, false if not Valid
 	 */
-	private boolean isValide(){
+	private String validateExistance(String fieldName, String fieldValue){
 		
-		if(firstName == null || lastName == null){
-			throw new IllegalArgumentException("Invalid Input-- Must Provide first name and Last Name");
+		if(fieldValue == null){
+			throw new IllegalArgumentException("Invalid Input--Must Provide "+ fieldName);
 		}
 		 
-		String trimmedFName = firstName.trim();
-		String trimmedLName = lastName.trim();
+		String trimmedFieldValue = fieldValue.trim();
 		 
-		if(trimmedFName.isEmpty() || trimmedLName.isEmpty()){
-			throw new IllegalArgumentException("Invalid Input-- Must Provide first name and Last Name");
+		if(trimmedFieldValue.isEmpty()){
+			throw new IllegalArgumentException("Invalid Input--Must Provide "+ fieldName);
 		}
 		
-		for(int i = 0; i < firstName.length(); i++){
-			if(!Character.isAlphabetic(firstName.charAt(i)) && firstName.charAt(i) != '\'' 
-					&& firstName.charAt(i) != '-' && firstName.charAt(i) != ' '){
-				throw new IllegalArgumentException("Invalid Input-- First Name must only contain alphabets, \"'\", \"-\" and space");
+		for(int i = 0; i < fieldValue.length(); i++){
+			if(!Character.isAlphabetic(fieldValue.charAt(i)) && fieldValue.charAt(i) != '\'' 
+					&& fieldValue.charAt(i) != '-' && fieldValue.charAt(i) != ' '){
+				throw new IllegalArgumentException("Invalid Input--" + fieldName + " must only contain alphabets, \"'\", \"-\" and space");
 			}
 		}
-		for(int i = 0; i < lastName.length(); i++){
-			if(!Character.isAlphabetic(lastName.charAt(i)) && lastName.charAt(i) != '\'' 
-					&& lastName.charAt(i) != '-' && lastName.charAt(i) != ' '){
-				throw new IllegalArgumentException("Invalid Input-- Last Name must only contain alphabets, \"'\", \"-\" and space");
-			}
-		}
-		return true;
+		return fieldValue;
 	}
 	
-	
-	
-	/**
-	 * Checks if the String is a valid firstName or lastName
-	 * @param name first name or last name
-	 * @return returns the String if it is valid
-	 */
-	public String validateExist(String name){
-		
-		if(name == null){
-			throw new IllegalArgumentException("Invalid Input-- Must Provide name");
-		}
-		
-		String trimmedName = name.trim();
-		
-		if(trimmedName.isEmpty()){
-			throw new IllegalArgumentException("Invalid Input-- Must Provide first name and Last Name");
-		}
-		
-		return name;
 	}
-}
