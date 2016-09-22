@@ -3,6 +3,7 @@
  */
 package dw317.lib.creditcard;
 
+
 /**
  * The AbstractCreditCard is an abstract class that holds general data about a
  * credit card. This class is used as a superclass or a parent class for classes
@@ -37,6 +38,8 @@ public abstract class AbstractCreditCard implements CreditCard {
 		// validate credit card number and assign validated value to this.number
 		this.number = validateLuhnAlgorithm(number);
 		this.cardType = cardType; // assign credit card type to this.cardType
+		
+		
 
 	}// end of constructor
 

@@ -23,6 +23,7 @@ public final class MasterCard extends AbstractCreditCard  {
 	 */
 	public MasterCard(String number)throws IllegalArgumentException{
 		super(CardType.MASTERCARD,validateNumber(number));
+	
 		
 	}//end of constructor
 	

@@ -24,6 +24,8 @@ public interface Room extends Comparable<Room>, Serializable {
 	public int getFloor(); //method to return floor number
 	public int getNumber(); //method to return number of room
 	
+	
+	
 
 }
 
