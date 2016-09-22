@@ -1,4 +1,4 @@
-/**
+  /**
  * 
  */
 package groupLAPD.hotel.business;
@@ -14,7 +14,7 @@ import dw317.hotel.business.*;
  */
 public class DawsonRoom implements Room {
 	
-	//declaring class fields
+	//declaring class fields...
 	private static final long serialVersionUID = 42031768871L; //for serializable
 	private final int roomNumber; //the room number
 	private final RoomType roomType; //the room type
