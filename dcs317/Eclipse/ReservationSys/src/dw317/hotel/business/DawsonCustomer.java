@@ -5,8 +5,7 @@ package dw317.hotel.business;
 
 import java.util.Optional;
 import dw317.hotel.business.interfaces.Customer;
-import dw317.hotel.business.interfaces.Email;
-import dw317.lib.Name;
+import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
 
 /**
@@ -40,82 +39,65 @@ public class DawsonCustomer implements Customer{
 
 	@Override
 	public Optional<CreditCard> getCreditCard() {
-		// TODO Auto-generated method stub
-		return this.creditCard.orElse("");;
+		return this.creditCard.orElse(CreditCard.getInstance(null, ""));
 	}
 
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {
-		// TODO Auto-generated method stub
-		this.creditCard = card.orElse("");
-	}	
-	
-	@Override
-	public final boolean equals(Object obj){
 		
+	}	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((creditCard == null) ? 0 : creditCard.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		String str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
+				+ this.name.getLastName() + "*" + this.creditCard.orElse(CreditCard.getInstance(null, "")).getType().toString() 
+				+ "*" + this.creditCard.orElse(CreditCard.getInstance(null, "")).getNumber();
+		
+		return str;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (this.getClass() != obj.getClass())
-			return false;		
-		
-		this.name.getFirstName().toUpperCase();	
-		this.name.getLastName().toUpperCase();
-		
-		Name other = (Name) obj;
-		
-		other.getFirstName().toUpperCase();
-		other.getLastName().toUpperCase();
-		
-		if(this.email != other.email)
+		if (getClass() != obj.getClass())
 			return false;
-		
-		if(this.name.getFirstName() == null){
-			if(other.getFirstName() != null){
+		DawsonCustomer other = (DawsonCustomer) obj;
+		if (creditCard == null) {
+			if (other.creditCard != null)
 				return false;
-			}
-		}else if(!this.name.getFirstName().equals(other.getFirstName())){
+		} else if (!creditCard.equals(other.creditCard))
 			return false;
-		}
-		
-		if(this.name.getLastName() == null){
-			if(other.getLastName() != null){
+		if (email == null) {
+			if (other.email != null)
 				return false;
-			}
-		}else if(!this.name.getLastName().equals(other.getLastName())){
+		} else if (!email.equals(other.email))
 			return false;
-		}
-		
-		return true;		
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
-	
-	@Override
-	public final int hashCode() {
-		
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result 
-				+ ((this.name.getFirstName().toUpperCase() == null) ? 0 : this.name.getFirstName().toUpperCase().hashCode());
-		result = prime * result 
-				+ ((this.name.getLastName().toUpperCase() == null) ? 0 : this.name.getLastName().toUpperCase().hashCode());
-		result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
-		
-		return result;
-	}
-	
-	
-	/*@Override
-	public String toString(){
-		String str;
-		str = 
-	}*/	
-	
+
 	@Override
 	public int compareTo(Customer customer) {
 		// TODO Auto-generated method stub		
-		return this.email.compareToIgnoreCase(customer.getEmail());
+		return this.email.compareTo(customer.getEmail());
 	}
+
 	
 }
