@@ -124,10 +124,10 @@ public class Name implements Serializable {
 		if(firstName == null || lastName == null){
 			throw new IllegalArgumentException("Invalid Input-- Must Provide first name and Last Name");
 		}
-		
+		 
 		String trimmedFName = firstName.trim();
 		String trimmedLName = lastName.trim();
-		
+		 
 		if(trimmedFName.isEmpty() || trimmedLName.isEmpty()){
 			throw new IllegalArgumentException("Invalid Input-- Must Provide first name and Last Name");
 		}
