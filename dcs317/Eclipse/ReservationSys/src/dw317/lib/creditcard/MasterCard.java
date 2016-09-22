@@ -17,7 +17,7 @@ public final class MasterCard extends AbstractCreditCard  {
 	
 	/**
 	 * The MasterCard constructor calls the super constructor and sets the MasterCard
-	 * credit card type and validated number 
+	 * instance's credit card type and validated number 
 	 * @param number The MasterCard number
 	 * @throws IllegalArgumentException If number is not a valid MasterCard number
 	 */
