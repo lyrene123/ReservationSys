@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dw317.hotel.business;
+package groupLAPD.hotel.business;
 
 import java.util.Optional;
 import dw317.hotel.business.interfaces.Customer;
@@ -39,12 +39,12 @@ public class DawsonCustomer implements Customer{
 
 	@Override
 	public Optional<CreditCard> getCreditCard() {
-		return this.creditCard.orElse(CreditCard.getInstance(null, ""));
+		return this.creditCard;
 	}
 
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {
-		
+		this.creditCard = card;
 	}	
 
 	@Override
