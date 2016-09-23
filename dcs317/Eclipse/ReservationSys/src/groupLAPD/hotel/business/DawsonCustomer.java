@@ -46,7 +46,7 @@ public class DawsonCustomer implements Customer{
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {
 
-		this.creditCard = card.orElse(CreditCard.getInstance(null, ""));
+		this.creditCard = card.orElse(null);
 	}	
 
 	@Override
