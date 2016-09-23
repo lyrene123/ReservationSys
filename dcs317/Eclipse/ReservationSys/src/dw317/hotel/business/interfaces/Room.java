@@ -19,11 +19,10 @@ public interface Room extends Comparable<Room>, Serializable {
 	
 	//abstract classes that classes need to provide
 	//if this interface is implemented
-	public RoomType getRoomType(); //method to return room type 
-	public int getRoomNumber();//method to return full room number
 	public int getFloor(); //method to return floor number
 	public int getNumber(); //method to return number of room
-	
+	public int getRoomNumber();//method to return full room number
+	public RoomType getRoomType(); //method to return room type 
 	
 	
 

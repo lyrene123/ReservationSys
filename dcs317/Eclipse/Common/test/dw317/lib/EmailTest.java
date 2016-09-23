@@ -6,7 +6,7 @@ package dw317.lib;
 
 
 /**
- * @author Lyrene Labor
+ * @author Ali Dali
  *
  */
 public class EmailTest {

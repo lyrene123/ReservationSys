@@ -47,7 +47,7 @@ public class DawsonRoom implements Room {
 	 * The compareTo method compares two room objects based on their room number
 	 * and returns an integer 1,-1 or 0 if the current room object's room number
 	 * bigger, smaller or equal than the compared room object's room number
-	 * 
+	 *  
 	 * @param roomNumber
 	 *            The room number of type Room
 	 * @return an integer value of 1, -1 or 0

@@ -5,25 +5,28 @@ package dw317.lib.creditcard;
 
 
 /**
- * The AbstractCreditCard is an abstract class that holds general data about a
- * credit card. This class is used as a superclass or a parent class for classes
- * representing specific credit card that extend to this class in order to
- * inherit its state and behavior. The AbstractCreditCart class implements the
- * CreditCard interface
+ * The AbstractCreditCard is an abstract class that holds general
+ * data about a credit card. This class is used as a superclass or 
+ * a parent class for classes representing specific credit card that
+ * extend to this class in order to inherit its state and behavior.
+ * The AbstractCreditCart class implements the CreditCard interface
  * 
  * @author Lyrene Labor
  * @version September 2016
  */
 public abstract class AbstractCreditCard implements CreditCard {
 
-	// class data declaration
-	private static final long serialVersionUID = 42031768871L; // serial ID
+	// class data declaration: 
+	
+	// serial ID
+	private static final long serialVersionUID = 42031768871L; 
 	private final CardType cardType; // credit card type
 	private final String number; // credit card number
 
 	/**
-	 * The constructor validates the input values and sets the credit card type
-	 * and number with the respective input values.
+	 * The constructor validates the input values and sets the 
+	 * credit card type and credit card number with the
+	 *  respective input values.
 	 * 
 	 * @param cardtype
 	 *            The credit card type
@@ -35,20 +38,22 @@ public abstract class AbstractCreditCard implements CreditCard {
 	public AbstractCreditCard(CardType cardType, String number) 
 			throws IllegalArgumentException {
   
-		// validate credit card number and assign validated value to this.number
+		// validate credit card number and assign validated value 
+		//to this.number
 		this.number = validateLuhnAlgorithm(number);
-		this.cardType = cardType; // assign credit card type to this.cardType
+		this.cardType = cardType; // assign credit card type to 
+		//this.cardType
 		
 		
 
 	}// end of constructor
 
 	/** 
-	 * The overridden equals method checks if two credit card objects are the same. Two
-	 * credit card objects are considered equal if they both belong to the same
-	 * class and they both have the same credit card type and credit card
-	 * number.
-	 * 
+	 * The overridden equals method checks if two credit card objects
+	 * are the same. Two credit card objects are considered equal if
+	 * they both belong to the same class and they both have the same
+	 * credit card type and credit card number.
+
 	 * @param object
 	 *            The credit card object
 	 * @return A boolean value representing if two credit card objects are
@@ -56,7 +61,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		//if both objects have the same reference address, return true
 		if (this == obj) {
 			return true;
@@ -66,7 +71,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 			return false;
 		}
 		//if both objects are not from the same class, return false
-		if (getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
 		//cast the object 
@@ -83,12 +88,15 @@ public abstract class AbstractCreditCard implements CreditCard {
 		} else if (!this.number.equals(other.number)) {
 			return false;
 		}
+		
+		//return true if non of the above statements are true
 		return true;
 	}//end of equals method
 	
 
 	/**
-	 * The overridden getNumber method returns a String containing the credit card number
+	 * The overridden getNumber method returns a String containing 
+	 * the credit card number
 	 * 
 	 * @return A reference to a String
 	 */
@@ -115,16 +123,19 @@ public abstract class AbstractCreditCard implements CreditCard {
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		//calculations of the hashCode based on the fields
+		//used in the equals method
 		result = prime * result + ((cardType == null) ? 0 : cardType.hashCode());
 		result = prime * result + ((number == null) ? 0 : number.hashCode());
 		return result;
 	}//end of hashCode method
 
 	/**
-	 * The overridden toString method returns a String containing a credit card data
+	 * The overridden toString method returns a String containing the credit card 
+	 * data
 	 * 
 	 * @returns A reference to a String
 	 */
@@ -135,10 +146,12 @@ public abstract class AbstractCreditCard implements CreditCard {
 	
 
 	/**
-	 * The digitSum method will process each digit of the credit card number
-	 * and sum all of the digits and return the value
-	 * @param num The credit card number
-	 * @return The sum of all digits of the credit number after 
+	 * The digitSum method is used by the method used to validate 
+	 * credit card numbers with the Luhn Algorithm will process each 
+	 * digit of the credit card number and sum all of the digits and return the 
+	 * value
+	 * @param num The credit card number 
+	 * @return The integer sum of all digits of the credit number after 
 	 *           processing each one of them
 	 */
 	private static int digitSum(long num){
@@ -182,14 +195,16 @@ public abstract class AbstractCreditCard implements CreditCard {
 	 * @throws IllegalArgumentException
 	 *             if credit card number is invalid
 	 */
-	private static String validateLuhnAlgorithm(String number) throws IllegalArgumentException {
+	private static String validateLuhnAlgorithm(String number) 
+			throws IllegalArgumentException {
 
 		// check if the credit card number is numeric by parsing it
 		long num = 0;
 		try {
 			num = Long.parseLong(number);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("The credit card number must be a non-decimal "
+			throw new IllegalArgumentException("The credit card number must be a "
+					+ "non-decimal "
 					+ "numeric value containing no spaces.");
 		}
 
@@ -203,7 +218,9 @@ public abstract class AbstractCreditCard implements CreditCard {
 		}
 		else {
 			throw new IllegalArgumentException(
-					"The credit card number is not a valid number " + "for a credit card "
+					"The credit card number is not a valid number " + "for a "
+							+ "credit"
+							+ " card "
 							+ "based on the Luhn Algorithm");
 		}
 
