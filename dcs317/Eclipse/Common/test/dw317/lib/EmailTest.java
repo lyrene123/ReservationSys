@@ -40,7 +40,11 @@ public class EmailTest {
 				+ "helloWorld123@yahoo.ca = helloWorld123@yahoo.ca", email);
 		
 		
+<<<<<<< HEAD
 	}//end of method
+=======
+	}
+>>>>>>> parent of 215de9c... email test
 	
 	private static void testCompareTo(String testCase, String expectedResult,
 			Email email){
