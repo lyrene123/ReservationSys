@@ -96,7 +96,7 @@ public class EmailTest {
 		
 		System.out.println("\nTesting the hashCode method.");
 		Email email1 = new Email("alidali123@gmail.com");
-		Email email2 = new Email("ali_dalihello@gmail.com");
+		Email email2 = new Email("alidali123@gmail.com");
 		
 		testHashCode("case 1 - equal objects, same hash code",
 				email1, email2, "Expected result: same hash codes");
