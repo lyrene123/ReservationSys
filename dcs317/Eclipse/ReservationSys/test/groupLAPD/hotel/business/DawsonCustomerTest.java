@@ -21,7 +21,6 @@ public class DawsonCustomerTest {
 		// TODO Auto-generated method stub
 		testConstructor();
 	
-		
 		/*DawsonCustomer customer = new DawsonCustomer("Pengkim", "Sy", "pengkimsy@gmail.com");
 		Amex amex = new Amex("344322624384908");
 		Optional<CreditCard> card = Optional.of(amex);

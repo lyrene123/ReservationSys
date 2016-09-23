@@ -8,7 +8,6 @@ import dw317.hotel.business.interfaces.Customer;
 import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
 
-
 /**
  * @author kimhyonh
  *
