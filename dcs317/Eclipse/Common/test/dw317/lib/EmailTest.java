@@ -16,16 +16,20 @@ public class EmailTest {
 		
 		testTheConstructor();
 		testGetAddress();
+		
 
 	}
 	
+	
+	
 	private static void testGetAddress(){
 		System.out.println("\nTesting the getAddress constructor.");
-		//asds
 		
-		
-		
-		
+		testGetAddress("case 1 - valid returned value: alidali123@hotmail.com",
+				"alidali123@hotmail.com", "alidali123@hotmail.com");
+		testGetAddress("case 2 - valid returned value: hello@localhost",
+				"hello@localhost", "hello@localhost");
+
 	}
 	
 	private static void testGetAddress(String testCase, String address, 
@@ -34,6 +38,7 @@ public class EmailTest {
 		System.out.println("   " + testCase);
 		Email email = new Email(address);
 		System.out.print("\tThe Email instance was created: " + email);
+		System.out.println("expected result returned: " + expectedAddress);
 		
 
 		if (!email.getAddress().equals(expectedAddress))
