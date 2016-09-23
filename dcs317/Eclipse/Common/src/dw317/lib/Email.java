@@ -111,39 +111,64 @@ public class Email implements Comparable<Email>, Serializable {
 	private static String validateEmail(String email)throws IllegalArgumentException{
 
 		if(email == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Invalid Input-- Must provide Email");
+		}else if(!email.contains("@")){
+			throw new IllegalArgumentException("Invalid Input-- Email Must contain \"@\"");
+		}else if(email.trim().isEmpty()){
+			throw new IllegalArgumentException("Invalid Input-- Email Must Not be Empty");
+		
 		}
+		
 		String userId = email.substring(0, email.indexOf('@'));
 		String host = email.substring(email.indexOf('@') +1);
-
+		
+		try{
+		for(int i = 0; i < email.length(); i++){
+			if((email.charAt(i) == '.' && email.charAt(i-1) == '.')){
+				throw new IllegalArgumentException("Invalid Input-- Cannot have concecutive \".\"");
+			}else if((email.charAt(i) == '.' && email.charAt(i-1) == '-')){
+				throw new IllegalArgumentException("Invalid Input-- Cannot Have consecutive \"-\" \".\"");
+			}else if((email.charAt(i) == '.' && email.charAt(i+1) == '-')){
+				throw new IllegalArgumentException("Invalid Input-- Cannot Have consecutive \".\" \"-\" ");
+			}
+		}
+		}catch(StringIndexOutOfBoundsException e){
+			
+		}
+		
+		
 		if(userId.length() < 1 || userId.length() > 32){
-			throw new IllegalArgumentException("User ID must be Between 1 and 32 Characters");
+			throw new IllegalArgumentException("Invalid Input-- User ID must be Between 1 and 32 Characters");
 		}else{
 			for(int i = 0; i<userId.length(); i++){
 				if(!Character.isAlphabetic(userId.charAt(i)) && !Character.isDigit(userId.charAt(i))
 						&& userId.charAt(i) != '_' && userId.charAt(i) != '-' && userId.charAt(i) != '.'){
-					throw new IllegalArgumentException("User ID can ONLY include \"upper or lower case letters\", \"Digits\", \"Hyphens\"(-), \"Dashe\"(_) and \"Dots\"(.)");
+					throw new IllegalArgumentException("Invalid Input-- User ID can ONLY include \"upper or lower case letters\", \"Digits\", \"Hyphens\"(-), \"Dashe\"(_) and \"Dots\"(.)");
 				} 
 			}
 			if(userId.charAt(0) == '.' || userId.charAt(userId.length()-1) == '.'){
-				throw new IllegalArgumentException("User ID CANNOT begin or end with \".");
-
+				throw new IllegalArgumentException("Invalid Input-- User ID CANNOT begin or end with \".\"");
+			}else if(userId.charAt(userId.length()-1) == '.'){
+				throw new IllegalArgumentException("Invalid Input-- Host Name CANNOT end with \".\"");
 			}
+			
 		}
 
 		if(host.length() < 1 || host.length() > 32){
-			throw new IllegalArgumentException("Host Name must be Between 1 and 32 Characters");
+			throw new IllegalArgumentException("Invalid Input-- Host Name must be Between 1 and 32 Characters");
 		}
 
 		for(int i = 0; i < host.length(); i++){
 			if(!Character.isAlphabetic(host.charAt(i)) && !Character.isDigit(host.charAt(i))
 					&& host.charAt(i) != '-' && host.charAt(i) != '.'){
-				throw new IllegalArgumentException("Host Name can ONLY include \"upper or lower case letters\", \"Digits\" and \"Hyphens\"(-)");
+				throw new IllegalArgumentException("Invalid Input-- Host Name can ONLY include \"upper or lower case letters\", \"Digits\" and \"Hyphens\"(-)");
 			}
 
 		}
 		if(host.charAt(0) == '-' || host.charAt(host.length()-1) == '-'){
-			throw new IllegalArgumentException("Host Name CANNOT begin or end With \"-\"");
+			throw new IllegalArgumentException("Invalid Input-- Host Name CANNOT begin or end With \"-\"");
+		}else if(host.charAt(host.length()-1) == '.'){
+			throw new IllegalArgumentException("Invalid Input-- Host Name CANNOT end with \".\"");
 		}
 		return email;
 
