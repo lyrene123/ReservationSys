@@ -3,6 +3,9 @@
  */
 package dw317.lib;
 
+
+
+
 /**
  * @author Lyrene Labor
  *
@@ -16,14 +19,87 @@ public class EmailTest {
 		
 		testTheConstructor();
 		testGetAddress();
+		testGetHost();
+		testGetUserID();
+		testHashCode();
 		
 
 	}
 	
+	private static void testHashCode(){
+		
+		System.out.println("\nTesting the hashCode method.");
+		Email email1 = new Email("alidali123@gmail.com");
+		Email email2 = new Email("ali_dalihello@gmail.com");
+		
+		testHashCode("case 1 - equal objects, same hash code",
+				email1, email2, "Expected result: same hash codes");
+		email2 = new Email("hello@localhost");
+		testHashCode("case 2 - not equal objects, different hash code",
+				email1, email2, "Expected result: different hash codes");
+		
+	}
+	
+	private static void testHashCode(String testCase, Object obj1, Object obj2, String expectedResult) {
+		System.out.println("   " + testCase);
+		System.out.println("   " + expectedResult);
+		// get the hash code of each object
+		int hash1 = obj1.hashCode();
+		int hash2 = obj2.hashCode();
+		// display each hash code and compare
+		System.out.println("\tobject 1 - " + obj1 + ": " + hash1);
+		System.out.println("\tobject 2 - " + obj2 + ": " + hash2);
+
+	} 
+	
+	private static void testGetUserID(){
+		System.out.println("\nTesting the testGetUserID method.");
+		System.out.println("\nTesting the getUserId method.");
+		testGetUserId("case 1 - valid returned value: alidali123@hotmail.com",
+				"alidali123@hotmail.com", "alidali123");
+		testGetUserId("case 2 - valid returned value: hello@localhost",
+				"hello@localhost", "hello");
+	}
+	
+	private static void testGetUserId(String testCase, String address, String expectedID){
+		System.out.println("   " + testCase);
+		Email email = new Email(address);
+		System.out.print("\tThe Email instance was created: " + email);
+		System.out.println("expected result returned: " + expectedID);
+
+		if (!email.getUserId().equals(expectedID))
+			System.out.print("  Error! Expected Invalid. ==== FAILED TEST ====");
+
+		System.out.println("\n");
+		
+		
+	}
+	
+	private static void testGetHost(){
+		System.out.println("\nTesting the getHost method.");
+		testGetHost("case 1 - valid returned value: alidali123@hotmail.com",
+				"alidali123@hotmail.com", "hotmail.com");
+		testGetHost("case 2 - valid returned value: hello@localhost",
+				"hello@localhost", "localhost");
+
+	}
+	
+	private static void testGetHost(String testCase, String address, String expectedHost){
+		System.out.println("   " + testCase);
+		Email email = new Email(address);
+		System.out.print("\tThe Email instance was created: " + email);
+		System.out.println("expected result returned: " + expectedHost);
+
+		if (!email.getHost().equals(expectedHost))
+			System.out.print("  Error! Expected Invalid. ==== FAILED TEST ====");
+
+		System.out.println("\n");
+		
+	}
 	
 	
 	private static void testGetAddress(){
-		System.out.println("\nTesting the getAddress constructor.");
+		System.out.println("\nTesting the getAddress method.");
 		
 		testGetAddress("case 1 - valid returned value: alidali123@hotmail.com",
 				"alidali123@hotmail.com", "alidali123@hotmail.com");
