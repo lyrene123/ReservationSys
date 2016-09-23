@@ -21,8 +21,7 @@ public class EmailTest {
 	
 	private static void testGetAddress(){
 		System.out.println("\nTesting the getAddress constructor.");
-		
-	
+		//asds
 		
 		
 		
