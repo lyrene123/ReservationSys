@@ -133,7 +133,7 @@ public class EmailTest {
 				"ali_dali69@hotmail.com", true);
 		testTheConstructor("case 3 - invalid email address: .alidali69@hotmail.com",
 				".alidali69@hotmail.com", false);
-		testTheConstructor("case 4 - invalid email address: alidali69.@hotmail.com",
+		testTheConstructor("case 4 - invalid email address: alidali69@hotmail.com.",
 				"alidali69@hotmail.com.", false);
 		testTheConstructor("case 5 - invalid email address: alid..ali69@hotmail.com",
 				"alid..ali69@hotmail.com.", false);
