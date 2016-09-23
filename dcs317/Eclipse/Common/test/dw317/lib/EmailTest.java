@@ -22,17 +22,25 @@ public class EmailTest {
 	private static void testGetAddress(){
 		System.out.println("\nTesting the getAddress constructor.");
 		
+	
+		
 		
 		
 		
 	}
 	
 	private static void testGetAddress(String testCase, String address, 
-			String expectedAdress){
+			String expectedAddress){
 		
 		System.out.println("   " + testCase);
 		Email email = new Email(address);
 		System.out.print("\tThe Email instance was created: " + email);
+		
+
+		if (!email.getAddress().equals(expectedAddress))
+			System.out.print("  Error! Expected Invalid. ==== FAILED TEST ====");
+
+		System.out.println("\n");
 		
 	}
 	
@@ -85,6 +93,8 @@ public class EmailTest {
 				"alidali123@hotmail..com", false);
 		testTheConstructor("case 23 - invalid email address: alidali123@hotmail.com.",
 				"alidali123@hotmail.com.", false);
+		testTheConstructor("case 24 - invalid email address: alida li 123@hotmail.com",
+				"alida li 123@hotmail.com", false);
 
 	}
 	
