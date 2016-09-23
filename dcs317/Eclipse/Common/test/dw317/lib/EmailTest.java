@@ -241,6 +241,8 @@ public class EmailTest {
 				"alidali123@hotmail.com.", false);
 		testTheConstructor("case 24 - invalid email address: alida li 123@hotmail.com",
 				"alida li 123@hotmail.com", false);
+		testTheConstructor("case 25 - invalid email address: alidali!!!@hotmail.com",
+				"alidali!!!@hotmail.com", false);
 
 	}//end of method
 	
