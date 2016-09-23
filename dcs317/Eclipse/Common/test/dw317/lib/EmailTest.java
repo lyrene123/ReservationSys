@@ -40,7 +40,7 @@ public class EmailTest {
 				+ "helloWorld123@yahoo.ca = helloWorld123@yahoo.ca", email);
 		
 		
-	}
+	}//end
 	
 	private static void testCompareTo(String testCase, String expectedResult,
 			Email email){
