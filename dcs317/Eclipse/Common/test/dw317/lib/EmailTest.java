@@ -39,8 +39,9 @@ public class EmailTest {
 		testCompareTo("case 3 - helloWorld123@yahoo.ca and helloWorld123@yahoo.ca", "Expected result: "
 				+ "helloWorld123@yahoo.ca = helloWorld123@yahoo.ca", email);
 		
-		
-	}//end
+
+	}//end of method
+
 	
 	private static void testCompareTo(String testCase, String expectedResult,
 			Email email){
