@@ -17,7 +17,7 @@ public class DawsonRoomTest {
 	/**
 	 * The main method will call private methods that will each test a method 
 	 * in the DawsonRoom class
-	 * @param args
+	 * @param args String array
 	 */
 	public static void main(String[] args) {
 		//method calls

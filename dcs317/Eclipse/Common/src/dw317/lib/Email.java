@@ -7,14 +7,14 @@ import java.io.*;
  *
  */
 
-public class Email implements Serializable Comparable<Email> {
+public class Email implements Comparable<Email>, Serializable {
 
-	final private long serialVersionUID = 42031768871L;
+	private static final long serialVersionUID = 42031768871L;
 	private final String address;
 
 	public Email(String address){
 
-		validateEmail(address);
+		this.address = validateEmail(address);
 	}
 
 	
@@ -38,15 +38,6 @@ public class Email implements Serializable Comparable<Email> {
 	public String getUserId(){
 		String userId = address.substring(0, address.indexOf('@'));
 		return userId;
-	}
-
-	
-	public String getNumber(){
-
-	}
-
-	public Scheme getType(){
-
 	}
 
 	
@@ -81,6 +72,7 @@ public class Email implements Serializable Comparable<Email> {
 	}
 	
 	
+	/**
 	public int compareTo(String email){
 		
 		if(email == null){
@@ -112,6 +104,8 @@ public class Email implements Serializable Comparable<Email> {
 		}
 		return 0;
 	}
+	
+	*/
 
 	/**
 	 * @param email
@@ -155,5 +149,13 @@ public class Email implements Serializable Comparable<Email> {
 		}
 		return email;
 
+	}
+
+
+
+	@Override
+	public int compareTo(Email email) {
+		
+		return 0;
 	}
 }

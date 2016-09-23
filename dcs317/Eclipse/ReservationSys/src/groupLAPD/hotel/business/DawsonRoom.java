@@ -15,9 +15,10 @@ import dw317.hotel.business.*;
  */
 public class DawsonRoom implements Room {
 
-	// declaring class fields
-	private static final long serialVersionUID = 42031768871L; // for
-																// serializable
+	// declaring class fields:
+	
+	// for serializable
+	private static final long serialVersionUID = 42031768871L; 
 	private final int roomNumber; // the room number
 	private final RoomType roomType; // the room type
 
@@ -37,7 +38,7 @@ public class DawsonRoom implements Room {
 		// before assigning it to the field
 		this.roomNumber = validateRoomNumber(roomNumber);
 		// validate room type before assigning
-		this.roomType = validateRoomType(roomType, roomNumber);
+		this.roomType = validateRoomType(roomType, this.roomNumber);
 	}// end of constructor
 	
 
@@ -48,12 +49,18 @@ public class DawsonRoom implements Room {
 	 * bigger, smaller or equal than the compared room object's room number
 	 * 
 	 * @param roomNumber
-	 *            The room number
+	 *            The room number of type Room
 	 * @return an integer value of 1, -1 or 0
 	 */
 	@Override
-	public int compareTo(Room roomNumber) {
+	public final int compareTo(Room roomNumber) {
 
+		//if both objects refer to the same reference variable
+		//then they are for sure equals
+		if(this==roomNumber){
+			return 0;
+		}
+		
 		if (this.roomNumber > roomNumber.getRoomNumber()) {
 			// if the current room number is bigger, return 1
 			return 1;
@@ -70,7 +77,7 @@ public class DawsonRoom implements Room {
 	/**
 	 * The overridden final equals method will compare two room objects if they
 	 * are instance of the same class and if they have the same room number
-	 * 
+	 * @param obj A reference of type Object
 	 * @return a boolean value - if true or not that the objects are equal
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -93,12 +100,7 @@ public class DawsonRoom implements Room {
 		}
 		// cast the input object to a DawsonRoom object
 		DawsonRoom other = (DawsonRoom) obj;
-		// check if both objects have the same room number
-		// if not, return false
-		if (this.roomNumber != other.roomNumber) {
-			return false;
-		}
-
+		
 		// if roomType is set to null, check if other is null as well
 		if (this.roomType == null) {
 			if (other.roomType != null) {
@@ -110,6 +112,14 @@ public class DawsonRoom implements Room {
 				return false;
 			}
 		}
+		
+		// check if both objects have the same room number
+		// if not, return false
+		if (this.roomNumber != other.roomNumber) {
+			return false;
+		}
+
+		
 		return true; // if none of the above if statements are true,
 		// return true
 	} // end of equals method
@@ -163,6 +173,7 @@ public class DawsonRoom implements Room {
 	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((roomType==null) ? 0 : roomType.hashCode());
 		// calculate the hash code for integer room number
 		result = prime * result + this.roomNumber;
 		return result;// return the hash code
