@@ -241,7 +241,7 @@ public class EmailTest {
 		testTheConstructor("case 24 - invalid email address: alida li 123@hotmail.com",
 				"alida li 123@hotmail.com", false);
 
-	}//end
+	}//end of method
 	
 	private static void testTheConstructor(String testCase, String address,
 			boolean expectedResult){
