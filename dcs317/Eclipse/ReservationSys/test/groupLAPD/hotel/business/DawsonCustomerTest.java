@@ -20,6 +20,7 @@ public class DawsonCustomerTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		testConstructor();
+	
 		
 		/*DawsonCustomer customer = new DawsonCustomer("Pengkim", "Sy", "pengkimsy@gmail.com");
 		Amex amex = new Amex("344322624384908");
