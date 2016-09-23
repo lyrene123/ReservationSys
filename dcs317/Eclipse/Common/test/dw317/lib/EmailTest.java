@@ -5,7 +5,6 @@ package dw317.lib;
 
 
 
-
 /**
  * @author Lyrene Labor
  *
@@ -22,7 +21,73 @@ public class EmailTest {
 		testGetHost();
 		testGetUserID();
 		testHashCode();
+		testEquals();
+		testCompareTo();
 		
+
+	}
+	
+	private static void testCompareTo(){
+		System.out.println("\nTesting the compareTo method.");
+		Email email = new Email("laborlyrene@gmail.com");
+		testCompareTo("case 1 - laborlyrene@gmail.com and helloWorld123@yahoo.ca", "Expected result: "
+				+ "yahoo > gmail", email);
+		email = new Email("laborlyrene@yahoo.ca");
+		testCompareTo("case 2 - laborlyrene@yahoo.ca and helloWorld123@yahoo.ca", "Expected result: "
+				+ "laborlyrene > helloWorld123", email);
+		email = new Email("helloWorld123@yahoo.ca");
+		testCompareTo("case 3 - helloWorld123@yahoo.ca and helloWorld123@yahoo.ca", "Expected result: "
+				+ "helloWorld123@yahoo.ca = helloWorld123@yahoo.ca", email);
+		
+		
+	}
+	
+	private static void testCompareTo(String testCase, String expectedResult,
+			Email email){
+		
+		System.out.println("   " + testCase);
+		System.out.println("\t    " + expectedResult);
+		
+		Email test = new Email("helloWorld123@yahoo.ca");
+		int compare = test.compareTo(email);
+		if(compare>0){
+			System.out.println("\tresult: "+test+" is superior than " + email);
+			
+		}
+		else if(compare<0){
+			System.out.println("\tresult: "+test+" is less superior than "+email);
+		}
+		else{
+			System.out.println("\tresult: "+test+" is equals to " + email);
+		}
+	}
+	
+	private static void testEquals() {
+		System.out.println("\nTesting the equals method.");
+
+		Email test = new Email("ali_dali@gmail.com");
+		testEquals("case 1 - same emails",
+				"Expected result:" + " both emails are equal", test);
+		test = new Email("hello@localhost");
+		testEquals("case 2 - different emails",
+				"Expected result:" + " both emails are not equal", test);
+		
+
+	}
+	
+	private static void testEquals(String testCase, String expectedResult, Object obj) {
+
+		System.out.println("   " + testCase);
+		System.out.println("\t    " + expectedResult);
+
+		Email email = new Email("ali_dali@gmail.com");
+		boolean compare = email.equals(obj);
+
+		if (compare) {
+			System.out.println("\tresult: " + email + " and " + obj + " are equal.");
+		} else {
+			System.out.println("\tresult:" + email + " and " + obj + " are not equal.");
+		}
 
 	}
 	
