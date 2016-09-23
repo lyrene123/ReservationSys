@@ -47,6 +47,7 @@ public interface CreditCard extends Serializable {
 	 * @author Provided by the teacher
 	 * @version September 2016
 	 */
+	//enum of type CardType containing constants for MasterCard, Visa and Amex
 	public enum CardType {
 		//constants
 		MASTERCARD, VISA, AMEX;

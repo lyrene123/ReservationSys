@@ -57,7 +57,7 @@ public final class Visa extends AbstractCreditCard  {
 		String firstDigit = trimmedNum.substring(0, 1);
 		int startingDigit = Integer.parseInt(firstDigit);
 		if(startingDigit!=4){
-			throw new IllegalArgumentException("A credit card number of type Visa must "
+			throw new IllegalArgumentException("A credit card number of type Visa must"
 					+ "start with 4");
 		}
 		
