@@ -8,5 +8,5 @@ public interface Reservation extends Comparable<Reservation>, Serializable {
 	public Room getRoom();
 	public LocalDate getCheckInDate();
 	public LocalDate getCheckOutDate();
-	public int getNumberDays();
+	public int getNumberOfDays();
 }
