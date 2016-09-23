@@ -17,7 +17,7 @@ public class Email implements Comparable<Email>, Serializable {
 		this.address = validateEmail(address);
 	}
 
-	
+
 
 	/**
 	 * @return
@@ -40,7 +40,7 @@ public class Email implements Comparable<Email>, Serializable {
 		return userId;
 	}
 
-	
+
 	public String toString(){
 		return address;
 	}
@@ -70,19 +70,19 @@ public class Email implements Comparable<Email>, Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public int compareTo(Email email){
-		
+
 		if(email == null){
 			throw new IllegalArgumentException();
 		}
-		
+
 		//Making the subStrings Lower case Because the method Compares in an insensitive way
 		String emailHost = email.getHost().toLowerCase();
 		String emailUId = email.getUserId().toLowerCase();
-		
+
 		if(this.getUserId().equals(emailUId)){
 			return 0;
 		}
@@ -106,7 +106,7 @@ public class Email implements Comparable<Email>, Serializable {
 	/**
 	 * @param email
 	 * @return email if Valid
-	 * @throws IllegalArgumentException  
+	 * @throws IllegalArgumentException   
 	 */
 	private static String validateEmail(String email)throws IllegalArgumentException{
 
@@ -115,8 +115,7 @@ public class Email implements Comparable<Email>, Serializable {
 		}
 		String userId = email.substring(0, email.indexOf('@'));
 		String host = email.substring(email.indexOf('@') +1);
-		System.out.println(userId + " " + host);
-		
+
 		if(userId.length() < 1 || userId.length() > 32){
 			throw new IllegalArgumentException("User ID must be Between 1 and 32 Characters");
 		}else{
@@ -125,23 +124,23 @@ public class Email implements Comparable<Email>, Serializable {
 						&& userId.charAt(i) != '_' && userId.charAt(i) != '-' && userId.charAt(i) != '.'){
 					throw new IllegalArgumentException("User ID can ONLY include \"upper or lower case letters\", \"Digits\", \"Hyphens\"(-), \"Dashe\"(_) and \"Dots\"(.)");
 				} 
-				}
+			}
 			if(userId.charAt(0) == '.' || userId.charAt(userId.length()-1) == '.'){
 				throw new IllegalArgumentException("User ID CANNOT begin or end with \".");
 
 			}
 		}
-		
+
 		if(host.length() < 1 || host.length() > 32){
 			throw new IllegalArgumentException("Host Name must be Between 1 and 32 Characters");
 		}
-					
+
 		for(int i = 0; i < host.length(); i++){
 			if(!Character.isAlphabetic(host.charAt(i)) && !Character.isDigit(host.charAt(i))
-					 && host.charAt(i) != '-' && host.charAt(i) != '.'){
+					&& host.charAt(i) != '-' && host.charAt(i) != '.'){
 				throw new IllegalArgumentException("Host Name can ONLY include \"upper or lower case letters\", \"Digits\" and \"Hyphens\"(-)");
 			}
-			
+
 		}
 		if(host.charAt(0) == '-' || host.charAt(host.length()-1) == '-'){
 			throw new IllegalArgumentException("Host Name CANNOT begin or end With \"-\"");
