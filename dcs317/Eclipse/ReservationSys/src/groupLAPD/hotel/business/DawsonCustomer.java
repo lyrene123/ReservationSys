@@ -4,6 +4,7 @@
 package groupLAPD.hotel.business;
 
 import java.util.Optional;
+
 import dw317.hotel.business.interfaces.Customer;
 import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
@@ -17,7 +18,7 @@ public class DawsonCustomer implements Customer{
 	private static final long serialVersionUID = 42031768871L;
 	private Name name;
 	private Email email;
-	private Optional<CreditCard> creditCard;
+	private CreditCard creditCard;
 	
 	public DawsonCustomer(String firstName, String LastName, String email){
 		
@@ -39,12 +40,13 @@ public class DawsonCustomer implements Customer{
 
 	@Override
 	public Optional<CreditCard> getCreditCard() {
-		return this.creditCard;
+		Optional<CreditCard> card = Optional.of(this.creditCard);
+		return card;
 	}
 
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {
-		this.creditCard = card;
+		this.creditCard = card.orElse(null);
 	}	
 
 	@Override
@@ -60,8 +62,8 @@ public class DawsonCustomer implements Customer{
 	@Override
 	public String toString() {
 		String str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
-				+ this.name.getLastName() + "*" + this.creditCard.orElse(CreditCard.getInstance(null, "")).getType().toString() 
-				+ "*" + this.creditCard.orElse(CreditCard.getInstance(null, "")).getNumber();
+				+ this.name.getLastName() + "*" + ((this.creditCard == null) ? "" : this.creditCard.getType()) + "*"
+				+ ((this.creditCard == null) ? "" : this.creditCard.getNumber());
 		
 		return str;
 	}
