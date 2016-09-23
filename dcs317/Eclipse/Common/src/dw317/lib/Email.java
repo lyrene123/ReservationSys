@@ -30,7 +30,7 @@ public class Email implements Comparable<Email>, Serializable {
 	 * @return
 	 */
 	public String getHost(){
-		String host = address.substring(address.indexOf('@')+1, address.length());
+		String host = address.substring(address.indexOf('@')+1);
 		return host;
 	}
 
@@ -72,90 +72,81 @@ public class Email implements Comparable<Email>, Serializable {
 	}
 	
 	
-	/**
-	public int compareTo(String email){
+	@Override
+	public int compareTo(Email email){
 		
 		if(email == null){
 			throw new IllegalArgumentException();
 		}
 		
 		//Making the subStrings Lower case Because the method Compares in an insensitive way
-		String addressHost = address.substring(address.indexOf('@'), address.indexOf('.')).toLowerCase();
-		String emailHost = email.substring(email.indexOf('@'), email.indexOf('.')).toLowerCase();
-		String addressUId = address.substring(0, address.indexOf('@')).toLowerCase();
-		String emailUId = email.substring(0, email.indexOf('@')).toLowerCase();
+		String emailHost = email.getHost().toLowerCase();
+		String emailUId = email.getUserId().toLowerCase();
 		
-		if(this.address == email){
+		if(this.getUserId().equals(emailUId)){
 			return 0;
 		}
-		for(int i = 0; i < addressHost.length(); i++){
-			if(addressHost.charAt(i) > emailHost.charAt(i)){
-				return -1;
-			}else if(addressHost.charAt(i) < emailHost.charAt(i)){
+		for(int i = 0; i < emailHost.length(); i++){
+			if(this.getHost().toLowerCase().charAt(i) > emailHost.charAt(i)){
 				return 1;
+			}else if(this.getHost().toLowerCase().charAt(i) < emailHost.charAt(i)){
+				return -1;
 			}
 		}
-		for(int i = 0; i < addressUId.length(); i++){
-			if(addressUId.charAt(i) > emailUId.charAt(i)){
-				return -1;
-			}else if(addressUId.charAt(i) < emailUId.charAt(i)){
+		for(int i = 0; i < emailUId.length(); i++){
+			if(this.getUserId().toLowerCase().charAt(i) > emailUId.charAt(i)){
 				return 1;
+			}else if(this.getUserId().toLowerCase().charAt(i) < emailUId.charAt(i)){
+				return -1;
 			}
 		}
 		return 0;
 	}
-	
-	*/
 
 	/**
 	 * @param email
 	 * @return email if Valid
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException  
 	 */
-	private String validateEmail(String email)throws IllegalArgumentException{
+	private static String validateEmail(String email)throws IllegalArgumentException{
 
 		if(email == null){
 			throw new IllegalArgumentException();
 		}
-
-		if(email.indexOf('@')-1 < 1 || email.indexOf('@')-1 > 32){
+		String userId = email.substring(0, email.indexOf('@'));
+		String host = email.substring(email.indexOf('@') +1);
+		System.out.println(userId + " " + host);
+		
+		if(userId.length() < 1 || userId.length() > 32){
 			throw new IllegalArgumentException("User ID must be Between 1 and 32 Characters");
 		}else{
-			for(int i = 0; i<email.indexOf('@'); i++){
-				if(!Character.isAlphabetic(email.charAt(i)) && !Character.isDigit(email.charAt(i))
-						&& email.charAt(i) != '_' && email.charAt(i) != '-' && email.charAt(i) != '.'){
+			for(int i = 0; i<userId.length(); i++){
+				if(!Character.isAlphabetic(userId.charAt(i)) && !Character.isDigit(userId.charAt(i))
+						&& userId.charAt(i) != '_' && userId.charAt(i) != '-' && userId.charAt(i) != '.'){
 					throw new IllegalArgumentException("User ID can ONLY include \"upper or lower case letters\", \"Digits\", \"Hyphens\"(-), \"Dashe\"(_) and \"Dots\"(.)");
-				}else if(email.charAt(0) == '.' || email.charAt(email.indexOf('@')-1) == '.'){
-					throw new IllegalArgumentException("User ID CANNOT begin or end with \".");
-
+				} 
 				}
+			if(userId.charAt(0) == '.' || userId.charAt(userId.length()-1) == '.'){
+				throw new IllegalArgumentException("User ID CANNOT begin or end with \".");
+
 			}
 		}
 		
-		if(email.substring(email.indexOf('@')+1, email.length()).length() < 1 || email.substring(email.indexOf('@')+1, email.length()).length() > 32){
+		if(host.length() < 1 || host.length() > 32){
 			throw new IllegalArgumentException("Host Name must be Between 1 and 32 Characters");
 		}
-		
-			int middle = email.indexOf('@')+1;
-		
-		for(int i = middle; i < email.length(); i++){
-			if(!Character.isAlphabetic(email.charAt(i)) && !Character.isDigit(email.charAt(i))
-					 && email.charAt(i) != '-'){
+					
+		for(int i = 0; i < host.length(); i++){
+			if(!Character.isAlphabetic(host.charAt(i)) && !Character.isDigit(host.charAt(i))
+					 && host.charAt(i) != '-' && host.charAt(i) != '.'){
 				throw new IllegalArgumentException("Host Name can ONLY include \"upper or lower case letters\", \"Digits\" and \"Hyphens\"(-)");
-			}else if(email.charAt(middle) == '-' || email.charAt(email.indexOf('@')-1) == '-'){
-				throw new IllegalArgumentException("Host Name CANNOT begin or end With \"-\"");
 			}
 			
 		}
+		if(host.charAt(0) == '-' || host.charAt(host.length()-1) == '-'){
+			throw new IllegalArgumentException("Host Name CANNOT begin or end With \"-\"");
+		}
 		return email;
 
-	}
-
-
-
-	@Override
-	public int compareTo(Email email) {
-		
-		return 0;
 	}
 }
