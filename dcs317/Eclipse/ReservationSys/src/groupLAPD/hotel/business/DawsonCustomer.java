@@ -75,12 +75,8 @@ public class DawsonCustomer implements Customer{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		DawsonCustomer other = (DawsonCustomer) obj;
-		if (creditCard == null) {
-			if (other.creditCard != null)
-				return false;
-		} else if (!creditCard.equals(other.creditCard))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
