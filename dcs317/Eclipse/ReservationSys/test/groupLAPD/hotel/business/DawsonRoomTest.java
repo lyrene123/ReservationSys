@@ -8,14 +8,16 @@ import dw317.hotel.business.RoomType;
 import dw317.lib.creditcard.MasterCard;
 
 /**
- * The DawsonRoomTest class is used to test the methods of the DawsonRoom class
+ * The DawsonRoomTest class is used to test the methods of the DawsonRoom 
+ * class
  * @author Lyrene Labor
  * @version September 2016
  */
 public class DawsonRoomTest {
 
 	/**
-	 * The main method will call private methods that will each test a method 
+	 * The main method will call private methods that will each test 
+	 * a method 
 	 * in the DawsonRoom class
 	 * @param args String array
 	 */
@@ -50,13 +52,15 @@ public class DawsonRoomTest {
 	}
 	
 	/**
-	 * The overloaded testCompareTo will test the overridden compareTo method
+	 * The overloaded testCompareTo will test the overridden compareTo 
+	 * method
 	 * of the DawsonRoom class
 	 * @param testCase the test case
 	 * @param expectedResult the described expected result
 	 * @param roomNumber the instance of a DawsonRoom object
 	 */
-	private static void testCompareTo(String testCase, String expectedResult,
+	private static void testCompareTo(String testCase, String 
+			expectedResult,
 			DawsonRoom roomNumber){
 		
 		System.out.println("   " + testCase);
@@ -65,14 +69,17 @@ public class DawsonRoomTest {
 		DawsonRoom test = new DawsonRoom(508, RoomType.NORMAL);
 		int compare = test.compareTo(roomNumber);
 		if(compare>0){
-			System.out.println("\tresult: "+test+" is superior than " + roomNumber);
+			System.out.println("\tresult: "+test+" is superior than " 
+		+ roomNumber);
 			
 		}
 		else if(compare<0){
-			System.out.println("\tresult: "+test+" is less superior than "+roomNumber);
+			System.out.println("\tresult: "+test+" is less superior than"
+					+ " "+roomNumber);
 		}
 		else{
-			System.out.println("\tresult: "+test+" is equals to " + roomNumber);
+			System.out.println("\tresult: "+test+" is equals to " +
+		roomNumber);
 		}
 	}
 	
@@ -87,14 +94,17 @@ public class DawsonRoomTest {
 		System.out.println("\nTesting the equals method");
 		
 		DawsonRoom room = new DawsonRoom(206, RoomType.NORMAL);
-		testEquals("case 1 - 206*normal with 206*normal", "Expected result:"
+		testEquals("case 1 - 206*normal with 206*normal", "Expected "
+				+ "result:"
 				+ " both rooms are equal", room);
 		room = new DawsonRoom(801, RoomType.PENTHOUSE);
-		testEquals("case 2 - 801*penthouse with 206*normal", "Expected result:"
+		testEquals("case 2 - 801*penthouse with 206*normal", "Expected "
+				+ "result:"
 				+ " 801*penthouse not equals to 206*normal", room);
 		
 		MasterCard test = new MasterCard("5326385350239456");
-		testEquals("case 3 - another class with 206*normal", "Expected result:"
+		testEquals("case 3 - another class with 206*normal", "Expected "
+				+ "result:"
 				+ " another class not equals to 206*normal", test);
 	}
 	
@@ -114,10 +124,12 @@ public class DawsonRoomTest {
 		boolean compare = test.equals(obj);
 		
 		if(compare){
-			System.out.println("\tresult: "+ test + " and " + obj + " are equal.");
+			System.out.println("\tresult: "+ test + " and " + obj + 
+					" are equal.");
 		}
 		else {
-			System.out.println("\tresult:" + test + " and " + obj + " are not equal.");
+			System.out.println("\tresult:" + test + " and " + obj 
+					+ " are not equal.");
 		}
 	}
 	
@@ -146,9 +158,11 @@ public class DawsonRoomTest {
 			RoomType type,int expectedFloor){
 		System.out.println("   " + testCase);
 		DawsonRoom room = new DawsonRoom(roomNumber,type);
-		System.out.print("\tThe DawsonRoom instance was created: " + room);
+		System.out.print("\tThe DawsonRoom instance was created: " 
+		+ room);
 		//compare the 2 object's floor number
-		System.out.print("\n\texpected returned value: " + expectedFloor);
+		System.out.print("\n\texpected returned value: " 
+		+ expectedFloor);
 		System.out.print("\n\treturned value: " + room.getFloor());
 		
 		if(room.getFloor()!=expectedFloor){
@@ -182,9 +196,11 @@ public class DawsonRoomTest {
 			RoomType type, int expectedNumber){
 		System.out.println("   " + testCase);
 		DawsonRoom room = new DawsonRoom(roomNumber,type);
-		System.out.print("\tThe DawsonRoom instance was created: " + room);
+		System.out.print("\tThe DawsonRoom instance was created: " 
+		+ room);
 		//compare the 2 object's number
-		System.out.print("\n\texpected returned value: " + expectedNumber);
+		System.out.print("\n\texpected returned value: " 
+		+ expectedNumber);
 		System.out.print("\n\treturned value: " + room.getNumber());
 		
 		if(room.getNumber()!=expectedNumber){
@@ -194,7 +210,8 @@ public class DawsonRoomTest {
 	}
 	
 	/**
-	 * The testGetRoomNumber method will call the overloaded testGetRoomNumber
+	 * The testGetRoomNumber method will call the overloaded 
+	 * testGetRoomNumber
 	 * with the a specific test case
 	 */
 	private static void testGetRoomNumber(){
@@ -219,7 +236,8 @@ public class DawsonRoomTest {
 		DawsonRoom room = new DawsonRoom(roomNumber,type);
 		System.out.print("\tThe DawsonRoom instance was created: " + room);
 		//compare the 2 object's room number
-		System.out.print("\n\texpected returned value: " + expectedRoomNumber);
+		System.out.print("\n\texpected returned value: " + 
+		expectedRoomNumber);
 		System.out.print("\n\treturned value: " + room.getRoomNumber());
 		
 		if(room.getRoomNumber()!=expectedRoomNumber){
@@ -256,8 +274,10 @@ public class DawsonRoomTest {
 		DawsonRoom room = new DawsonRoom(roomNumber,type);
 		System.out.print("\tThe DawsonRoom instance was created: " + room);
 		//compare the two object's room type
-		System.out.print("\n\texpected returned value: " + expectedType.toString());
-		System.out.print("\n\treturned value: " + room.getRoomType().toString());
+		System.out.print("\n\texpected returned value: " + 
+		expectedType.toString());
+		System.out.print("\n\treturned value: " + 
+		room.getRoomType().toString());
 		
 		if(!(room.getRoomType().equals(expectedType))){
 			System.out.print("  Error! unexected returned value!");
@@ -294,7 +314,8 @@ public class DawsonRoomTest {
 	 * @param obj2 An object of type Object
 	 * @param expectedResult The described expected result
 	 */
-	private static void testHashCode(String testCase, Object obj1, Object obj2, 
+	private static void testHashCode(String testCase, Object obj1, 
+			Object obj2, 
 			String expectedResult){
 		System.out.println("   " + testCase);
 		System.out.println("   " + expectedResult);
@@ -323,34 +344,47 @@ public class DawsonRoomTest {
 		RoomType suite = RoomType.SUITE;
 		RoomType penthouse = RoomType.PENTHOUSE;
 		
-		testTheTwoParameterConstructor("case 1 - valid data(101*normal): ", 101, normal, true);
-		testTheTwoParameterConstructor("case 2 - invalid data(room 109), room number  not between 1-8:"
+		testTheTwoParameterConstructor("case 1 - valid data(101*normal):"
+				+ " ", 101, normal, true);
+		testTheTwoParameterConstructor("case 2 - invalid data(room 109),"
+				+ " room number  not between 1-8:"
 				+ ": ", 109, normal, false);
-		testTheTwoParameterConstructor("case 3 - invalid data(room 139), room number  not between 01-08:"
+		testTheTwoParameterConstructor("case 3 - invalid data(room 139),"
+				+ " room number  not between 01-08:"
 				+ ": ", 139, normal, false);
 		testTheTwoParameterConstructor("case 4 - valid data(604*suite):"
 				+ ": ", 604, suite, true);
 		testTheTwoParameterConstructor("case 5 - valid data(801*penthouse):"
 				+ ": ", 801, penthouse, true);
-		testTheTwoParameterConstructor("case 6 - invalid data(room 901), floor number not between 1-8"
+		testTheTwoParameterConstructor("case 6 - invalid data(room 901), "
+				+ "floor number not between 1-8"
 				+ ": ", 901, penthouse, false);
-		testTheTwoParameterConstructor("case 7 - invalid data(room 100), room number not between 1-8"
+		testTheTwoParameterConstructor("case 7 - invalid data(room 100),"
+				+ " room number not between 1-8"
 				+ ": ", 100, penthouse, false);
-		testTheTwoParameterConstructor("case 8 - invalid data(null room type )"
+		testTheTwoParameterConstructor("case 8 - invalid data(null room "
+				+ "type )"
 				+ ": ", 101, null, false);
-		testTheTwoParameterConstructor("case 9 - invalid data(room number not 3 digits)"
+		testTheTwoParameterConstructor("case 9 - invalid data(room number "
+				+ "not 3 digits)"
 				+ ": ", 1, normal, false);
-		testTheTwoParameterConstructor("case 10 - invalid data(room number doesn't exists (room 608)"
+		testTheTwoParameterConstructor("case 10 - invalid data(room number"
+				+ " doesn't exists (room 608)"
 				+ ": ", 608, suite, false);
-		testTheTwoParameterConstructor("case 11 - invalid data(room number doesn't exists (room 708)"
+		testTheTwoParameterConstructor("case 11 - invalid data(room number"
+				+ " doesn't exists (room 708)"
 				+ ": ", 708, suite, false);
-		testTheTwoParameterConstructor("case 12 - invalid data(room number doesn't exists (room 804)"
+		testTheTwoParameterConstructor("case 12 - invalid data(room number"
+				+ " doesn't exists (room 804)"
 				+ ": ", 804, penthouse, false);
-		testTheTwoParameterConstructor("case 13 - invalid data(room 101, type suite)"
+		testTheTwoParameterConstructor("case 13 - invalid data(room 101,"
+				+ " type suite)"
 				+ ": ", 101, suite, false);
-		testTheTwoParameterConstructor("case 14 - invalid data(room 801, type normal)"
+		testTheTwoParameterConstructor("case 14 - invalid data(room 801,"
+				+ " type normal)"
 				+ ": ", 801, normal, false);
-		testTheTwoParameterConstructor("case 15 - invalid data(room 700 doesn't exist)"
+		testTheTwoParameterConstructor("case 15 - invalid data(room 700 "
+				+ "doesn't exist)"
 				+ ": ", 700, suite, false);
 		
 		
@@ -371,21 +405,26 @@ public class DawsonRoomTest {
 		
 		try {
 			DawsonRoom room = new DawsonRoom(roomNumber, roomType);
-			System.out.print("\tThe DawsonRoom instance was created: " + room);
+			System.out.print("\tThe DawsonRoom instance was created: "
+			+ room);
 			
 			if (!expectedResult)
-				System.out.print("\n\tError! You expected this case to fail but it didn't. ");
+				System.out.print("\n\tError! You expected this case to "
+						+ "fail but it didn't. ");
 		}
 		catch (IllegalArgumentException e)	{
 			System.out.print("\t"+ e.getMessage());
 			if (expectedResult)
-				System.out.print("\n\tError! You expected this case to succeed but it didnt. ");
+				System.out.print("\n\tError! You expected this case to "
+						+ "succeed but it didnt. ");
 		}
 		catch (Exception x) {
-			System.out.print("\n\tError! There was an unexpected exception type " + x.getClass() +  " "  + 				
+			System.out.print("\n\tError! There was an unexpected exception"
+					+ " type " + x.getClass() +  " "  + 				
 					x.getMessage());
 			if (expectedResult)
-				System.out.print("\n\tYou expected this case to succeed but it didn't ");
+				System.out.print("\n\tYou expected this case to succeed but"
+						+ " it didn't ");
 		}
 
 		System.out.println("\n");
