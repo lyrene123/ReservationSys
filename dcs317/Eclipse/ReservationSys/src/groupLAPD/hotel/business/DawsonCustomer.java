@@ -8,6 +8,7 @@ import dw317.hotel.business.interfaces.Customer;
 import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
 
+
 /**
  * @author kimhyonh
  *
@@ -19,11 +20,21 @@ public class DawsonCustomer implements Customer{
 	private Email email;
 	private CreditCard creditCard;
 	
+	public DawsonCustomer(){
+		this.name = null;
+		this.email = null;
+		this.creditCard = null;
+	}
+	
 	public DawsonCustomer(String firstName, String LastName, String email){
 		
-		this.name = new Name(firstName, LastName);
-		this.email = new Email(email);
-		this.creditCard = null;
+		try{
+			this.name = new Name(firstName, LastName);
+			this.email = new Email(email);
+			this.creditCard = null;
+		} catch (IllegalArgumentException e){
+			System.out.println("\t" + e.getMessage());
+		}
 	}
 	
 	@Override
@@ -39,7 +50,16 @@ public class DawsonCustomer implements Customer{
 
 	@Override
 	public Optional<CreditCard> getCreditCard() {
-		Optional<CreditCard> card = Optional.of(this.creditCard);
+		
+		/*Optional<CreditCard> card = Optional.empty();
+		try{
+			 card = Optional.ofNullable(this.creditCard);
+		} catch(IllegalArgumentException e){
+			System.out.println("\t" + e.getMessage());
+			card = Optional.empty();
+		}*/
+		
+		Optional<CreditCard> card = Optional.ofNullable(this.creditCard);
 		return card;
 	}
 
@@ -53,7 +73,7 @@ public class DawsonCustomer implements Customer{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((creditCard == null) ? 0 : creditCard.hashCode());
+
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -61,9 +81,14 @@ public class DawsonCustomer implements Customer{
 
 	@Override
 	public String toString() {
-		String str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
+		String str = "";
+		try{
+			str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
 				+ this.name.getLastName() + "*" + ((this.creditCard == null) ? "" : this.creditCard.getType()) + "*"
 				+ ((this.creditCard == null) ? "" : this.creditCard.getNumber());
+		} catch (NullPointerException e){
+			str = "";
+		}
 		
 		return str;
 	}

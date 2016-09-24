@@ -1,4 +1,4 @@
- /**
+  /**
  * 
  */
 package groupLAPD.hotel.business;
@@ -23,17 +23,19 @@ public class DawsonRoom implements Room {
 	private final RoomType roomType; // the room type
 
 	/**
-	 * The 2-parameter constructor method accepts input values and assigns them
-	 * to the room number and room type fields of the DawsonRoom class
+	 * The 2-parameter constructor method accepts input values and assigns 
+	 * them to the room number and room type fields of the DawsonRoom
+	 *  class after being validated
 	 * 
 	 * @param roomNumber
 	 *            The room number
 	 * @param roomType
 	 *            The room type
 	 * @throws IllegalArgumentException
-	 *             If roomNumber is invalid
+	 *             If roomNumber or roomType is invalid
 	 */
-	public DawsonRoom(int roomNumber, RoomType roomType) throws IllegalArgumentException {
+	public DawsonRoom(int roomNumber, RoomType roomType) 
+			throws IllegalArgumentException {
 		// validate if the input value for the room number is valid
 		// before assigning it to the field
 		this.roomNumber = validateRoomNumber(roomNumber);
@@ -44,12 +46,15 @@ public class DawsonRoom implements Room {
 
 
 	/**
-	 * The compareTo method compares two room objects based on their room number
-	 * and returns an integer 1,-1 or 0 if the current room object's room number
-	 * bigger, smaller or equal than the compared room object's room number
-	 * 
+	 * The compareTo method compares two room objects based on their 
+	 * room number
+	 * and returns an integer 1,-1 or 0 if the current room object's 
+	 * room number
+	 * bigger, smaller or equal than the compared room object's room 
+	 * number
+	 *  
 	 * @param roomNumber
-	 *            The room number of type Room
+	 *            A reference to an object of type Room
 	 * @return an integer value of 1, -1 or 0
 	 */
 	@Override
@@ -75,7 +80,8 @@ public class DawsonRoom implements Room {
 	}
 
 	/**
-	 * The overridden final equals method will compare two room objects if they
+	 * The overridden final equals method will compare two room objects if 
+	 * they
 	 * are instance of the same class and if they have the same room number
 	 * @param obj A reference of type Object
 	 * @return a boolean value - if true or not that the objects are equal
@@ -125,7 +131,8 @@ public class DawsonRoom implements Room {
 	} // end of equals method
 
 	/**
-	 * The getFloor method returns the value of the floor number where the room
+	 * The getFloor method returns the value of the floor number where 
+	 * the room
 	 * is located
 	 * 
 	 * @return an integer value representing the floor number
@@ -141,11 +148,12 @@ public class DawsonRoom implements Room {
 	 * 
 	 */
 	public int getNumber() {
-		return this.roomNumber % 10;
+		return this.roomNumber % 100;
 	}// end of getNumber method
 
 	/**
-	 * The getRoomNumber method returns the integer value od the room number
+	 * The getRoomNumber method returns the integer value of the 
+	 * complete room number
 	 * 
 	 * @return the roomNumber - int value
 	 */
@@ -180,7 +188,8 @@ public class DawsonRoom implements Room {
 	}// end of hashCode method
 
 	/**
-	 * The toString method returns a formatted string containing the room number
+	 * The toString method returns a formatted string containing the room 
+	 * number
 	 * and the room type
 	 * 
 	 * @return a reference to a String containing room number and room type
@@ -191,7 +200,8 @@ public class DawsonRoom implements Room {
 	}// end of toString method
 
 	/**
-	 * The validateRoomNumber will accept a room number value as input and will
+	 * The validateRoomNumber will accept a room number value as input and 
+	 * will
 	 * checks if it is a valid dawson hotel room number
 	 * 
 	 * @param roomNumber
@@ -200,29 +210,36 @@ public class DawsonRoom implements Room {
 	 * @throws IllegalArgumentException
 	 *             If the room number value is invalid
 	 */
-	private static int validateRoomNumber(int roomNumber) throws IllegalArgumentException {
+	private static int validateRoomNumber(int roomNumber) 
+			throws IllegalArgumentException {
 
 		// check if the room number has 3 digits only
 		int length = String.valueOf(roomNumber).length();
 		if (length != 3) {
 			// throw an exception if not a 3-digit number
-			throw new IllegalArgumentException("Invalid room number value - must be a three digit"
-					+ " number. 1st digit must be the floor number from 1 to 8 and the"
-					+ " last two digits must be the number of the room from" + " 01 to 08");
+			throw new IllegalArgumentException("Invalid room number value "
+					+ "- must be a three digit"
+					+ " number. 1st digit must be the floor number from "
+					+ "1 to 8 and the"
+					+ " last two digits must be the number of the room from" 
+					+ " 01 to 08");
 		}
 
 		// check if the 1st digit is between 1 to 8 and followed
 		int floorNum = roomNumber / 100; // get 1st digit
 		if (!(floorNum >= 1 && floorNum <= 8)) {
 			// throw an exception if 1st digit not between 1-8
-			throw new IllegalArgumentException("Invalid room number value - the first digit "
+			throw new IllegalArgumentException("Invalid room number value - "
+					+ "the first digit "
 					+ "representing the floor number must be between 1 to 8");
 		}
 
 		// check if the middle value of the room number is 0 or not
 		if ((roomNumber / 10) % 10 != 0) {
-			throw new IllegalArgumentException("Invalid room number value - the last two digits "
-					+ "representing the door number must be between 01 to 08");
+			throw new IllegalArgumentException("Invalid room number value - "
+					+ "the last two digits "
+					+ "representing the door number must be between 01 to "
+					+ "08");
 		}
 
 		
@@ -232,20 +249,31 @@ public class DawsonRoom implements Room {
 		if (floorNum >= 1 && floorNum <= 5) {
 			if (!(doorNumber >= 1 && doorNumber <= 8)) {
 				// throw an exception if last 2 digits not between 1-8
-				throw new IllegalArgumentException("Invalid room number value - the last digit "
-						+ "representing the door number must be between 1 to 8 for normal rooms");
+				throw new IllegalArgumentException("Invalid room number "
+						+ "value "
+						+ "- the last digit "
+						+ "representing the door number must be between "
+						+ "1 to 8 "
+						+ "for normal rooms");
 			}
 		}
 		else if(floorNum>=6 && floorNum <= 7){
 			if(!(doorNumber>=1 && doorNumber<=4)){
-				throw new IllegalArgumentException("Invalid room number value - the last digit "
-						+ "representing the door number must be between 1 to 4 for suite rooms");
+				throw new IllegalArgumentException("Invalid room number "
+						+ "value "
+						+ "- the last digit "
+						+ "representing the door number must be between "
+						+ "1 to "
+						+ "4 for suite rooms");
 			}
 		}
 		else{
 			if(doorNumber!=1){
-				throw new IllegalArgumentException("Invalid room number value - the last digit "
-						+ "representing the door number must be 1 for the penthouse room");
+				throw new IllegalArgumentException("Invalid room number "
+						+ "value "
+						+ "- the last digit "
+						+ "representing the door number must be 1 for the "
+						+ "penthouse room");
 			}
 		}
 		
@@ -255,7 +283,8 @@ public class DawsonRoom implements Room {
 	}// end of validateRoomNumber
 
 	/**
-	 * The validateRoomType will accept a room type enum value as input and will
+	 * The validateRoomType will accept a room type enum value as input 
+	 * and will
 	 * checks if it is a valid dawson hotel room type
 	 * 
 	 * @param roomType
@@ -264,19 +293,24 @@ public class DawsonRoom implements Room {
 	 * @return the validated room type enum
 	 * @throws IllegalArgumentException if room type invalid
 	 */
-	private static RoomType validateRoomType(RoomType roomType, int roomNumber) 
+	private static RoomType validateRoomType(RoomType roomType, 
+			int roomNumber) 
 			throws IllegalArgumentException {
 
 		// throw exception if roomType is null
 		if (roomType == null) {
-			throw new IllegalArgumentException("Invalid room type - must exist and must "
+			throw new IllegalArgumentException("Invalid room type - "
+					+ "must exist "
+					+ "and must "
 		+ "not be null");
 		}
 
 		// check if the room type is normal for normal rooms
 		if (roomNumber >= 101 && roomNumber <= 508) {
 			if (!(roomType.equals(RoomType.NORMAL))) {
-				throw new IllegalArgumentException("Invalid room type - your room type must"
+				throw new IllegalArgumentException("Invalid room type "
+						+ "- your "
+						+ "room type must"
 			+ " be of type normal");
 			}
 		}
@@ -284,7 +318,9 @@ public class DawsonRoom implements Room {
 		// check if the room type is suite for rooms in suite
 		if (roomNumber >= 601 && roomNumber <= 704) {
 			if (!(roomType.equals(RoomType.SUITE))) {
-				throw new IllegalArgumentException("Invalid room type - your room type must" 
+				throw new IllegalArgumentException("Invalid room type "
+						+ "- your "
+						+ "room type must" 
 			+ " be of type suite");
 			}
 		}
@@ -292,7 +328,9 @@ public class DawsonRoom implements Room {
 		// check if the room type is penthouse for the penthouse room
 		if (roomNumber == 801) {
 			if (!(roomType.equals(RoomType.PENTHOUSE))) {
-				throw new IllegalArgumentException("Invalid room type - your room type must"
+				throw new IllegalArgumentException("Invalid room type "
+						+ "- your "
+						+ "room type must"
 			+ " be of type penthouse");
 			}
 		}

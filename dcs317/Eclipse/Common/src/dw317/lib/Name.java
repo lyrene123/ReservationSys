@@ -23,7 +23,7 @@ public class Name implements Serializable {
 	 */
 	public Name(String firstName, String lastName){
 		this.firstName = validateExistance("First Name", firstName);
-		this.lastName = validateExistance("First Name", lastName);
+		this.lastName = validateExistance("Last Name", lastName);
 	}
 
 	/**
