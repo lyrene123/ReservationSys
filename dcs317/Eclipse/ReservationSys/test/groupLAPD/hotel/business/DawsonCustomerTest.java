@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import dw317.lib.creditcard.Amex;
 import dw317.lib.creditcard.CreditCard;
-import dw317.lib.creditcard.CreditCard.CardType;
 import dw317.lib.creditcard.Visa;
 
 /**
@@ -26,8 +25,11 @@ public class DawsonCustomerTest {
 		testGetEmail();
 		testGetCreditCard();
 		testSetCreditCard();
+		testHashCode();
+		testEqual();
+		testCompareTo();
 	}
-	
+
 	private static void testConstructor(){
 		
 		System.out.println("Testing constructor and toString()");
@@ -48,7 +50,7 @@ public class DawsonCustomerTest {
 	private static void testConstructor(String cases, String firstName, String lastName, String email,
 			 CreditCard creditCard, boolean expectedResult){
 		
-		System.out.println("\t" + cases + " :");
+		System.out.println("   " + cases + " :");
 		
 		DawsonCustomer customer = new DawsonCustomer(firstName, lastName, email);
 		Optional<CreditCard> card = Optional.ofNullable(creditCard);
@@ -79,7 +81,7 @@ public class DawsonCustomerTest {
 	
 	private static void testGetName(String cases, String firstName, String lastName, String email, boolean expectedResult){
 		
-		System.out.println("\t" + cases);
+		System.out.println("   " + cases);
 		
 		DawsonCustomer customer = new DawsonCustomer(firstName, lastName, email);
 		
@@ -108,7 +110,7 @@ public class DawsonCustomerTest {
 	
 	private static void testGetEmail(String cases, String firstName, String lastName, String email, boolean expectedResult){
 		
-		System.out.println("\t" + cases);
+		System.out.println("   " + cases);
 		
 		DawsonCustomer customer  = new DawsonCustomer(firstName, lastName, email);
 		
@@ -149,17 +151,18 @@ public class DawsonCustomerTest {
 	
 	private static void testGetCreditCard(String cases, CreditCard creditCard, boolean expectedResult){
 		
-		System.out.println("\t" + cases);
+		System.out.println("   " + cases);
 		
-		DawsonCustomer customer = new DawsonCustomer("Pengkim", "Sy", "pengkim@gmail.com");		
+		DawsonCustomer customer = new DawsonCustomer();		
 		Optional<CreditCard> card = Optional.ofNullable(creditCard);
 		customer.setCreditCard(card);
 		
 		if(expectedResult == true){
-			System.out.println("\tReturn of getCreditCard()" + customer.getCreditCard());
+			System.out.println("\tReturn of getCreditCard(): " + customer.getCreditCard());
 			System.out.println("\tExpected to run");
 			System.out.println();
 		} else{
+			System.out.println("\tReturn of getCreditCard(): " + customer.getCreditCard());
 			System.out.println("\tExpected to fail");
 			System.out.println();
 		}
@@ -187,9 +190,9 @@ public class DawsonCustomerTest {
 	
 	private static void testSetCreditCard(String cases, CreditCard creditCard, boolean expectedResult){
 		
-		System.out.println("\t" + cases);
+		System.out.println("   " + cases);
 		
-		DawsonCustomer customer = new DawsonCustomer("Pengkim", "Sy", "pengkim@gmail.com");
+		DawsonCustomer customer = new DawsonCustomer();
 		Optional<CreditCard> card = Optional.ofNullable(creditCard);
 		customer.setCreditCard(card);
 		
@@ -198,9 +201,116 @@ public class DawsonCustomerTest {
 			System.out.println("\tExpected to run");
 			System.out.println();
 		} else{
+			System.out.println("\tsetCreditCard() : " + customer.getCreditCard());
 			System.out.println("\tExpeted to fail");
 			System.out.println();
 		}
+	}
+	
+	private static void testHashCode(){
+		
+		System.out.println("Testing the hashCode method");
+		
+		DawsonCustomer customer1 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		DawsonCustomer customer2 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		testHashCode("Case 1: equal objects, same hash code", customer1, customer2, true);
+		
+		Amex amex = new Amex("344322624384908");
+		Optional<CreditCard> card = Optional.ofNullable(amex);
+		customer1.setCreditCard(card);
+		testHashCode("Case 2: add a credit card to customer1", customer1, customer2, false);
+		
+		customer2 = new DawsonCustomer("James", "Bone", "james.bone@hotmail.com");
+		testHashCode("Case 3: not equal objects, different hash code", customer1, customer2, false);
+		
+		System.out.println();
+	}
+
+	private static void testHashCode(String cases, Object obj1, Object obj2, boolean expectedResult){
+		
+		System.out.println("   " + cases);
+		
+		int hash1 = obj1.hashCode();
+		int hash2 = obj2.hashCode();
+
+		if(expectedResult == true){
+			System.out.println("\tExpected result: same hash codes");
+			System.out.println("\tobject 1 - "+ obj1 + ": " + hash1);
+			System.out.println("\tobject 2 - "+ obj2 + ": " + hash2);
+			System.out.println();
+		} else{
+			System.out.println("\tExpected result: different hash codes");
+			System.out.println("\tobject 1 - "+ obj1 + ": " + hash1);
+			System.out.println("\tobject 2 - "+ obj2 + ": " + hash2);
+			System.out.println();
+		}
+	}
+	
+	private static void testEqual(){
+		
+		System.out.println("Testing equal() method");
+
+		DawsonCustomer customer1 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		DawsonCustomer customer2 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		testEqual("Case 1: object1 = object2, expected \"true\"", customer1, customer2);
+		
+		customer2 = new DawsonCustomer("Pengkim", "Sy", "Pengkimsy@gmail.com");
+		testEqual("Case 2: same name but different emal, expected \"false\"", customer1, customer2);
+		
+		customer2 = new DawsonCustomer("Pengkim", "King", "Pengkim@gmail.com");
+		testEqual("Case 3: different last name, expected \"false\"", customer1, customer2);
+		
+		customer2 = new DawsonCustomer("Kim", "Sy", "Pengkim@gmail.com");
+		testEqual("Case 4: different first name, expected \"false\"", customer1, customer2);
+		
+		System.out.println();
+	}
+	
+	private static void testEqual(String cases, Object obj1, Object obj2){
+		
+		System.out.println("   " + cases);
+		
+		if(obj1.equals(obj2)){
+			System.out.println("\tObject1 : " + obj1);
+			System.out.println("\tObject2 : " + obj2);
+			System.out.println("\tTrue: these two objects are equal");
+			System.out.println();
+		} else{
+			System.out.println("\tObject1 : " + obj1);
+			System.out.println("\tObject2 : " + obj2);
+			System.out.println("\tFalse: these two objects are not equal");
+			System.out.println();
+		}
+		
+	}
+	
+	private static void testCompareTo(){
+		
+		System.out.println("Testing compareTo() method");
+		
+		DawsonCustomer customer1 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		DawsonCustomer customer2 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@gmail.com");
+		testCompareTo("Case 1: the same object", customer1, customer2, "Expected result : 0");
+		
+		customer2 = new DawsonCustomer("Pengkim", "Sy", "Pengkim@hotmail.com");
+		testCompareTo("Case 2: different domain of the email", customer1, customer2, "Expected result : -1");
+		
+		customer2 = new DawsonCustomer("Pengkim", "Sy", "PengkimSy@gmail.com");
+		testCompareTo("Case 3: different userID of the email", customer1, customer2, "Expected result : -1");
+
+		System.out.println();
+	}
+	
+	private static void testCompareTo(String cases, DawsonCustomer customer1, DawsonCustomer customer2, String expectedResult){
+		
+		System.out.println("   " + cases);
+		System.out.println("\t" + expectedResult);
+		
+		int result = customer1.compareTo(customer2);
+		System.out.println("\tObject1 : " + customer1);
+		System.out.println("\tObject2 : " + customer2);
+		System.out.println("\tResult from test : " + result);
+		System.out.println();		
 	}
 		
 }
