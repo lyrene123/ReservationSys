@@ -139,7 +139,7 @@ public class DawsonReservation implements Reservation {
 	 * HashCode() 
 	 * @Override
 	 * @return the place in memory of a Reservation 
-	 */
+	 */ 
 	@Override
 	final public int hashCode() {
 		final int prime = 31;
