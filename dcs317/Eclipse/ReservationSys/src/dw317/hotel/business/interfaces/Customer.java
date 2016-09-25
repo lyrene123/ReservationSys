@@ -8,16 +8,21 @@ import java.util.Optional;
 import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
 
-
 /**
+ * The Customer interface contains the abstract methods that a class
+ * related to customer needs to provide if this interface is implemented.
+ * These abstract methods define the behavior of the class that implements
+ * the Customer interface. The Customer interface extends to Comparable and
+ * Serializable interfaces.
+ * 
  * @author kimhyonh
+ * @version September, 2016
  *
  */
 public interface Customer extends Comparable<Customer>, Serializable{
 	
-	Name getName();
-	Email getEmail();
-	Optional<CreditCard> getCreditCard();
-	void setCreditCard(Optional<CreditCard> card);
-
+	Name getName(); // Method to return the name
+	Email getEmail(); // Method to return email
+	Optional<CreditCard> getCreditCard(); // Method to get an optional credit card
+	void setCreditCard(Optional<CreditCard> card); // Method to set a credit card
 }

@@ -8,9 +8,13 @@ import dw317.hotel.business.interfaces.Customer;
 import dw317.lib.*;
 import dw317.lib.creditcard.CreditCard;
 
-
 /**
- * @author kimhyonh
+ * The DawsonCustomer class implements every behavior of Customer's
+ * interface. It overrides all the abstract methods and adds some
+ * characteristic to its class. 
+ * 
+ * @author KimHyonh
+ * @version September, 2016
  *
  */
 public class DawsonCustomer implements Customer{
@@ -20,16 +24,29 @@ public class DawsonCustomer implements Customer{
 	private Email email;
 	private CreditCard creditCard;
 	
+	/**
+	 * DawsonCustomer() has no parameter, and it will set every member of
+	 * this class to null.
+	 */
 	public DawsonCustomer(){
 		this.name = null;
 		this.email = null;
 		this.creditCard = null;
 	}
 	
-	public DawsonCustomer(String firstName, String LastName, String email){
+	/**
+	 * This 3 parameters constructor will set the value to name and email,
+	 * and it also sets credit card to null.
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * 			firstName and lastName will be assigned to name.
+	 * @param email
+	 */
+	public DawsonCustomer(String firstName, String lastName, String email){
 		
 		try{
-			this.name = new Name(firstName, LastName);
+			this.name = new Name(firstName, lastName);
 			this.email = new Email(email);
 			this.creditCard = null;
 		} catch (IllegalArgumentException e){
@@ -37,38 +54,52 @@ public class DawsonCustomer implements Customer{
 		}
 	}
 	
+	/**
+	 * This method is get Name of a DawsonCutomer.
+	 * @return Name
+	 * 			Name has both firstName and lastName as written in Name class
+	 */
 	@Override
 	public Name getName(){
 		return new Name(this.name.getFirstName(), this.name.getLastName());
 	}
 	
+	/**
+	 * This method is get Email of a DawsonCutomer.
+	 * @return Email
+	 */
 	@Override
 	public Email getEmail() {
-		// TODO Auto-generated method stub
 		return this.email;
 	}
 
+	/**
+	 * This method will return a CreditCard, and if there's no CreditCard,
+	 * it will return empty.
+	 * @return Optional<CreditCard>
+	 */
 	@Override
-	public Optional<CreditCard> getCreditCard() {
-		
-		/*Optional<CreditCard> card = Optional.empty();
-		try{
-			 card = Optional.ofNullable(this.creditCard);
-		} catch(IllegalArgumentException e){
-			System.out.println("\t" + e.getMessage());
-			card = Optional.empty();
-		}*/
-		
+	public Optional<CreditCard> getCreditCard() {		
 		Optional<CreditCard> card = Optional.ofNullable(this.creditCard);
 		return card;
 	}
 
+	/**
+	 * This method will set a CreditCard, and if there's no CreditCard to
+	 * be assigned, it will set default CreditCard to null.
+	 * @return void
+	 */
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {
 
 		this.creditCard = card.orElse(null);
 	}	
-
+	
+	/**
+	 * This method will return a hashCode number of DawsonCustomer base on
+	 * Email and Name.
+	 * @return hashCode
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -79,6 +110,12 @@ public class DawsonCustomer implements Customer{
 		return result;
 	}
 
+	/**
+	 * This method will return a string of Email, Name and CreditCard type and 
+	 * number (if available) separated by "*". 
+	 * For example, pengkimsy@gmail.com*Pengkim*Sy*VISA*1234567988
+	 * @return a string of email*firstName*lastName*CreditCard type*CreditCard number
+	 */
 	@Override
 	public String toString() {
 		String str = "";
@@ -93,6 +130,11 @@ public class DawsonCustomer implements Customer{
 		return str;
 	}
 
+	/**
+	 * This method is to see if the object in parameter is equals to DawsonCustoomer.
+	 * @param Object
+	 * @return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -116,9 +158,16 @@ public class DawsonCustomer implements Customer{
 		return true;
 	}
 
+	/**
+	 * This method is to compare the Customer in the parameter to DawsonCustomer base on
+	 * email in both objects. 
+	 * @param Customer
+	 * @return a value 1 if Customer is lexicographically greater than the Customer argument,
+	 * 			a value of 0 if both Customer objects are equal, a value of -1 if Customer
+	 * 			is lexicographically less than the Customer argument.
+	 */
 	@Override
 	public int compareTo(Customer customer) {
-		// TODO Auto-generated method stub		
 		return this.email.compareTo(customer.getEmail());
 	}
 
