@@ -145,7 +145,7 @@ public class Email implements Comparable<Email>, Serializable {
 		String userId = email.substring(0, email.indexOf('@'));
 		String host = email.substring(email.indexOf('@') +1);
 
-
+		try{
 		for(int i = 0; i < email.length(); i++){
 			if((email.charAt(i) == '.' && email.charAt(i-1) == '.')){//checks for two consecutive periods 
 				throw new IllegalArgumentException("Invalid Input-- Cannot have concecutive \".\"");
@@ -154,6 +154,9 @@ public class Email implements Comparable<Email>, Serializable {
 			}else if((email.charAt(i) == '-' && email.charAt(i-1) == '.')){//checks for consecutive period then hyphen
 				throw new IllegalArgumentException("Invalid Input-- Cannot Have consecutive \".\" \"-\" ");
 			}
+		}
+		}catch(StringIndexOutOfBoundsException e){
+			
 		}
 
 		if(userId.length() < 1 || userId.length() > 32){//checks userId for appropriate length
