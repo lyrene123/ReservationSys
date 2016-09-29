@@ -53,83 +53,20 @@ public class DawsonCustomer implements Customer{
 			System.out.println("\t" + e.getMessage());
 		}
 	}
-	
+
 	/**
-	 * This method is get Name of a DawsonCutomer.
-	 * @return Name
-	 * 			Name has both firstName and lastName as written in Name class
+	 * This method is to compare the Customer in the parameter to DawsonCustomer base on
+	 * email in both objects. 
+	 * @param Customer
+	 * @return a value 1 if Customer is lexicographically greater than the Customer argument,
+	 * 			a value of 0 if both Customer objects are equal, a value of -1 if Customer
+	 * 			is lexicographically less than the Customer argument.
 	 */
 	@Override
-	public Name getName(){
-		return new Name(this.name.getFirstName(), this.name.getLastName());
+	public int compareTo(Customer customer) {
+		return this.email.compareTo(customer.getEmail());
 	}
 	
-	/**
-	 * This method is get Email of a DawsonCutomer.
-	 * @return Email
-	 */
-	@Override
-	public Email getEmail() {
-		return this.email;
-	}
-
-	/**
-	 * This method will return a CreditCard, and if there's no CreditCard,
-	 * it will return empty.
-	 * @return Optional<CreditCard>
-	 */
-	@Override
-	public Optional<CreditCard> getCreditCard() {		
-		Optional<CreditCard> card = Optional.ofNullable(this.creditCard);
-		return card;
-	}
-
-	/**
-	 * This method will set a CreditCard, and if there's no CreditCard to
-	 * be assigned, it will set default CreditCard to null.
-	 * @return void
-	 */
-	@Override
-	public void setCreditCard(Optional<CreditCard> card) {
-
-		this.creditCard = card.orElse(null);
-	}	
-	
-	/**
-	 * This method will return a hashCode number of DawsonCustomer base on
-	 * Email and Name.
-	 * @return hashCode
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	/**
-	 * This method will return a string of Email, Name and CreditCard type and 
-	 * number (if available) separated by "*". 
-	 * For example, pengkimsy@gmail.com*Pengkim*Sy*VISA*1234567988
-	 * @return a string of email*firstName*lastName*CreditCard type*CreditCard number
-	 */
-	@Override
-	public String toString() {
-		String str = "";
-		try{
-			str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
-				+ this.name.getLastName() + "*" + ((this.creditCard == null) ? "" : this.creditCard.getType()) + "*"
-				+ ((this.creditCard == null) ? "" : this.creditCard.getNumber());
-		} catch (NullPointerException e){
-			str = "";
-		}
-		
-		return str;
-	}
-
 	/**
 	 * This method is to see if the object in parameter is equals to DawsonCustoomer.
 	 * @param Object
@@ -159,17 +96,78 @@ public class DawsonCustomer implements Customer{
 	}
 
 	/**
-	 * This method is to compare the Customer in the parameter to DawsonCustomer base on
-	 * email in both objects. 
-	 * @param Customer
-	 * @return a value 1 if Customer is lexicographically greater than the Customer argument,
-	 * 			a value of 0 if both Customer objects are equal, a value of -1 if Customer
-	 * 			is lexicographically less than the Customer argument.
+	 * This method will return a CreditCard, and if there's no CreditCard,
+	 * it will return empty.
+	 * @return Optional<CreditCard>
 	 */
 	@Override
-	public int compareTo(Customer customer) {
-		return this.email.compareTo(customer.getEmail());
+	public Optional<CreditCard> getCreditCard() {		
+		Optional<CreditCard> card = Optional.ofNullable(this.creditCard);
+		return card;
+	}	
+	
+	/**
+	 * This method is get Email of a DawsonCutomer.
+	 * @return Email
+	 */
+	@Override
+	public Email getEmail() {
+		return this.email;
+	}
+	
+	/**
+	 * This method is get Name of a DawsonCutomer.
+	 * @return Name
+	 * 			Name has both firstName and lastName as written in Name class
+	 */
+	@Override
+	public Name getName(){
+		return this.name;
+	}	
+	
+	/**
+	 * This method will return a hashCode number of DawsonCustomer base on
+	 * Email and Name.
+	 * @return hashCode
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
 
-	
+	/**
+	 * This method will set a CreditCard, and if there's no CreditCard to
+	 * be assigned, it will set default CreditCard to null.
+	 * @return void
+	 */
+	@Override
+	public void setCreditCard(Optional<CreditCard> card) {
+
+		this.creditCard = card.orElse(null);
+	}	
+
+	/**
+	 * This method will return a string of Email, Name and CreditCard type and 
+	 * number (if available) separated by "*". 
+	 * For example, pengkimsy@gmail.com*Pengkim*Sy*VISA*1234567988
+	 * @return a string of email*firstName*lastName*CreditCard type*CreditCard number
+	 */
+	@Override
+	public String toString() {
+		String str = "";
+		try{
+			str = this.email.toString() + "*" + this.name.getFirstName() + "*" 
+				+ this.name.getLastName() + "*" + ((this.creditCard == null) ? "" : this.creditCard.getType()) + "*"
+				+ ((this.creditCard == null) ? "" : this.creditCard.getNumber());
+		} catch (NullPointerException e){
+			str = "";
+		}
+		
+		return str;
+	}
 }
