@@ -51,7 +51,8 @@ public class DawsonReservation implements Reservation {
 		this.ACUSTOMER = ACUSTOMER;
 		this.AROOM = AROOM;
 		
-		//Using isValid() to validate data and if valid assign values to fields
+		//Using isValid() to validate data and if valid assign values 
+		//to fields
 		if(isValid(inYear, inMonth, inDay, outYear, outMonth, outDay)){
 			this.inYear = inYear;
 			this.inMonth = inMonth;
@@ -73,19 +74,23 @@ public class DawsonReservation implements Reservation {
 	 * @Override
 	 * @param an another Instance to compare with
 	 * @return Returns a negative number, 0, or positive number depending
-	 * 			if the first instance is smaller, equal to or bigger than the second  
+	 * if the first instance is smaller, equal to or bigger than the second  
 	 */
 	public int compareTo(Reservation otherRes){
-
-		if(this.checkInDate.compareTo(otherRes.getCheckInDate()) == 0){//checks checkIn Date is equal to other checkIn date
-			return this.AROOM.compareTo(otherRes.getRoom());//check which Room is bigger
+		//checks checkIn Date is equal to other checkIn date
+		if(this.checkInDate.compareTo(otherRes.getCheckInDate()) == 0){
+			//check which Room is bigger
+			return this.AROOM.compareTo(otherRes.getRoom());
 		}else
-			return this.checkInDate.compareTo(otherRes.getCheckInDate());//checks which checkIn date is bigger
+			//checks which checkIn date is bigger
+			return this.checkInDate.compareTo(otherRes.getCheckInDate());
 	}//end of compareTo()
 	
 	
 	/** 
-	 * equals() Method checks if two objects are equal;
+	 * equals() Method checks if two objects are equal; Two Reservations are
+	 * equal if the customer, Room, Check In Date check Out Date are equal.
+	 * Or if they are of same class. 
 	 * @Override
 	 * @param an object to check equality with
 	 * @return boolean true if they are equal, false if not
@@ -98,26 +103,33 @@ public class DawsonReservation implements Reservation {
 			return false;
 		if (getClass() != obj.getClass())//check if its the same class
 			return false;
-		DawsonReservation other = (DawsonReservation) obj;//casting obj as DawsonReservation
+		//casting obj as DawsonReservation
+		DawsonReservation other = (DawsonReservation) obj;
 		if (ACUSTOMER == null) {//if customer null
 			if (other.ACUSTOMER != null)//if other customer is not null
 				return false;
-		} else if (!ACUSTOMER.equals(other.ACUSTOMER))//if the first customer is not equal to the second
+			//if the first customer is not equal to the second
+		} else if (!ACUSTOMER.equals(other.ACUSTOMER))
 			return false;
 		if (AROOM == null) {//checks Room is null
 			if (other.AROOM != null)//checks if other room is not null
 				return false;
-		} else if (!AROOM.equals(other.AROOM))//checks if first room is not equal to second
+			//checks if first room is not equal to second
+		} else if (!AROOM.equals(other.AROOM))
 			return false;
 		if (checkInDate == null) {//checks checkIn Date if null
-			if (other.checkInDate != null)//checks if other checkIn Date is null
+			//checks if other checkIn Date is null
+			if (other.checkInDate != null)
 				return false;
-		} else if (!checkInDate.equals(other.checkInDate))//checks if checkIn date is not equal to other check in Date
+			//checks if checkIn date is not equal to other check in Date
+		} else if (!checkInDate.equals(other.checkInDate))
 			return false;
 		if (checkOutDate == null) {//checks if checkOut Date is null
-			if (other.checkOutDate != null)//checks if other checkOut Date is null
+			//checks if other checkOut Date is null
+			if (other.checkOutDate != null)
 				return false;
-		} else if (!checkOutDate.equals(other.checkOutDate))//checks if first checkOut date is not equal to other checkOut Date
+		//checks if first checkOut date is not equal to other checkOut Date
+		} else if (!checkOutDate.equals(other.checkOutDate))
 			return false;
 		return true;
 	}//end of equals()
@@ -212,10 +224,12 @@ public class DawsonReservation implements Reservation {
 	 * @return a String representation of the class
 	 */
 	public String toString(){
-		String email = ACUSTOMER.getEmail().toString();//getting the user email
+		//getting the user email
+		String email = ACUSTOMER.getEmail().toString();
 		int roomNumber = AROOM.getNumber();//getting user Room Number
 
-		return email +"*"+ inYear +"*"+ inMonth +"*"+ inDay +"* "+ outYear +"*"+ outMonth +"*"+ outDay +"*"+ roomNumber; 
+		return email +"*"+ inYear +"*"+ inMonth +"*"+ inDay +"* "+ outYear 
+				+"*"+ outMonth +"*"+ outDay +"*"+ roomNumber; 
 	}//end of toString()
 
 
@@ -230,26 +244,41 @@ public class DawsonReservation implements Reservation {
 	 * @param check out Month
 	 * @param check out Day
 	 * @return true if data is valid, false if not
+	 * @throws IllegalArgumentException()
 	 * @since 1.8
 	 */
-	private boolean isValid(int inYear, int inMonth, int inDay, int outYear, int outMonth, int outDay){
+	private boolean isValid(int inYear, int inMonth, int inDay, int outYear,
+			int outMonth, int outDay) throws IllegalArgumentException{
 
 		LocalDate checkInDate = null;//initializing checkIn Date
 		LocalDate checkOutDate = null;
 
 		//put it in a try because LocalDate throws a DateTimeException()
 		try{
-			checkInDate = checkInDate.of(inYear, inMonth, inDay);// assigning input to CheckIn Date
+			// assigning input to CheckIn Date
+			checkInDate = checkInDate.of(inYear, inMonth, inDay);
 			checkOutDate = checkOutDate.of(outYear, outMonth, outDay);
-		}catch(DateTimeException e){//if input invalid catch the DateTimeException thrown
-			if((inMonth < 1 || outMonth < 1) || (inMonth > 12 || outMonth > 12)){//checks if the invalid input was because of Month
-				throw new IllegalArgumentException("Invalid Input-- Month must be between 1(January) to 12(December)");//throw illegalArgumentException saying that Month is invalid
-			}else if((inDay < 1 || outDay < 1) || (inDay > 31 || outDay > 31)){//checks if invalid input was because of Day
-				throw new IllegalArgumentException("Invaid Input-- Day must be between 1 to 31");//throw IllegalArgumentException saying that Day is invalid
+			//if input invalid catch the DateTimeException thrown
+		}catch(DateTimeException e){
+			//checks if the invalid input was because of Month
+			if((inMonth < 1 || outMonth < 1) || 
+					(inMonth > 12 || outMonth > 12)){
+				//throw illegalArgumentException saying that Month is invalid
+				throw new IllegalArgumentException("Invalid Input-- Month "
+						+ "must be between 1(January) to 12(December)");
+				//checks if invalid input was because of Day
+			}else if((inDay < 1 || outDay < 1) || 
+					(inDay > 31 || outDay > 31)){
+				//throw IllegalArgumentException saying that Day is invalid
+				throw new IllegalArgumentException("Invaid Input-- Day must"
+						+ " be between 1 to 31");
 			}
 		}
-		if(checkInDate.isAfter(checkOutDate)){//checks if checkInDate in after CheckOutDate
-			throw new IllegalArgumentException("Invalid Input-- checkout date cannot be before checkin Date");//throw IllegalArgumentExpection if true
+		//checks if checkInDate in after CheckOutDate
+		if(checkInDate.isAfter(checkOutDate)){
+			//throw IllegalArgumentExpection if true
+			throw new IllegalArgumentException("Invalid Input-- checkout date"
+					+ " cannot be before checkin Date");
 		}
 		
 		return true;
