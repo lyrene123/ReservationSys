@@ -40,7 +40,8 @@ public final class Amex extends AbstractCreditCard  {
 	 * @throws IllegalArgumentException If number is not a valid 
 	 *           Amex number
 	 */
-	private static String validateNumber(String number)throws IllegalArgumentException
+	private static String validateNumber(String number)
+			throws IllegalArgumentException
 	{
 		if(number == null){
 			throw new IllegalArgumentException("Number can't be null!!");
@@ -66,7 +67,4 @@ public final class Amex extends AbstractCreditCard  {
 		
 		return number;
 	}
-	
-	
-
 }

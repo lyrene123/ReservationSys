@@ -17,12 +17,17 @@ import dw317.lib.creditcard.CreditCard;
  * 
  * @author kimhyonh
  * @version September, 2016
+ * @since Optional class
  *
  */
 public interface Customer extends Comparable<Customer>, Serializable{
 	
-	Name getName(); // Method to return the name
-	Email getEmail(); // Method to return email
-	Optional<CreditCard> getCreditCard(); // Method to get an optional credit card
-	void setCreditCard(Optional<CreditCard> card); // Method to set a credit card
+	// Method to get an optional credit card
+	Optional<CreditCard> getCreditCard();
+	// Method to return email
+	Email getEmail(); 
+	// Method to return the name
+	Name getName(); 
+	// Method to set a credit card
+	void setCreditCard(Optional<CreditCard> card);
 }
