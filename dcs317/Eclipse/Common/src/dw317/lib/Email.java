@@ -69,7 +69,7 @@ public class Email implements Comparable<Email>, Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)//if its the same object
 			return true;
-		if (obj == null)//if object is null
+		if (obj == null)//if object is null 
 			return false;
 		if (getClass() != obj.getClass())//if its the same class 
 			return false;
