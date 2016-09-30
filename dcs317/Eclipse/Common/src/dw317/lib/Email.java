@@ -22,78 +22,9 @@ public class Email implements Comparable<Email>, Serializable {
 	 */
 	public Email(String address){
 		this.address = validateEmail(address);//Validate email address
-	}
-
-	/**
-	 * Gets Email address;
-	 * @return address
-	 */
-	public String getAddress(){
-		return address;
-	}
-
-	/**
-	 * Gets host which is everything after @ sign 
-	 * @return host 
-	 */
-	public String getHost(){
-		String host = address.substring(address.indexOf('@')+1);
-		return host;
-	}
-
-	/**
-	 * Gets UserId, which is everything before @ sign
-	 * @return userId
-	 */
-	public String getUserId(){
-		String userId = address.substring(0, address.indexOf('@'));
-		return userId;
-	}
-
-	/**
-	 * Returns String representation of email address
-	 * @Override
-	 * @return address
-	 */
-	public String toString(){
-		return address;
-	}
-
-	/** 
-	 * Allocates a place in memory for this object
-	 * @return result 
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + (int) (serialVersionUID ^ (serialVersionUID >>> 32));
-		return result;
-	}
-
-	/** 
-	 * This overridden method checks if two email addresses are equal
-	 * @Return boolean true if both addresses are equal, false if not
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)//if its the same object
-			return true;
-		if (obj == null)//if object is null
-			return false;
-		if (getClass() != obj.getClass())//if its the same class 
-			return false;
-		Email other = (Email) obj;//Casting object to as Email type
-		if (address == null) {//checks if the address is null
-			if (other.address != null)//checks if the other address is null
-				return false;
-		} else if (!address.equals(other.address))//checks if both addresses are equal
-			return false;
-		return true;
-	}
-
-
+	}//end of Email()
+	
+	
 	/**
 	 * This compareTo() method compares this object's email address with another
 	 * first according to their host name, then if they have the same host name 
@@ -121,8 +52,85 @@ public class Email implements Comparable<Email>, Serializable {
 			return this.getUserId().compareToIgnoreCase(emailUId);
 		}
 		return 0;//returns 0 if they're equal
-	}
+	}//end of compare()
 
+	
+	/** 
+	 * This overridden method checks if two email addresses are equal
+	 * @Return boolean true if both addresses are equal, false if not
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)//if its the same object
+			return true;
+		if (obj == null)//if object is null
+			return false;
+		if (getClass() != obj.getClass())//if its the same class 
+			return false;
+		Email other = (Email) obj;//Casting object to as Email type
+		if (address == null) {//checks if the address is null
+			if (other.address != null)//checks if the other address is null
+				return false;
+		} else if (!address.equals(other.address))//checks if both addresses are equal
+			return false;
+		return true;
+	}//end of equal()
+	
+	
+	/**
+	 * Gets Email address;
+	 * @return address
+	 */
+	public String getAddress(){
+		return address;
+	}//end of getAddress()
+	
+
+	/**
+	 * Gets host which is everything after @ sign 
+	 * @return host 
+	 */
+	public String getHost(){
+		String host = address.substring(address.indexOf('@')+1);
+		return host;
+	}//end of getHost()
+	
+
+	/**
+	 * Gets UserId, which is everything before @ sign
+	 * @return userId
+	 */
+	public String getUserId(){
+		String userId = address.substring(0, address.indexOf('@'));
+		return userId;
+	}//end of getUserId
+
+	
+	/** 
+	 * Allocates a place in memory for this object
+	 * @return result 
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + (int) (serialVersionUID ^ (serialVersionUID >>> 32));
+		return result;
+	}//end of hashCode()
+
+
+	/**
+	 * Returns String representation of email address
+	 * @Override
+	 * @return address
+	 */
+	 @Override
+	public String toString(){
+		return address;
+	}//end of toString()
+	
+	 
 	/**
 	 * This method validates the email address. Its used by the constructor before
 	 * assigning the address to the private field.

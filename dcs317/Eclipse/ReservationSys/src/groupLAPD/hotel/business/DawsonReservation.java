@@ -37,15 +37,16 @@ public class DawsonReservation implements Reservation {
 	 * if input is Valid it'll assign parameters to fields;
 	 * @param ACUSTOMER
 	 * @param AROOM
-	 * @param inYear
-	 * @param inMonth
-	 * @param inDay
-	 * @param outYear
-	 * @param outMonth
-	 * @param outDay
+	 * @param check in Year
+	 * @param check in Month
+	 * @param check in Day
+	 * @param check out Year
+	 * @param check out Month
+	 * @param check out Day
+	 * @since 1.8
 	 */
-	public DawsonReservation(Customer ACUSTOMER, Room AROOM, int inYear, int inMonth, int inDay, 
-			int outYear, int outMonth, int outDay){
+	public DawsonReservation(Customer ACUSTOMER, Room AROOM, int inYear, 
+			int inMonth, int inDay, int outYear, int outMonth, int outDay){
 
 		this.ACUSTOMER = ACUSTOMER;
 		this.AROOM = AROOM;
@@ -63,61 +64,8 @@ public class DawsonReservation implements Reservation {
 		}
 
 	}//end of DawsonReservation(...)
+		
 	
-	/**
-	 * this method is overridden from the customer class
-	 * it returns a deep copy of the customer.toString()
-	 * @see DawsonCustomer
-	 * @return a deep copy of the customer Info
-	 * @Override
-	 */
-	public Customer getCustomer(){
-		String fName = ACUSTOMER.getName().getFirstName();//getting first name
-		String lName = ACUSTOMER.getName().getLastName();//getting last name
-		String email = ACUSTOMER.getEmail().toString();//getting email
-		DawsonCustomer dcCustomer =  new DawsonCustomer(fName, lName, email);//creating a deep copy of the Customer
-		return dcCustomer;
-	}//end of getCustomer
-
-	/** 
-	 * this method computes the numbers of days Left a customer
-	 * has according to their checkIn Date and CheckOut Date;
-	 * it uses the until() method thats in the LocalDate Class
-	 * @return number of days left
-	 */
-	public int getNumberOfDays(){
-		Period numDaysLeft;
-		numDaysLeft = checkInDate.until(checkOutDate);//getting number of days left from checkIn to checkOut Date
-		return numDaysLeft.getDays();//converts Period to Integer Type
-	}//end of getNumberOfDays()
-
-	/** 
-	 * this method returns the CheckIn Date of a customer
-	 * @see dw317.hotel.business.interfaces.Reservation#getCheckInDate()
-	 * @return checkInDate
-	 */
-	public LocalDate getCheckInDate(){
-		return checkInDate;
-	}//end of getCheckInDate()
-
-	/** 
-	 * this method returns the CheckOut Date of a customer
-	 * @see dw317.hotel.business.interfaces.Reservation#getCheckOutDate()
-	 * @return checkOutDate
-	 */
-	public LocalDate getCheckOutDate(){
-		return checkOutDate;
-	}//end of getCheckOutDate()
-
-	/** 
-	 * this method returns the room Info a customer is occupying
-	 * @see dw317.hotel.business.interfaces.Reservation#getRoom()
-	 * @return AROOM 
-	 */
-	public Room getRoom(){
-		return AROOM;
-	}//end of getRoom()
-
 	/** 
 	 * the compareTo() method is overridden from the object class
 	 * it compares an instance of a Reservation with another,
@@ -134,26 +82,8 @@ public class DawsonReservation implements Reservation {
 		}else
 			return this.checkInDate.compareTo(otherRes.getCheckInDate());//checks which checkIn date is bigger
 	}//end of compareTo()
-
-	/**
-	 * HashCode() 
-	 * @Override
-	 * @return the place in memory of a Reservation 
-	 */ 
-	@Override
-	final public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((ACUSTOMER == null) ? 0 : ACUSTOMER.hashCode());
-		result = prime * result + ((AROOM == null) ? 0 : AROOM.hashCode());
-		result = prime * result
-				+ ((checkInDate == null) ? 0 : checkInDate.hashCode());
-		result = prime * result
-				+ ((checkOutDate == null) ? 0 : checkOutDate.hashCode());
-		return result;
-	}//end of hashCode()
-
+	
+	
 	/** 
 	 * equals() Method checks if two objects are equal;
 	 * @Override
@@ -191,8 +121,90 @@ public class DawsonReservation implements Reservation {
 			return false;
 		return true;
 	}//end of equals()
+	
+	
+	/** 
+	 * this method returns the CheckIn Date of a customer
+	 * @since 1.8
+	 * @return checkInDate
+	 */
+	public LocalDate getCheckInDate(){
+		return checkInDate;
+	}//end of getCheckInDate()
 
+	
+	/** 
+	 * this method returns the CheckOut Date of a customer
+	 * @since java 8 java.time
+	 * @return checkOutDate
+	 */
+	public LocalDate getCheckOutDate(){
+		return checkOutDate;
+	}//end of getCheckOutDate()
+		
+	
+	/**
+	 * this method is overridden from the customer class
+	 * it returns a deep copy of the customer.toString()
+	 * @see DawsonCustomer
+	 * @return a deep copy of the customer Info
+	 * @Override
+	 */
+	public Customer getCustomer(){
+		String fName = ACUSTOMER.getName().getFirstName();//getting first name
+		String lName = ACUSTOMER.getName().getLastName();//getting last name
+		String email = ACUSTOMER.getEmail().toString();//getting email
+		//creating a deep copy of the Customer
+		DawsonCustomer dcCustomer =  new DawsonCustomer(fName, lName, email);
+		return dcCustomer;
+	}//end of getCustomer
 
+	
+	/** 
+	 * this method computes the numbers of days Left a customer
+	 * has according to their checkIn Date and CheckOut Date;
+	 * it uses the until() method thats in the LocalDate Class
+	 * @return number of days left
+	 * @since 1.8
+	 */
+	public int getNumberOfDays(){
+		Period numDaysLeft;
+		//getting number of days left from checkIn to checkOut Date
+		numDaysLeft = checkInDate.until(checkOutDate);
+		return numDaysLeft.getDays();//converts Period to Integer Type
+	}//end of getNumberOfDays()
+
+	
+	/** 
+	 * this method returns the room Info a customer is occupying
+	 * @return AROOM 
+	 */
+	public Room getRoom(){
+		return AROOM;
+	}//end of getRoom()
+	
+	
+	/**
+	 * HashCode() allocates a place in memory
+	 * @Override
+	 * @return the place in memory of a Reservation
+	 * @since 1.8
+	 */ 
+	@Override
+	final public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((ACUSTOMER == null) ? 0 : ACUSTOMER.hashCode());
+		result = prime * result + ((AROOM == null) ? 0 : AROOM.hashCode());
+		result = prime * result
+				+ ((checkInDate == null) ? 0 : checkInDate.hashCode());
+		result = prime * result
+				+ ((checkOutDate == null) ? 0 : checkOutDate.hashCode());
+		return result;
+	}//end of hashCode()
+
+	
 	/**
 	 * toString() is an overridden method from the Object class that give a 
 	 * String representation of the object 
@@ -211,15 +223,16 @@ public class DawsonReservation implements Reservation {
 	 * isValid() method is used to validate the user input
 	 * Makes sure that dates are well inputed and that
 	 * the checkIn date is not after checkOut Date.
-	 * @param inYear
-	 * @param inMonth
-	 * @param inDay
-	 * @param outYear
-	 * @param outMonth
-	 * @param outDay
+	 * @param check in Year
+	 * @param check in Month
+	 * @param check in Day
+	 * @param check out Year
+	 * @param check out Month
+	 * @param check out Day
 	 * @return true if data is valid, false if not
+	 * @since 1.8
 	 */
-	public boolean isValid(int inYear, int inMonth, int inDay, int outYear, int outMonth, int outDay){
+	private boolean isValid(int inYear, int inMonth, int inDay, int outYear, int outMonth, int outDay){
 
 		LocalDate checkInDate = null;//initializing checkIn Date
 		LocalDate checkOutDate = null;
