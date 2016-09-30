@@ -13,9 +13,8 @@ import dw317.lib.creditcard.CreditCard;
  * interface. It overrides all the abstract methods and adds some
  * characteristic to its class. 
  * 
- * @author KimHyonh
+ * @author Pengkim Sy
  * @version September, 2016
- *
  */
 public class DawsonCustomer implements Customer{
 
@@ -59,10 +58,10 @@ public class DawsonCustomer implements Customer{
 	 * DawsonCustomer base on email in both objects.
 	 *  
 	 * @param Customer
-	 * @return a value 1 if Customer is lexicographically greater than the
-	 * 			Customer argument, a value of 0 if both Customer objects 
-	 * 			are equal, a value of -1 if Customer is lexicographically 
-	 * 			less than the Customer argument.
+	 * @return a positive number if Customer is lexicographically greater
+	 * 			 than the Customer argument, a value of 0 if both Customer
+	 * 			 objects are equal, a value of negative number if Customer
+	 * 			 is lexicographically  less than the Customer argument.
 	 */
 	@Override
 	public int compareTo(Customer customer) {
@@ -105,7 +104,7 @@ public class DawsonCustomer implements Customer{
 	 * it will return empty.
 	 * 
 	 * @return Optional<CreditCard>
-	 * @since Optional class
+	 * @since 1.8
 	 */
 	@Override
 	public Optional<CreditCard> getCreditCard() {		
@@ -154,7 +153,7 @@ public class DawsonCustomer implements Customer{
 	 * be assigned, it will set default CreditCard to null.
 	 * 
 	 * @return void
-	 * @since Optional class
+	 * @since 1.8
 	 */
 	@Override
 	public void setCreditCard(Optional<CreditCard> card) {

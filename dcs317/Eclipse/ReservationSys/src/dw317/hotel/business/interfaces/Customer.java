@@ -15,10 +15,9 @@ import dw317.lib.creditcard.CreditCard;
  * the Customer interface. The Customer interface extends to Comparable and
  * Serializable interfaces.
  * 
- * @author kimhyonh
+ * @author Pengkim Sy
  * @version September, 2016
- * @since Optional class
- *
+ * @since 1.8
  */
 public interface Customer extends Comparable<Customer>, Serializable{
 	
