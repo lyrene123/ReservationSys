@@ -98,7 +98,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 	 * The overridden getNumber method returns a String containing 
 	 * the credit card number
 	 * 
-	 * @return A reference to a String
+	 * @return A reference to a String containing credit card number
 	 */
 	@Override
 	public String getNumber() {
@@ -128,14 +128,16 @@ public abstract class AbstractCreditCard implements CreditCard {
 		int result = 1;
 		//calculations of the hashCode based on the fields
 		//used in the equals method
-		result = prime * result + ((cardType == null) ? 0 : cardType.hashCode());
-		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		result = prime * result + 
+				((cardType == null) ? 0 : cardType.hashCode());
+		result = prime * result + 
+				((number == null) ? 0 : number.hashCode());
 		return result;
 	}//end of hashCode method
 
 	/**
-	 * The overridden toString method returns a String containing the credit card 
-	 * data
+	 * The overridden toString method returns a String containing the 
+	 * credit card data
 	 * 
 	 * @returns A reference to a String
 	 */
@@ -146,10 +148,11 @@ public abstract class AbstractCreditCard implements CreditCard {
 	
 
 	/**
-	 * The digitSum method is used by the method used to validate 
-	 * credit card numbers with the Luhn Algorithm will process each 
-	 * digit of the credit card number and sum all of the digits and return the 
-	 * value
+	 * The digitSum method is used by the method that validates 
+	 * credit card numbers with the Luhn Algorithm. It will process each 
+	 * digit of the credit card number and sum all of the digits 
+	 * and return the value
+	 * 
 	 * @param num The credit card number 
 	 * @return The integer sum of all digits of the credit number after 
 	 *           processing each one of them
@@ -176,7 +179,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 
 			sum = sum + digit; // sum each digit
 
-			position++; // update position
+			position++; // update current digit position
 			num = num / 10; // remove the used digit
 		}
 		
@@ -198,14 +201,23 @@ public abstract class AbstractCreditCard implements CreditCard {
 	private static String validateLuhnAlgorithm(String number) 
 			throws IllegalArgumentException {
 
+		//check if the credit card number is null or empty
+		if(number==null || number==""){
+			throw new IllegalArgumentException("The credit card number"
+					+ " must not be null and must not be empty.");
+		}
+		
+		String trimmedNum = number.trim();
+		
 		// check if the credit card number is numeric by parsing it
 		long num = 0;
 		try {
-			num = Long.parseLong(number);
-		} catch (NumberFormatException e) {
+			num = Long.parseLong(trimmedNum);
+		} catch (java.lang.NumberFormatException ex) {
 			throw new IllegalArgumentException("The credit card number must be a "
 					+ "non-decimal "
-					+ "numeric value containing no spaces.");
+					+ "numeric value containing no spaces or other non-numerial "
+					+ "characters.");
 		}
 
 		//pass the value of num to the digitSum method and 
@@ -214,7 +226,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 
 		// the following code checks if the total sum is multiple of ten
 		if (sum % 10 == 0) {
-			return number; // return valid number
+			return trimmedNum; // return valid number
 		}
 		else {
 			throw new IllegalArgumentException(

@@ -23,8 +23,7 @@ public class DawsonRoomTest {
 	 */
 	public static void main(String[] args) {
 		//method calls
-		testCompareTo();
-		
+		testCompareTo();		
 		testEquals();
 		testGetFloor();
 		testGetNumber();
@@ -326,10 +325,6 @@ public class DawsonRoomTest {
 		System.out.println("\tobject 1 - "+obj1 + ": " + hash1);
 		System.out.println("\tobject 2 - "+obj2 + ": " + hash2);
 	}
-	
-	
-	
-
 
 	/**
 	 * The testTheTwoParameterConstructor method will call the 
@@ -386,10 +381,25 @@ public class DawsonRoomTest {
 		testTheTwoParameterConstructor("case 15 - invalid data(room 700 "
 				+ "doesn't exist)"
 				+ ": ", 700, suite, false);
-		
-		
-		
-		
+		testTheTwoParameterConstructor("case 16 - invalid data(room 12345) "
+				+ ": ", 12345, suite, false);
+		testTheTwoParameterConstructor("case 17 - invalid null room type "
+				+ ": ", 801, null, false);
+		testTheTwoParameterConstructor("case 18 - invalid room 900 "
+				+ ": ", 900, suite, false);
+		testTheTwoParameterConstructor("case 19 - invalid room 803 "
+				+ ": ", 803, penthouse, false);
+		testTheTwoParameterConstructor("case 19 - invalid type penthouse for 701 "
+				+ ": ", 701, penthouse, false);
+		testTheTwoParameterConstructor("case 20 - invalid type penthouse for 304 "
+				+ ": ", 304, penthouse, false);
+		testTheTwoParameterConstructor("case 21 - invalid type suite for 801 "
+				+ ": ", 801, suite, false);
+		testTheTwoParameterConstructor("case 22 - invalid room 210 "
+				+ ": ", 210, normal, false);
+		testTheTwoParameterConstructor("case 23 - invalid room 200 "
+				+ ": ", 200, normal, false);
+	
 	}
 	
 	/**

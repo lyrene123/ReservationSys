@@ -8,8 +8,8 @@ package dw317.hotel.business;
  * @author Lyrene Labor
  * @version September 2016
  */
-//enum of type RoomType containing constants for Normal, Suite and Penthouse
 public enum RoomType {   
+	// enum constants declaration
 	NORMAL, SUITE, PENTHOUSE;   
 	/**
 	 * The overridden toString method returns the String value of the enum

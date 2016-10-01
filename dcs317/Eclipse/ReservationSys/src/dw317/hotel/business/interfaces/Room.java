@@ -24,8 +24,6 @@ public interface Room extends Comparable<Room>, Serializable {
 	public int getRoomNumber();//method to return full room number
 	public RoomType getRoomType(); //method to return room type 
 	
-	
-
 }
 
 
