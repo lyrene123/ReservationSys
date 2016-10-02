@@ -31,7 +31,7 @@ public class DawsonReservation implements Reservation {
 	private LocalDate checkInDate;
 	private LocalDate checkOutDate;
 
-	
+
 	/**
 	 * Constructor, uses the isValid method to validate the input 
 	 * if input is Valid it'll assign parameters to fields;
@@ -50,7 +50,7 @@ public class DawsonReservation implements Reservation {
 
 		this.ACUSTOMER = ACUSTOMER;
 		this.AROOM = AROOM;
-		
+
 		//Using isValid() to validate data and if valid assign values 
 		//to fields
 		if(isValid(inYear, inMonth, inDay, outYear, outMonth, outDay)){
@@ -65,8 +65,8 @@ public class DawsonReservation implements Reservation {
 		}
 
 	}//end of DawsonReservation(...)
-		
-	
+
+
 	/** 
 	 * the compareTo() method is overridden from the object class
 	 * it compares an instance of a Reservation with another,
@@ -85,8 +85,8 @@ public class DawsonReservation implements Reservation {
 			//checks which checkIn date is bigger
 			return this.checkInDate.compareTo(otherRes.getCheckInDate());
 	}//end of compareTo()
-	
-	
+
+
 	/** 
 	 * equals() Method checks if two objects are equal; Two Reservations are
 	 * equal if the customer, Room, Check In Date check Out Date are equal.
@@ -128,13 +128,13 @@ public class DawsonReservation implements Reservation {
 			//checks if other checkOut Date is null
 			if (other.checkOutDate != null)
 				return false;
-		//checks if first checkOut date is not equal to other checkOut Date
+			//checks if first checkOut date is not equal to other checkOut Date
 		} else if (!checkOutDate.equals(other.checkOutDate))
 			return false;
 		return true;
 	}//end of equals()
-	
-	
+
+
 	/** 
 	 * this method returns the CheckIn Date of a customer
 	 * @since 1.8
@@ -144,7 +144,7 @@ public class DawsonReservation implements Reservation {
 		return checkInDate;
 	}//end of getCheckInDate()
 
-	
+
 	/** 
 	 * this method returns the CheckOut Date of a customer
 	 * @since java 8 java.time
@@ -153,8 +153,8 @@ public class DawsonReservation implements Reservation {
 	public LocalDate getCheckOutDate(){
 		return checkOutDate;
 	}//end of getCheckOutDate()
-		
-	
+
+
 	/**
 	 * this method is overridden from the customer class
 	 * it returns a deep copy of the customer.toString()
@@ -171,7 +171,7 @@ public class DawsonReservation implements Reservation {
 		return dcCustomer;
 	}//end of getCustomer
 
-	
+
 	/** 
 	 * this method computes the numbers of days Left a customer
 	 * has according to their checkIn Date and CheckOut Date;
@@ -186,7 +186,7 @@ public class DawsonReservation implements Reservation {
 		return numDaysLeft.getDays();//converts Period to Integer Type
 	}//end of getNumberOfDays()
 
-	
+
 	/** 
 	 * this method returns the room Info a customer is occupying
 	 * @return AROOM 
@@ -194,8 +194,8 @@ public class DawsonReservation implements Reservation {
 	public Room getRoom(){
 		return AROOM;
 	}//end of getRoom()
-	
-	
+
+
 	/**
 	 * HashCode() allocates a place in memory
 	 * @Override
@@ -216,7 +216,36 @@ public class DawsonReservation implements Reservation {
 		return result;
 	}//end of hashCode()
 
-	
+
+	/** 
+	 * overlap() method checks if two two Reservations overlap;
+	 * First it checks if its the same rooms, Then if so it'll if the checkIn
+	 * Date of one Reservation is before the checkIn Date of an other and
+	 * checkOut Date of one Reservation is  after the checkOut date of the 
+	 * other reservation.
+	 * @param Reservation 
+	 * @return boolean True if there is overlap, false otherwise.
+	 * @since java 8.
+	 * 
+	 **/
+	public boolean overlap(Reservation other){
+
+		//Check if both Reservation have the same Room
+		if(this.getRoom().equals(other.getRoom())){
+			//Check if the dates overlap
+			if(this.checkInDate.isBefore(other.getCheckInDate()) && 
+					this.checkOutDate.isAfter(other.getCheckOutDate())){
+				return true;
+			}else if(other.getCheckInDate().isBefore(this.checkInDate) &&
+					other.getCheckOutDate().isAfter(this.checkOutDate)){
+				return true;
+			}
+		}
+		return false;
+	}//end of overlap()
+
+
+
 	/**
 	 * toString() is an overridden method from the Object class that give a 
 	 * String representation of the object 
@@ -280,7 +309,7 @@ public class DawsonReservation implements Reservation {
 			throw new IllegalArgumentException("Invalid Input-- checkout date"
 					+ " cannot be before checkin Date");
 		}
-		
+
 		return true;
 	}//end of isValid()
 
