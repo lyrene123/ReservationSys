@@ -167,7 +167,7 @@ public class DawsonHotelFactoryTest {
 	private static void testGetRoomInstance()
 	{
 		System.out.println("\nTesting the GetRoomInstance method");
-		System.out.println("----------------------------------------");
+		System.out.println("------------------------------------");
 		testGetRoomInstance("Case 1: Valid room number of type Normal",
 				101, "Normal", true);
 		testGetRoomInstance("Case 2: Invalid room number of type Normal",
