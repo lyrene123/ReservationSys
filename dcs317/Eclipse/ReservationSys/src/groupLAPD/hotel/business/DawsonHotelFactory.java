@@ -11,7 +11,7 @@ import dw317.lib.creditcard.CreditCard;
 
 
 /**
- * The DawsonHotelFactory enum is a mechanism to ensure that only one DawsonHotelFactory 
+ * The DawsonHotelFactory enum Class is a mechanism to ensure that only one DawsonHotelFactory 
  * object is ever created (i.e., the Singleton design pattern). 
  * DawsonHotelFactory is used when you need instances of DawsonCustomers, 
  * Credit Cards, DawsonRooms, or DawsonReservations.
@@ -35,8 +35,8 @@ public enum DawsonHotelFactory implements HotelFactory {
 				RoomType.valueOf(roomtype.toUpperCase()));
 	}
 	@Override
-	public Reservation getReservationInstance(Customer aCustomer, Room aRoom, int inYear, int inMonth, int inDay,
-			int outYear, int outMonth, int outDay) {
+	public Reservation getReservationInstance(Customer aCustomer, Room aRoom, 
+			int inYear, int inMonth, int inDay, int outYear, int outMonth, int outDay) {
 		return new DawsonReservation(aCustomer, aRoom, inYear, inMonth, inDay, outYear, outMonth, outDay);
 	}
 }
