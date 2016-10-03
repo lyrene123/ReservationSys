@@ -116,9 +116,9 @@ public class DawsonHotelFactoryTest {
 		testGetCard("Case 4: Invalid Card Type ", 
 				"VisaTop", "", false);
 		testGetCard("Case 5: null Card Type ", 
-				null, "", false);
+				null, "371604312147093", false);
 		testGetCard("Case 6: Empty Card Type ", 
-				"", "", false);
+				"", "5326385350239456", false);
 		testGetCard("Case 7: A Wrong Card Number ", 
 				"Amex", "671604312147093", false);
 	}
@@ -168,19 +168,30 @@ public class DawsonHotelFactoryTest {
 	{
 		System.out.println("\nTesting the GetRoomInstance method");
 		System.out.println("----------------------------------------");
-		testGetRoomInstance("Case 1: Valid room number of type Normal", 101, "Normal", true);
-		testGetRoomInstance("Case 2: Invalid room number of type Normal", 109, "Normal", false);
-		testGetRoomInstance("Case 3: Invalid room Type", 101, "Suite", false);
-		testGetRoomInstance("Case 4: Valid room Number and room type", 604, "Suite", true);
-		testGetRoomInstance("Case 5: Invalid room number of type Suite", 101, "Suite", false);
-		testGetRoomInstance("Case 6: Valid room Number and room type", 801, "penthouse", true);
-		testGetRoomInstance("Case 7: Invalid room number of type Penthouse", 709, "penthouse", false);
-		testGetRoomInstance("Case 8: Invalid room number of type Penthouse", 801, "Normal", false);
-		testGetRoomInstance("Case 8: Invalid room number", 1001, "Normal", false);
-		testGetRoomInstance("Case 8: Null room type", 101, null, false);
-		testGetRoomInstance("Case 8: Empty room number", 000, "Normal", false);
-		testGetRoomInstance("Case 8: Empty room type", 809, "", false);
-
+		testGetRoomInstance("Case 1: Valid room number of type Normal",
+				101, "Normal", true);
+		testGetRoomInstance("Case 2: Invalid room number of type Normal",
+				109, "Normal", false);
+		testGetRoomInstance("Case 3: Invalid room Type",
+				101, "Suite", false);
+		testGetRoomInstance("Case 4: Valid room Number and room type",
+				604, "Suite", true);
+		testGetRoomInstance("Case 5: Invalid room number of type Suite",
+				101, "Suite", false);
+		testGetRoomInstance("Case 6: Valid room Number and room type",
+				801, "penthouse", true);
+		testGetRoomInstance("Case 7: Invalid room number of type Penthouse",
+				709, "penthouse", false);
+		testGetRoomInstance("Case 8: Invalid room number of type Penthouse",
+				801, "Normal", false);
+		testGetRoomInstance("Case 8: Invalid room number",
+				1001, "Normal", false);
+		testGetRoomInstance("Case 8: Null room type",
+				101, null, false);
+		testGetRoomInstance("Case 8: Empty room number",
+				000, "Normal", false);
+		testGetRoomInstance("Case 8: Empty room type",
+				809, "", false);
 	}
 	/**
 	 * The overloaded testGetRoomInstance will test the overridden  
@@ -200,8 +211,12 @@ public class DawsonHotelFactoryTest {
 			System.out.print("\tThe Room instance was created " + room);
 			System.out.print("\n\tExpected return: " 
 					+ expectedValid);
-			if(expectedValid == true){
+			if(expectedValid == true)
+			{
 				System.out.println("\n\tValid Data. == TEST OK");
+			} else {
+			System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
+			//System.out.println();
 			}
 		}
 		catch (IllegalArgumentException iae)	
@@ -296,6 +311,9 @@ public class DawsonHotelFactoryTest {
 					+ expectedValid);
 			if(expectedValid == true){
 				System.out.println("\n\tValid Data. == TEST OK");
+			} else {
+			System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
+			//System.out.println();
 			}
 		}
 		catch (IllegalArgumentException iae)	
