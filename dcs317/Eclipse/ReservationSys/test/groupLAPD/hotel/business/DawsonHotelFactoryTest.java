@@ -11,9 +11,20 @@ import dw317.lib.creditcard.CreditCard.CardType;
 import dw317.lib.creditcard.MasterCard;
 import dw317.lib.creditcard.Visa;
 
-
+/**
+ * The DawsonHotelFactoryTest Class tests the methods
+ * of the DawsonHotelFactory enum class.
+ * 
+ * @author Daniel Cavalcanti
+ * @version September 2016
+ */
 public class DawsonHotelFactoryTest {
 
+	/**
+	 * The main method will call private methods that will each test 
+	 * a method in the DawsonHotelFactory enum class.
+	 * @param args String array
+	 */
 	public static void main(String[] args) 
 	{
 		testGetCustomerInstance();
@@ -21,6 +32,10 @@ public class DawsonHotelFactoryTest {
 		testGetRoomInstance();
 		testgetReservationInstance();
 	}
+	/**
+	 * The testGetCustomerInstance method will call the overloaded 
+	 * testGetCustomerInstance with the a specific test case
+	 */
 	public static void testGetCustomerInstance()
 	{
 		System.out.println("\nTesting the getCustomer Instance method");
@@ -41,7 +56,15 @@ public class DawsonHotelFactoryTest {
 				+ "", null, "Cavalcanti", " ", false);
 
 	}
-
+	/**
+	 * The overloaded testGetCustomerInstance will test the overridden  
+	 * getCustomerInstance method of the DawsonHotelFactory enum class.
+	 * @param testCase The Test Case
+	 * @param firstname The first name of the Customer
+	 * @param lastname The last name of the Customer
+	 * @param email The email of the Customer
+	 * @param expectedResult A condition True or False for the test case
+	 */
 	private static void testGetCustomerInstance(String testCase, String firstName, 
 			String lastName, String email, boolean expectedValid)
 	{
@@ -76,6 +99,10 @@ public class DawsonHotelFactoryTest {
 
 		System.out.println("\n");
 	}
+	/**
+	 * The testGetCard method will call the overloaded 
+	 * testGetCard with the a specific test case
+	 */
 	private static void testGetCard()
 	{
 		System.out.println("\nTesting the getCard method");
@@ -95,6 +122,14 @@ public class DawsonHotelFactoryTest {
 		testGetCard("Case 7: A Wrong Card Number ", 
 				"Amex", "671604312147093", false);
 	}
+	/**
+	 * The overloaded testGetCard will test the overridden  
+	 * getCard method of the DawsonHotelFactory enum class.
+	 * @param testCase The Test Case
+	 * @param cardtype The type of the CreditCard
+	 * @param number The number of the CreditCard
+	 * @param expectedResult A condition True or False for the test case
+	 */
 	private static void testGetCard(String testCase, String cardtype, String number, 
 			Boolean expectedValid)
 	{
@@ -125,6 +160,10 @@ public class DawsonHotelFactoryTest {
 		}
 		System.out.println("\n");
 	}
+	/**
+	 * The testGetRoomInstance method will call the overloaded 
+	 * testGetRoomInstance with the a specific test case
+	 */
 	private static void testGetRoomInstance()
 	{
 		System.out.println("\nTesting the GetRoomInstance method");
@@ -141,8 +180,16 @@ public class DawsonHotelFactoryTest {
 		testGetRoomInstance("Case 8: Null room type", 101, null, false);
 		testGetRoomInstance("Case 8: Empty room number", 000, "Normal", false);
 		testGetRoomInstance("Case 8: Empty room type", 809, "", false);
-				
+
 	}
+	/**
+	 * The overloaded testGetRoomInstance will test the overridden  
+	 * getetRoomInstance method of the DawsonHotelFactory enum class.
+	 * @param testCase The Test Case
+	 * @param roomNumber The number of the room
+	 * @param roomtype The type of the room
+	 * @param expectedResult A condition True or False for the test case
+	 */
 	private static void testGetRoomInstance(String testCase, int roomNumber, 
 			String roomtype, Boolean expectedValid)
 	{
@@ -172,9 +219,13 @@ public class DawsonHotelFactoryTest {
 		}
 		System.out.println("\n");
 	}
+	/**
+	 * The testgetReservationInstance method will call the overloaded 
+	 * testgetReservationInstance with the a specific test case
+	 */
 	private static void testgetReservationInstance()
 	{
-		
+
 		//Creating Valid new Instances of Customer
 		Customer customer1 = DawsonHotelFactory.DAWSON.getCustomerInstance
 				("Daniel", "Cavalcanti", "danielhbc@gmail.com");
@@ -216,8 +267,22 @@ public class DawsonHotelFactoryTest {
 				2016, 11, 21, 0, 02, 25, false );
 		testgetReservationInstance("Case 11: Check-In Day after Check-Out day", customer1, room3, 
 				2016, 11, 21, 2016, 10, 02, false );
-			
+
 	}
+	/**
+	 * The overloaded testgetReservationInstance will test the overridden  
+	 * getReservationInstance method of the DawsonHotelFactory enum class.
+	 * @param testCase The Test Case
+	 * @param aCustomer The instance of Customer
+	 * @param aRoom The instance of Room
+	 * @param inYear The Year of the Check-In
+	 * @param inMonth The Month of the Check-In
+	 * @param inDay The Day of the Check-In
+	 * @param outYear The Year of the Check-Out
+	 * @param outMonth The Month of the Check-Out
+	 * @param outDay The Day of the Check-Out
+	 * @param expectedResult A condition True or False for the test case
+	 */
 	private static void testgetReservationInstance(String testCase, Customer aCustomer, Room aRoom, int inYear, 
 			int inMonth, int inDay, int outYear, int outMonth, int outDay, Boolean expectedValid)
 	{
@@ -247,7 +312,7 @@ public class DawsonHotelFactoryTest {
 				System.out.print(" Expected Valid.");
 		}
 		System.out.println();
-		}
+	}
 }
 
 
@@ -256,4 +321,3 @@ public class DawsonHotelFactoryTest {
 
 
 
-	
