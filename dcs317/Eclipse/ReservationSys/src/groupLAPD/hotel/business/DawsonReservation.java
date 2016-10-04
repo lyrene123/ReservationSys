@@ -233,11 +233,11 @@ public class DawsonReservation implements Reservation {
 		//Check if both Reservation have the same Room
 		if(this.getRoom().equals(other.getRoom())){
 			//Check if the dates overlap
-			if(this.checkInDate.isBefore(other.getCheckInDate()) && 
-					this.checkOutDate.isAfter(other.getCheckOutDate())){
+			if(this.checkInDate.isBefore(other.getCheckOutDate()) && 
+					this.checkOutDate.isAfter(other.getCheckInDate())){
 				return true;
-			}else if(other.getCheckInDate().isBefore(this.checkInDate) &&
-					other.getCheckOutDate().isAfter(this.checkOutDate)){
+			}else if(other.getCheckInDate().isBefore(this.checkOutDate) &&
+					other.getCheckOutDate().isAfter(this.checkInDate)){
 				return true;
 			}
 		}

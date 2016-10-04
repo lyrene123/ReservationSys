@@ -236,10 +236,10 @@ public class DawsonReservationTest {
 
 		//Calling parameterized testOverlap()
 		System.out.println("testing overlap() method: ");
-		testOverlap("case 1: checkIn Date of first Reservation is before and "
-				+ "checkOut date is after second Reservation", aliRes, lyreneRes, true);
-		testOverlap("case 2: checkIn date of second Reservation is before and "
-				+"checkOut Date is after the first Reservation.", lyreneRes, aliRes, true);
+		testOverlap("case 1: checkIn Date of first Reservation is before "
+				+ "checkOut date of second Reservation And Check Out Date is after second Reservation CheckIn Date", aliRes, lyreneRes, true);
+		testOverlap("case 2: checkIn date of second Reservation is before CheckOut Date of first and "
+				+"checkOut Date is after the first Reservation CheckIn date.", lyreneRes, aliRes, true);
 		testOverlap("case 3: Different Rooms", aliRes, lyreneRes2, false);
 		testOverlap("case 4: CheckIn and CheckOut Dates don't over lap", aliRes, kimRes, false);
 	}
