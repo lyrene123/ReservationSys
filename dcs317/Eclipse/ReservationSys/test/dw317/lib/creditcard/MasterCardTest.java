@@ -209,7 +209,6 @@ public class MasterCardTest {
 
 		System.out.println("   " + testCase);
 		System.out.println("\t    " + expectedResult);
-
 		MasterCard testCard = new MasterCard("5361496937200808");
 		boolean compare = testCard.equals(obj);
 
