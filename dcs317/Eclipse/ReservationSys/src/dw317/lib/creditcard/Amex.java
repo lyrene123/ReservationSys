@@ -62,11 +62,16 @@ public final class Amex extends AbstractCreditCard  {
 		
 		String subDigits = number.substring(0, 2);
 		int firstDigits = Integer.parseInt(subDigits);
-		if(!(firstDigits!=34 || firstDigits!=37)){
-			throw new IllegalArgumentException("The Amex card number must"
-					+ " be starting digits with 34 or 37.");
+		if(firstDigits!=34)
+		{
+			if(firstDigits!=37)
+			{
+				throw new IllegalArgumentException("The Amex card number must"
+						+ " be starting digits with 34 or 37.");
+			}
+			
 		}
 		
-		return number;
+		return trimDigits;
 	}
 }

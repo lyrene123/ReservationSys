@@ -40,9 +40,14 @@ public class AmexTest {
 		caseValidation("Case 8 : check if the parameter is a non-decimal number", "344322.62438490"
 				, false);
 		caseValidation("Case 9 : check if there is no parameter", "", false);
+		caseValidation("Case 10: Invalid Starting Card Number ", "354322624384908", false);
+		caseValidation("Case 11: Valid Start Card Number", "344322624384908",true);
+		caseValidation("Case 12: Valid Start Card Number","3722624384908", true);
+		
 	}
 	
-	public static void caseValidation(String testCase, String number, boolean expectedResult){
+	public static void caseValidation(String testCase, String number, boolean expectedResult)
+	{
 		System.out.println(testCase);
 		try{
 			Amex card = new Amex(number);
@@ -52,12 +57,14 @@ public class AmexTest {
 				System.out.print("\n\tError! You expected this case to fail but it didn't. ");
 			}
 		}
-		catch(IllegalArgumentException e){
+		catch(IllegalArgumentException e)
+		{
 			System.out.print("\t"+ e.getMessage());
 			if (expectedResult)
 				System.out.print("\n\tError! You expected this case to succeed but it didnt. ");
 		}
-		catch(Exception x){
+		catch(Exception x)
+		{
 			System.out.print("\n\tError! There was an unexpected exception type " + x.getClass() +  " "  + 				
 		x.getMessage());
 			if (expectedResult)
