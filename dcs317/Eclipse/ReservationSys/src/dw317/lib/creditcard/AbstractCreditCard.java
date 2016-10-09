@@ -26,7 +26,7 @@ public abstract class AbstractCreditCard implements CreditCard {
 	/**
 	 * The constructor validates the input values and sets the 
 	 * credit card type and credit card number with the
-	 *  respective input values.
+	 *  respective input values...
 	 * 
 	 * @param cardtype
 	 *            The credit card type
