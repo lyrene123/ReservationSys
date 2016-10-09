@@ -6,7 +6,7 @@ package dw317.hotel.business;
 /**
  * The RoomType enum holds constants for normal, suite and penthouse rooms
  * @author Lyrene Labor
- * @version September 2016
+ * @version September 2016...
  */
 public enum RoomType {   
 	// enum constants declaration
