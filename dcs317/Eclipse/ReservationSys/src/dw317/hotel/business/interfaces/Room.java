@@ -12,7 +12,7 @@ import java.io.Serializable;
  * the Room interface. The Room interface extends to Comparable and
  * Serializable interfaces.
  * @author Lyrene Labor
- * @version September 2016
+ * @version September 2016...
  *
  */
 public interface Room extends Comparable<Room>, Serializable {
