@@ -36,5 +36,27 @@ public class HotelFileLoaderTest {
 		}
 		
 	}
+	
+	public static void TestGetRoomListFromSequentialFile(){
+		System.out.println("\nTesting the "
+				+ "getRoomListFromSequentialFile method");
+		
+		String property = System.getProperty("user.dir");
+		property += File.separator + "datafiles"+File.separator;
+		String goodFile = property+"rooms.txt";
+		TestGetRoomListFromSequentialFile
+			("Case 1: Room file with correct entries", 
+					true, goodFile);
+		
+	}
+	
+	public static void TestGetRoomListFromSequentialFile
+				(String testCase, boolean expectedResult, String filename){
+		System.out.println("   " + testCase);
+		
+		
+	}
+	
+	
 
 }

@@ -117,7 +117,7 @@ public class HotelFileLoader {
 						e.getMessage() + "\nA room number must be numeric "
 								+ "and not empty.");
 			}
-			//catch IllegalArugmentException if it occurs
+			//catch IllegalArgumentException if it occurs
 			//and throw the following exception and message
 			catch(IllegalArgumentException x){
 				throw new IllegalArgumentException("The file " + filename +
@@ -157,10 +157,10 @@ public class HotelFileLoader {
 			throws IllegalArgumentException {
 		//throw the following exception if a room entry
 		//has more than 2 fields
-		if (roomEntry.length > 2)
+		if (roomEntry.length != 2)
 			throw new IllegalArgumentException
-			("Invalid Room Entry found! A room entry must not have more"
-					+ " than 2 fields");
+			("Invalid Room Entry found! A room entry must not have"
+					+ " 2 fields only");
 
 	}
 	
@@ -226,11 +226,12 @@ public class HotelFileLoader {
 				String creditName = customerEntry[3];
 				String creditNumber = customerEntry[4];
 				
-				if(creditName.equalsIgnoreCase("amex")&&
+				if(!(creditName.equalsIgnoreCase("amex")&&
 						creditName.equalsIgnoreCase("visa")&&
-						creditName.equalsIgnoreCase("mastercard")){
+						creditName.equalsIgnoreCase("mastercard"))){
 					throw new IllegalArgumentException("The credit card type"
-							+ " of a customer must be amex, visa or mastercard only");
+							+ " of a customer must not be empty and must"
+							+ " be amex, visa or mastercard only");
 				}
 				
 				if(creditName.equalsIgnoreCase("amex")){
@@ -244,8 +245,7 @@ public class HotelFileLoader {
 				else{
 					MasterCard card = new MasterCard(creditNumber);
 					customers[i].setCreditCard(Optional.of(card));
-				}
-					
+				}				
 			}
 			
 			
@@ -274,7 +274,8 @@ public class HotelFileLoader {
 		//has more than 5 fields
 		if (customerEntry.length > 5)
 			throw new IllegalArgumentException
-			("Invalid Customer Entry found!");
+			("Invalid Customer Entry found! A customer entry must not have more"
+					+ " than 5 fields");
 	}
 	
 	
