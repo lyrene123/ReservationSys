@@ -5,16 +5,19 @@ package groupLAPD.hotel.data;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Customer;
+import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.business.interfaces.Room;
 import dw317.lib.creditcard.Amex;
 import dw317.lib.creditcard.MasterCard;
 import dw317.lib.creditcard.Visa;
 import groupLAPD.hotel.business.DawsonCustomer;
+import groupLAPD.hotel.business.DawsonReservation;
 import groupLAPD.hotel.business.DawsonRoom;
 
 /**
@@ -176,6 +179,7 @@ public class HotelFileLoader {
 	 * 			When the input file does not exist or cannot be found
 	 * 			or any other input and output related errors such as
 	 * 			the scanner not closing properly.
+	 * 			When the credit card type is not visa, amex or mastercard
 	 */
 	public static Customer[] getCustomerListFromSequentialFile(String filename) 
 			throws IOException{
@@ -211,7 +215,7 @@ public class HotelFileLoader {
 		String customerArray[] = sb.toString().split(ITEM_DELIMETER);
 		//iterate through each entry of the String customerArray array
 		for (int i = 0; i < noOfCustomers; i++) {
-			//for each line of the customerArray, seperate each field
+			//for each line of the customerArray, separate each field
 			//and assign them to the customerEntry array of type String
 			String[] customerEntry = customerArray[i].split(DELIMETER);
 			//validate the value of each field of the customerEntry array
@@ -221,18 +225,24 @@ public class HotelFileLoader {
 			//DawsonCustomer		
 			customers[i] = new DawsonCustomer(customerEntry[1], 
 				customerEntry[2], customerEntry[0]);
-			
+			//if the customer entry contains information about 
+			//the customer's credit card then of the following
 			if(customerEntry.length==5){
+				//store the customer's credit card type
+				//and the credit card number in a variable
 				String creditName = customerEntry[3];
 				String creditNumber = customerEntry[4];
 				
-				if(!(customerEntry[3].equalsIgnoreCase("amex")||
-						customerEntry[3].equalsIgnoreCase("visa")||
-						customerEntry[3].equalsIgnoreCase("mastercard"))){
+				//If the credit card type is not amex, visa
+				// or mastercard, then throw an exception
+				if(!(creditName.equalsIgnoreCase("amex")||
+						creditName.equalsIgnoreCase("visa")||
+						creditName.equalsIgnoreCase("mastercard"))){
 					throw new IllegalArgumentException("The credit card type"
 							+ " of a customer must not be empty and must"
 							+ " be amex, visa or mastercard only");
 				}
+				
 				
 				if(creditName.equalsIgnoreCase("amex")){
 					Amex card = new Amex(creditNumber);
@@ -277,6 +287,79 @@ public class HotelFileLoader {
 			("Invalid Customer Entry found! A customer entry must not have more"
 					+ " than 5 fields");
 	}
+	
+	
+	public static Reservation[] getReservationListFromSequentialFile
+    (String filename,
+    Customer[] customerList,
+    Room[] roomList)
+    throws IOException, IllegalArgumentException{
+
+    File fileObj = new File(filename);
+    Scanner reader = new Scanner(fileObj);
+	int numReserv = 0;
+	ArrayList<Customer> customerArray = new ArrayList();
+	ArrayList<Room> roomArray = new ArrayList();
+	ArrayList<Integer> checkInYearArr = new ArrayList();
+	ArrayList<Integer> checkInMonthArr = new ArrayList();
+	ArrayList<Integer> checkInDayArr = new ArrayList();
+	ArrayList<Integer> checkOutYearArr = new ArrayList();
+	ArrayList<Integer> checkOutMonthArr = new ArrayList();
+	ArrayList<Integer> checkOutDayArr = new ArrayList();	
+	
+	while(reader.hasNext()){
+		String aLine = reader.nextLine();
+		
+		String[] arrLineStr = aLine.split("\\*");
+		
+		try{
+		for(int i = 0; i < customerList.length; i++){
+			if(arrLineStr[0].equalsIgnoreCase(customerList[i].getEmail().getAddress())){
+				customerArray.add(customerList[i]);
+			}else{
+				throw new IllegalArgumentException(customerList[i] +" Customer not found");
+			}		
+	}
+		}catch(Exception e){
+			
+		}
+		
+		try{
+		for(int i = 0; i < roomList.length; i++){
+			if(arrLineStr[7] == String.valueOf(roomList[i].getRoomNumber())){
+				roomArray.add(roomList[i]);
+			}else{
+				throw new IllegalArgumentException(roomList[i] + " Room is not Found");
+			}
+		}
+		}catch(Exception e){
+			
+		}
+		checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
+		checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
+		checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
+		checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
+		checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
+		checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
+		numReserv++;
+	}
+		
+	reader.close();
+	
+	
+	Reservation[] reservations = new Reservation[numReserv];
+	
+	//try{
+	for(int i = 0; i <= numReserv; i++){
+		reservations[i] = new DawsonReservation(customerArray.get(i), roomArray.get(i),checkInYearArr.get(i), checkInMonthArr.get(i), 
+				checkInDayArr.get(i), checkOutYearArr.get(i), checkOutMonthArr.get(i), checkOutDayArr.get(i));
+	}
+	//}catch(Exception e){
+		
+	//}
+	return reservations;
+	}
+	
 	
 	
 }

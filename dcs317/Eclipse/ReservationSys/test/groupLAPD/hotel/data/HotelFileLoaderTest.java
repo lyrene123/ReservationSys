@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import dw317.hotel.business.interfaces.Customer;
+import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.business.interfaces.Room;
 
 /**
@@ -35,6 +36,15 @@ public class HotelFileLoaderTest {
 			System.out.println(c);
 		}
 		
+		String property3 = System.getProperty("user.dir");
+		property3+= File.separator + "datafiles"+File.separator;
+		System.out.println(property3+"reservationsLAPD.txt");
+		Reservation[] reservList = 
+				HotelFileLoader.getReservationListFromSequentialFile
+				(property3+"reservationsLAPD.txt", CustomerList, roomList);
+		for(Reservation r: reservList){
+			System.out.println(r);
+		}
 	}
 	
 	public static void TestGetRoomListFromSequentialFile(){
@@ -52,6 +62,7 @@ public class HotelFileLoaderTest {
 	
 	public static void TestGetRoomListFromSequentialFile
 				(String testCase, boolean expectedResult, String filename){
+		
 		System.out.println("   " + testCase);
 		
 		
