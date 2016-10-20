@@ -226,9 +226,9 @@ public class HotelFileLoader {
 				String creditName = customerEntry[3];
 				String creditNumber = customerEntry[4];
 				
-				if(!(creditName.equalsIgnoreCase("amex")&&
-						creditName.equalsIgnoreCase("visa")&&
-						creditName.equalsIgnoreCase("mastercard"))){
+				if(!(customerEntry[3].equalsIgnoreCase("amex")||
+						customerEntry[3].equalsIgnoreCase("visa")||
+						customerEntry[3].equalsIgnoreCase("mastercard"))){
 					throw new IllegalArgumentException("The credit card type"
 							+ " of a customer must not be empty and must"
 							+ " be amex, visa or mastercard only");
