@@ -25,7 +25,7 @@ import groupLAPD.hotel.business.DawsonRoom;
  * series of static utility methods that can be used to load, read and
  * copy data from files such as text sequential files. The files that
  * are used in this class contain data related to Hotel information.  
- * @author Lyrene Labor
+ * @author Lyrene Labor and Ali Dali
  * @version October 2016
  */
 public class HotelFileLoader {
@@ -38,6 +38,7 @@ public class HotelFileLoader {
 	/**
 	 * The private no-parameter constructor prevents
 	 * the HotelFileLoader class to be instantiated.
+	 * @author Lyrene Labor
 	 */
 	private HotelFileLoader() { 
 		//no implementation inside constructor 
@@ -55,6 +56,7 @@ public class HotelFileLoader {
 	 * 			When the input file does not exist or cannot be found
 	 * 			or any other input and output related errors such as
 	 * 			the scanner not closing properly.
+	 * @author Lyrene Labor
 	 */
 	public static Room[] getRoomListFromSequentialFile(String filename)
 			throws IOException {
@@ -154,7 +156,8 @@ public class HotelFileLoader {
 	 * @param roomEntry An array of type String containing a 
 	 * 			room entry or line 
 	 * @throws IllegalArgumentException If a room entry contains 
-	 * 			more or less than 2 fields 			
+	 * 			more or less than 2 fields 	
+	 * @author Lyrene Labor		
 	 */
 	private static void validateRoomEntry(String[] roomEntry) 
 			throws IllegalArgumentException {
@@ -162,7 +165,7 @@ public class HotelFileLoader {
 		//has more than 2 fields
 		if (roomEntry.length != 2)
 			throw new IllegalArgumentException
-			("Invalid Room Entry found! A room entry must not have"
+			("Invalid Room Entry found! A room entry must have"
 					+ " 2 fields only");
 
 	}
@@ -180,6 +183,7 @@ public class HotelFileLoader {
 	 * 			or any other input and output related errors such as
 	 * 			the scanner not closing properly.
 	 * 			When the credit card type is not visa, amex or mastercard
+	 * @author Lyrene Labor
 	 */
 	public static Customer[] getCustomerListFromSequentialFile(String filename) 
 			throws IOException{
@@ -276,7 +280,9 @@ public class HotelFileLoader {
 	 * @param roomEntry An array of type String containing a 
 	 * 			customer entry or line 
 	 * @throws IllegalArgumentException If a customer entry contains 
-	 * 			more or less than 5 fields 			
+	 * 			more or less than 5 fields 	
+	 * @author Lyrene Labor
+	 *		
 	 */
 	private static void validateCustomerEntry(String[] customerEntry) 
 			throws IllegalArgumentException {
