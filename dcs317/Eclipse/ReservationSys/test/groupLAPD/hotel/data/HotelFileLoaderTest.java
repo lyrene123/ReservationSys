@@ -43,19 +43,56 @@ public class HotelFileLoaderTest {
 			("Case 1: Room file with all correct entries", 
 					true, goodRoomFile);
 		
-		property = System.getProperty("user.dir")+File.separator+"groupLAPD"+
+		property = System.getProperty("user.dir")+File.separator+"test"
+				+File.separator +"groupLAPD"+
 				File.separator+"hotel"+File.separator+"data"+
 				File.separator+"datafilesTest"+File.separator;
+		
 		String badRoomFile1 = property+"badRoomFile1.txt";
 		TestGetRoomListFromSequentialFile("Case 2: Room file "
 				+ "with non existing room type bleh", false, badRoomFile1);
+		
+		String badRoomFile2 = property+"badRoomFile2.txt";
+		TestGetRoomListFromSequentialFile("Case 3: Room file "
+				+ "with numerical room type 123", false, 
+				badRoomFile2);
+		
+		String badRoomFile3 = property+"badRoomFile3.txt";
+		TestGetRoomListFromSequentialFile("Case 4: Room file "
+				+ "with non-numerical room number normal", 
+				false, badRoomFile3);
+		
+		String badRoomFile4 = property+"badRoomFile4.txt";
+		TestGetRoomListFromSequentialFile("Case 5: Room file "
+				+ "with entry with more than 2 fields", 
+				false, badRoomFile4);
+		
+		String badRoomFile5 = property+"badRoomFile5.txt";
+		TestGetRoomListFromSequentialFile("Case 6: Room file "
+				+ "with entry with less than 2 fields", 
+				false, badRoomFile5);
+		
+		String badRoomFile6 = property+"badRoomFile6.txt";
+		TestGetRoomListFromSequentialFile("Case 7: Room file "
+				+ "with entry containing wrong room number 110", 
+				false, badRoomFile6);
+		
+		String badRoomFile7 = property+"badRoomFile7.txt";
+		TestGetRoomListFromSequentialFile("Case 8: Room file "
+				+ "with entry containing wrong room type for room number", 
+				false, badRoomFile7);
+		
+		String badRoomFile8 = property+"badRoomFile8.txt";
+		TestGetRoomListFromSequentialFile("Case 9: Room file "
+				+ "with entry containing wrong room number for room type", 
+				false, badRoomFile8);
 		
 	}
 	
 	public static void TestGetRoomListFromSequentialFile
 				(String testCase, boolean expectedResult, String filename) 
 						throws IOException{
-		
+		System.out.println();
 		System.out.println("   " + testCase);
 		System.out.println("    Filename: " + filename);
 		
@@ -87,7 +124,7 @@ public class HotelFileLoaderTest {
 						+ " it didn't ");
 		}
 		
-		System.out.println();	
+		System.out.println("\n");	
 	}
 	
 	public static void TestGetCustomerListFromSequentialFile()
@@ -101,6 +138,58 @@ public class HotelFileLoaderTest {
 		TestGetCustomerListFromSequentialFile
 			("Case 1: Customer file with all correct entries", 
 					true, goodCustFile);
+		
+		property = System.getProperty("user.dir")+
+				File.separator+"test"
+				+File.separator +"groupLAPD"+
+				File.separator+"hotel"+File.separator+"data"+
+				File.separator+"datafilesTest"+File.separator;
+		
+		String badCustFile1 = property+"badCustFile1.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 2: Customer file with entry of 2 fields", 
+				false, badCustFile1);
+		
+		String badCustFile2 = property+"badCustFile2.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 3: Customer file with entry of 4 fields only", 
+				false, badCustFile2);
+		
+		String badCustFile3 = property+"badCustFile3.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 4: Customer file with entry of 1 field only", 
+				false, badCustFile3);
+		
+		String badCustFile4 = property+"badCustFile4.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 5: Customer file with entry of 6 fields only", 
+				false, badCustFile4);
+		
+		String badCustFile5 = property+"badCustFile5.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 6: Customer file with entry containing empty card type", 
+				false, badCustFile5);
+		
+		String badCustFile6 = property+"badCustFile6.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 7: Customer file with entry containing wrong card type", 
+				false, badCustFile6);
+		
+		String badCustFile7 = property+"badCustFile7.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 8: Customer file with entry containing wrong card number", 
+				false, badCustFile7);
+		
+		String badCustFile8 = property+"badCustFile8.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 9: Customer file with entry containing wrong email", 
+				false, badCustFile8);
+		
+		String badCustFile9 = property+"badCustFile9.txt";
+		TestGetCustomerListFromSequentialFile
+		("Case 10: Customer file with entry containing wrong "
+				+ "customer name", 
+				false, badCustFile9);
 		
 		
 	}
@@ -141,7 +230,7 @@ public class HotelFileLoaderTest {
 						+ " it didn't ");
 		}
 
-		System.out.println();	
+		System.out.println("\n");	
 }
 	
 	

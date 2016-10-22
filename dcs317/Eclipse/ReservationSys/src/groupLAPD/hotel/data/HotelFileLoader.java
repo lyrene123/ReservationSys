@@ -13,6 +13,8 @@ import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.business.interfaces.Room;
+import dw317.lib.Email;
+import dw317.lib.Name;
 import dw317.lib.creditcard.Amex;
 import dw317.lib.creditcard.MasterCard;
 import dw317.lib.creditcard.Visa;
@@ -119,22 +121,22 @@ public class HotelFileLoader {
 			catch(java.lang.NumberFormatException e){
 				throw new IllegalArgumentException("The file " + filename +
 						" have an invalid room entry: " +
-						e.getMessage() + "\nA room number must be numeric "
+						e.getMessage() + "\n\tA room number must be numeric "
 								+ "and not empty.");
 			}
 			//catch IllegalArgumentException if it occurs
 			//and throw the following exception and message
 			catch(IllegalArgumentException x){
-				throw new IllegalArgumentException("The file " + filename +
+				throw new IllegalArgumentException("\tThe file " + filename +
 						" have an invalid room entry: " +
-						x.getMessage() + "\nThe room type must not "
+						x.getMessage() + "\n\t And the room type must not "
 								+ "be empty and must be "
 						+ "NORMAL, SUITE or PENTHOUSE.");
 			}
 			//catch any other Exception if it occurs
 			//and throw the following exception and message
 			catch(Exception y){
-				throw new IllegalArgumentException("The file " + filename +
+				throw new IllegalArgumentException("\tThe file " + filename +
 						" have an invalid room entry: " +
 						y.getMessage());
 			}
@@ -165,7 +167,7 @@ public class HotelFileLoader {
 		//has more than 2 fields
 		if (roomEntry.length != 2)
 			throw new IllegalArgumentException
-			("Invalid Room Entry found! A room entry must have"
+			("\tInvalid Room Entry found! A room entry must have"
 					+ " 2 fields only");
 
 	}
@@ -197,7 +199,7 @@ public class HotelFileLoader {
 		catch(FileNotFoundException e){
 			//if file not found, throw the following exception type
 			//and message
-			throw new IllegalArgumentException("The file " + filename+ 
+			throw new IllegalArgumentException("\tThe file " + filename+ 
 					"containing customer "
 					+ "data does not exist"
 					+ " or cannot be found");
@@ -224,11 +226,20 @@ public class HotelFileLoader {
 			String[] customerEntry = customerArray[i].split(DELIMETER);
 			//validate the value of each field of the customerEntry array
 			validateCustomerEntry(customerEntry);
+			
+			//validate for each entry the email, 
+			//firstname and lastname fields and
+			//throw the exception generated if there is
+			Email customerEmail = new Email(customerEntry[0]);
+			Name customerName = new Name(customerEntry[1], 
+				customerEntry[2]);
+			
 			//once validated, try assigning the value of the entry
 			//into the customers array by creating an instance of 
-			//DawsonCustomer		
-			customers[i] = new DawsonCustomer(customerEntry[1], 
-				customerEntry[2], customerEntry[0]);
+			//DawsonCustomer	
+			customers[i] = new DawsonCustomer(customerName.getFirstName(), 
+				customerName.getLastName(), customerEmail.toString());
+			
 			//if the customer entry contains information about 
 			//the customer's credit card then of the following
 			if(customerEntry.length==5){
@@ -242,7 +253,7 @@ public class HotelFileLoader {
 				if(!(creditName.equalsIgnoreCase("amex")||
 						creditName.equalsIgnoreCase("visa")||
 						creditName.equalsIgnoreCase("mastercard"))){
-					throw new IllegalArgumentException("The credit card type"
+					throw new IllegalArgumentException("\tThe credit card type"
 							+ " of a customer must not be empty and must"
 							+ " be amex, visa or mastercard only");
 				}
@@ -288,10 +299,10 @@ public class HotelFileLoader {
 			throws IllegalArgumentException {
 		//throw the following exception if a customer entry
 		//has more than 5 fields
-		if (customerEntry.length > 5)
+		if (!(customerEntry.length==5 || customerEntry.length==3))
 			throw new IllegalArgumentException
-			("Invalid Customer Entry found! A customer entry must not have more"
-					+ " than 5 fields");
+			("\tInvalid Customer Entry found! A customer entry must have"
+					+ " 5 fields or 3 fields only");
 	}
 	
 	
