@@ -76,29 +76,40 @@ public class DawsonHotelFactoryTest {
 					+ name);
 			System.out.print("\n\tExpected return: " 
 					+ expectedValid);
-			if(expectedValid == true){
+			if(expectedValid){
 				System.out.println("\n\tValid Data. == TEST OK");
 				//System.out.println();
 			} else {
-				System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
+				System.out.println("\n\tExpected Error! TEST OK");
 				//System.out.println();
 			}
 
 		}
 		catch (IllegalArgumentException iae)	{
 			System.out.print("\t"+ iae.getMessage());
-			if (expectedValid)
-				System.out.print("  Error! Expected Valid. ==== FAILED TEST ====");
+			if(!expectedValid)
+			{
+				System.out.println("\tExpected Error! TEST OK");
+			}else{
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
 		}
 		catch (Exception e) {
 			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() +  " "  + 					
-					e.getMessage() + " ==== FAILED TEST ====");
-			if (expectedValid)
-				System.out.print(" Expected Valid.");
-		}
+					e.getMessage());
+			System.out.println();
+			if(!expectedValid)
+			{
+				System.out.println("\tExpected Error! TEST OK");
+			}else{
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
 
-		System.out.println("\n");
+		} finally {
+			System.out.println("____________________________________________________________");
+		}
 	}
+		
 	/**
 	 * The testGetCard method will call the overloaded 
 	 * testGetCard with the a specific test case
@@ -139,24 +150,24 @@ public class DawsonHotelFactoryTest {
 			System.out.print("\tThe CreditCard instance was created " + card);
 			System.out.print("\n\tExpected return: " 
 					+ expectedValid);
-			if(expectedValid == true){
+			if(expectedValid){
 				System.out.println("\n\tValid Data. == TEST OK");
 				//System.out.println();
 			} else {
-				System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
+				System.out.println("\n\tExpected Error! TEST OK");
 				//System.out.println();
 			}
 		}
 		catch (IllegalArgumentException iae)	{
 			System.out.print("\t"+ iae.getMessage());
-			if (expectedValid)
-				System.out.print("  Error! Expected Valid. ==== FAILED TEST ====");
+			if (!expectedValid)
+				System.out.print("Expected error! \n\tTEST OK");
 		}
 		catch (Exception e) {
 			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() +  " "  + 					
-					e.getMessage() + " ==== FAILED TEST ====");
-			if (expectedValid)
-				System.out.print(" Expected Valid.");
+					e.getMessage());
+			if (!expectedValid)
+				System.out.print("\n\tExpected error! TEST OK");
 		}
 		System.out.println("\n");
 	}
@@ -184,13 +195,13 @@ public class DawsonHotelFactoryTest {
 				709, "penthouse", false);
 		testGetRoomInstance("Case 8: Invalid room number of type Penthouse",
 				801, "Normal", false);
-		testGetRoomInstance("Case 8: Invalid room number",
+		testGetRoomInstance("Case 9: Invalid room number",
 				1001, "Normal", false);
-		testGetRoomInstance("Case 8: Null room type",
+		testGetRoomInstance("Case 10: Null room type",
 				101, null, false);
-		testGetRoomInstance("Case 8: Empty room number",
+		testGetRoomInstance("Case 11: Empty room number",
 				000, "Normal", false);
-		testGetRoomInstance("Case 8: Empty room type",
+		testGetRoomInstance("Case 12: Empty room type",
 				809, "", false);
 	}
 	/**
@@ -211,26 +222,26 @@ public class DawsonHotelFactoryTest {
 			System.out.print("\tThe Room instance was created " + room);
 			System.out.print("\n\tExpected return: " 
 					+ expectedValid);
-			if(expectedValid == true)
+			if(expectedValid)
 			{
-				System.out.println("\n\tValid Data. == TEST OK");
+				System.out.println("\n\t Valid Data == TEST OK");
 			} else {
-			System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
-			//System.out.println();
+			System.out.println("\n\tExpected Error! TEST OK");
+			
 			}
 		}
 		catch (IllegalArgumentException iae)	
 		{
 			System.out.print("\t"+ iae.getMessage());
-			if (expectedValid)
-				System.out.print("  Error! Expected Valid. ==== FAILED TEST ====");
+			if (!expectedValid)
+				System.out.print("\n\tExpected error! TEST OK");
 		}
 		catch (Exception e) 
 		{
 			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() +  " "  + 					
-					e.getMessage() + " ==== FAILED TEST ====");
-			if (expectedValid)
-				System.out.print(" Expected Valid.");
+					e.getMessage());
+			if (!expectedValid)
+				System.out.print("\n\tExpected error! TEST OK");
 		}
 		System.out.println("\n");
 	}
@@ -309,25 +320,25 @@ public class DawsonHotelFactoryTest {
 			System.out.print("\tThe Reservation instance was created " + reserv);
 			System.out.print("\n\tExpected return: " 
 					+ expectedValid);
-			if(expectedValid == true){
-				System.out.println("\n\tValid Data. == TEST OK");
+			if(expectedValid){
+				System.out.println("\n\tTEST OK");
 			} else {
-			System.out.println("\n\t" + "Error! Invalid data. ==== FAILED TEST ====");
+			System.out.println("\n\tExpected Error! TEST OK");
 			//System.out.println();
 			}
 		}
 		catch (IllegalArgumentException iae)	
 		{
 			System.out.print("\t"+ iae.getMessage());
-			if (expectedValid)
-				System.out.print("  Error! Expected Valid. ==== FAILED TEST ====");
+			if (!expectedValid)
+				System.out.print("\n\tExpected error! TEST OK");
 		}
 		catch (Exception e) 
 		{
 			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() +  " "  + 					
-					e.getMessage() + " ==== FAILED TEST ====");
-			if (expectedValid)
-				System.out.print(" Expected Valid.");
+					e.getMessage());
+			if (!expectedValid)
+				System.out.print("\n\tExpected error! TEST OK");
 		}
 		System.out.println();
 	}
