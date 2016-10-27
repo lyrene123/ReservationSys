@@ -285,7 +285,7 @@ public class HotelFileLoader {
 		return customers; //return the customers array
 			
 	} 
-	
+	/////
 	/**
 	 * The validateCustomerEntry method will validate each line of
 	 * the file containing the customers data and will check if each
@@ -296,7 +296,7 @@ public class HotelFileLoader {
 	 * 			more or less than 5 fields 	
 	 * @author Lyrene Labor
 	 *		
-	 */
+	 *////
 	private static void validateCustomerEntry(String[] customerEntry) 
 			throws IllegalArgumentException {
 		//throw the following exception if a customer entry
@@ -315,45 +315,42 @@ public class HotelFileLoader {
     throws IOException, IllegalArgumentException{
 
     File fileObj = new File(filename);
-    Scanner reader = new Scanner(fileObj);
+    Scanner reader = null;
+    try{
+    reader = new Scanner(fileObj);
+    }catch(FileNotFoundException e){
+    	System.out.println(fileObj + " file not found");
+    }
 	int numReserv = 0;
-	ArrayList<Customer> customerArray = new ArrayList();
-	ArrayList<Room> roomArray = new ArrayList();
-	ArrayList<Integer> checkInYearArr = new ArrayList();
-	ArrayList<Integer> checkInMonthArr = new ArrayList();
-	ArrayList<Integer> checkInDayArr = new ArrayList();
-	ArrayList<Integer> checkOutYearArr = new ArrayList();
-	ArrayList<Integer> checkOutMonthArr = new ArrayList();
-	ArrayList<Integer> checkOutDayArr = new ArrayList();	
+	ArrayList<Customer> customerArray = new ArrayList<>();
+	ArrayList<Room> roomArray = new ArrayList<>();
+	ArrayList<Integer> checkInYearArr = new ArrayList<>();
+	ArrayList<Integer> checkInMonthArr = new ArrayList<>();
+	ArrayList<Integer> checkInDayArr = new ArrayList<>();
+	ArrayList<Integer> checkOutYearArr = new ArrayList<>();
+	ArrayList<Integer> checkOutMonthArr = new ArrayList<>();
+	ArrayList<Integer> checkOutDayArr = new ArrayList<>();	
 	
 	while(reader.hasNext()){
 		String aLine = reader.nextLine();
 		
 		String[] arrLineStr = aLine.split("\\*");
+
 		
-		try{
 		for(int i = 0; i < customerList.length; i++){
 			if(arrLineStr[0].equalsIgnoreCase(customerList[i].getEmail().getAddress())){
 				customerArray.add(customerList[i]);
-			}else{
-				throw new IllegalArgumentException(customerList[i] +" Customer not found");
+				
 			}		
 	}
-		}catch(Exception e){
-			
-		}
 		
-		try{
 		for(int i = 0; i < roomList.length; i++){
-			if(arrLineStr[7] == String.valueOf(roomList[i].getRoomNumber())){
+			if(arrLineStr[7].equals(String.valueOf(roomList[i].getRoomNumber())) ){
 				roomArray.add(roomList[i]);
-			}else{
-				throw new IllegalArgumentException(roomList[i] + " Room is not Found");
+				
 			}
 		}
-		}catch(Exception e){
-			
-		}
+		
 		checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
 		checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
 		checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
@@ -361,21 +358,24 @@ public class HotelFileLoader {
 		checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
 		checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
 		numReserv++;
+	
 	}
-		
+
 	reader.close();
 	
+
 	
 	Reservation[] reservations = new Reservation[numReserv];
 	
 	//try{
-	for(int i = 0; i <= numReserv; i++){
+	for(int i = 0; i < numReserv; i++){
+
 		reservations[i] = new DawsonReservation(customerArray.get(i), roomArray.get(i),checkInYearArr.get(i), checkInMonthArr.get(i), 
 				checkInDayArr.get(i), checkOutYearArr.get(i), checkOutMonthArr.get(i), checkOutDayArr.get(i));
+		//}
 	}
 	//}catch(Exception e){
 		
-	//}
 	return reservations;
 	}
 	
