@@ -307,21 +307,41 @@ public class HotelFileLoader {
 					+ " 5 fields or 3 fields only");
 	}
 	
-	
+	/**
+	 * The getReservationListFromSequentialFile method 
+	 * loads and reads a reservation file, it will check 
+	 * the customer array and room array to make sure the 
+	 * the customer and room exist and will store everything
+	 * in a separate arrayList which will be used at the end 
+	 * to create a Reservation array with all the arrayList
+	 * @param filename: String containing the path of reservations file
+	 * 			customer[]: to check if customer in reservation exists
+	 * 			room[] : to check if room in reservation exists
+	 * @return an array of Reservations that is filled
+	 * @throws IOException: When file does not exist or not found
+	 * 			IllegalArgumentException: When Room or Customer
+	 * 				not found
+	 * @return a Reservation Array
+	 * @author Ali Dali
+	 **/
 	public static Reservation[] getReservationListFromSequentialFile
     (String filename,
     Customer[] customerList,
     Room[] roomList)
     throws IOException, IllegalArgumentException{
-
+		
+	//creating file using filename	
     File fileObj = new File(filename);
     Scanner reader = null;
+    //to check if file exist or not
     try{
     reader = new Scanner(fileObj);
     }catch(FileNotFoundException e){
-    	System.out.println(fileObj + " file not found");
+    	throw new IOException(fileObj + " file not found ");
     }
-	int numReserv = 0;
+    
+	int numReserv = 0;//count number of Reservations
+	//creating arrayLists to store each parameter
 	ArrayList<Customer> customerArray = new ArrayList<>();
 	ArrayList<Room> roomArray = new ArrayList<>();
 	ArrayList<Integer> checkInYearArr = new ArrayList<>();
@@ -331,26 +351,29 @@ public class HotelFileLoader {
 	ArrayList<Integer> checkOutMonthArr = new ArrayList<>();
 	ArrayList<Integer> checkOutDayArr = new ArrayList<>();	
 	
+
+	//takes every line and splits it using the delimiter
 	while(reader.hasNext()){
+		//storing line into String
 		String aLine = reader.nextLine();
-		
+		//splitting according to the delimiter *
 		String[] arrLineStr = aLine.split("\\*");
 
-		
+		//checking if customer from reservation file
+		//exists in customer array
 		for(int i = 0; i < customerList.length; i++){
 			if(arrLineStr[0].equalsIgnoreCase(customerList[i].getEmail().getAddress())){
-				customerArray.add(customerList[i]);
-				
+				customerArray.add(customerList[i]);	
 			}		
 	}
-		
+		//checking if Room from reservation file
+		//exists in room array
 		for(int i = 0; i < roomList.length; i++){
 			if(arrLineStr[7].equals(String.valueOf(roomList[i].getRoomNumber())) ){
-				roomArray.add(roomList[i]);
-				
+				roomArray.add(roomList[i]);	
 			}
 		}
-		
+		//storing dates in corresponding arrayLists
 		checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
 		checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
 		checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
@@ -358,26 +381,26 @@ public class HotelFileLoader {
 		checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
 		checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
 		numReserv++;
-	
 	}
-
+	//close scanner	
 	reader.close();
 	
-
-	
+	//Creating reservation array
 	Reservation[] reservations = new Reservation[numReserv];
 	
-	//try{
+	//Creating Reservations using arrayLists
 	for(int i = 0; i < numReserv; i++){
-
+		//if room or customer does not exist 
+		try{
 		reservations[i] = new DawsonReservation(customerArray.get(i), roomArray.get(i),checkInYearArr.get(i), checkInMonthArr.get(i), 
 				checkInDayArr.get(i), checkOutYearArr.get(i), checkOutMonthArr.get(i), checkOutDayArr.get(i));
-		//}
-	}
-	//}catch(Exception e){
-		
+		//throw illegalArgumentException
+		}catch(IndexOutOfBoundsException e){
+			throw new IllegalArgumentException();
+		}
+	}	
 	return reservations;
-	}
+	}//End of method
 	
 	
 	

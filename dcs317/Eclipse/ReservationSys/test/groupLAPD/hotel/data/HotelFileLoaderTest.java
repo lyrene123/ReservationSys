@@ -19,16 +19,9 @@ public class HotelFileLoaderTest {
 		
 		TestGetRoomListFromSequentialFile();
 		TestGetCustomerListFromSequentialFile();
+		TestGetReservationListFromSequentialFile();
 		
-		/**String property3 = System.getProperty("user.dir");
-		property3+= File.separator + "datafiles"+File.separator;
-		System.out.println(property3+"reservationsLAPD.txt");
-		Reservation[] reservList = 
-				HotelFileLoader.getReservationListFromSequentialFile
-				(property3+"reservationsLAPD.txt", CustomerList, roomList);
-		for(Reservation r: reservList){
-			System.out.println(r);
-		}*/
+		
 	}
 	
 	public static void TestGetRoomListFromSequentialFile()
@@ -233,7 +226,88 @@ public class HotelFileLoaderTest {
 		System.out.println("\n");	
 }
 	
+	public static void TestGetReservationListFromSequentialFile(){
+		
+		String property = System.getProperty("user.dir");
+		property += File.separator + "datafiles"+File.separator;
+		String goodResFile = property+"reservationsLAPD.txt";
+		TestGetReservationListFromSequentialFile
+		("Case 1: Reservation file with all correct entries", 
+				true, goodResFile);
+		
+		property = System.getProperty("user.dir")+
+				File.separator+"test"
+				+File.separator +"groupLAPD"+
+				File.separator+"hotel"+File.separator+"data"+
+				File.separator+"datafilesTest"+File.separator;
+		
+		String badResFile1 = property + "badResFile1.txt";
+		TestGetReservationListFromSequentialFile
+		("Case 2: Reservation file with Room not found", 
+				false, badResFile1);
+		
+		String badResFile2 = property + "badResFile2.txt";
+		TestGetReservationListFromSequentialFile
+		("Case 3: Reservation file with Customer not found", 
+				false, badResFile1);
+		
+		String badResFile3 = property + "";
+		TestGetReservationListFromSequentialFile
+		("Case 3: Reservation file does not exist", 
+				false, badResFile3);
+		
+	}
 	
+	
+	public static void TestGetReservationListFromSequentialFile
+	(String testCase,boolean expectedResult, String filename ){
+		
+		System.out.println("   " + testCase);
+		System.out.println("    Filename: " + filename);
+
+		
+		
+		String property = System.getProperty("user.dir");
+		property += File.separator + "datafiles"+File.separator;
+		String goodRoomFile = property+"rooms.txt";
+		Room[] roomList = null;
+		try{
+			roomList = HotelFileLoader.getRoomListFromSequentialFile(goodRoomFile);
+		}catch(Exception e){
+			System.out.println("Room File does not exist");
+		}
+		
+		String property2 = System.getProperty("user.dir");
+		property2 += File.separator + "datafiles"+File.separator;
+		String goodCustFile = property2+"customersLAPD.txt";
+		Customer[] custList = null;
+		try{
+			custList = HotelFileLoader.getCustomerListFromSequentialFile(goodCustFile);
+		}catch(Exception e){
+			System.out.println("Cust File does not exist");
+		}
+		
+		Reservation[] resList = null;
+		try{
+			resList = HotelFileLoader.getReservationListFromSequentialFile
+					(filename, custList, roomList);
+			System.out.println("    Here is the Reservation data file content:");
+			for(Reservation r: resList){
+				System.out.println("\t"+r);
+			}
+			if(!expectedResult){
+				System.out.println("\nERROR! You expected this test case to"
+						+ " fail but it didn't");
+			}
+		}catch(IllegalArgumentException e){
+			System.out.println("Customer not found or Room not found");
+		}catch(IOException d){
+			System.out.println("File not found" + filename);
+		}
+		
+		System.out.println();
+		
+	}
 	
 
 }
