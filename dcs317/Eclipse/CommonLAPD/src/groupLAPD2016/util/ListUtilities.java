@@ -1,8 +1,10 @@
 package groupLAPD2016.util;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class ListUtilities {
 	private static final Charset CHARACTER_ENCODING = StandardCharsets.UTF_8;
@@ -60,48 +62,78 @@ public class ListUtilities {
 	 * @throws NullPointerException if the list is null.
 	 */
 
-	/*
-	 * public static void sort(Comparable[] list) { int min; Comparable temp;
-	 * 
-	 * for (int index = 0; index < list.length-1; index++) { min = index; for
-	 * (int scan = index+1; scan < list.length; scan++) if
-	 * (list[scan].compareTo(list[min]) < 0) min = scan;
-	 * 
-	 * // Swap the values temp = list[min]; list[min] = list[index]; list[index]
-	 * = temp; } }
-	 */
-	public static <E extends Comparable<E>> void sort(E[] list) 
-	{
-		for (int n = 0; n < list.length; n++) 
-		{
-			if (list[n] == null) 
-			{
+	
+	public static <E extends Comparable<E>> void sort(E[] list) {
+		
+		for (int n = 0; n < list.length; n++) {
+			if (list[n] == null) {
 				throw new NullPointerException("Error sorting list! Can't handle null element arrays");
-			} else if (list[n] == "") 
-			{
-				throw new IllegalArgumentException("Error sorting list! Can't handle empty element arrays.");
 			}
 		}
-		if (list.length == 0) 
-		{
-			throw new IllegalArgumentException("Error sorting list! Can't handle zero-length arrays.");
+		if (list.length == 0) {
+			throw new IllegalArgumentException("Error sorting list! Can't handle empty arrays.");
 		}
-		//Sorting Array 
-		int min;
-	      E temp;
+		// Sorting Array
+		Arrays.sort(list);
+	}
+	/*
+	* Efficiently merges two sorted lists of objects in ascending
+	* natural order. If the duplicate objects are in both lists,
+	* the object from list1 is merged into the resulting list, and
+	* both objects are written to the duplicate file.
+	*
+	* Precondition: Assumes that the lists are not null and that
+	* both lists contain objects that can be compared to
+	* each other and are filled to capacity.
+	*
+	* @param list1 A naturally sorted list of objects. Assumes
+	* that the list contains no duplicates and that
+	* its capacity is equal to its size.
+	* @param list2 A naturally sorted list of objects. Assumes
+	* that the list contains no duplicates and that
+	* its capacity is equal to its size.
+	* @param duplicateFileName The name of the file in
+	* datafiles\duplicates to which duplicate pairs
+	* will be appended.
+	*
+	* @throws IllegalArgumentException if either parameter is
+	* not full to capacity.
+	*
+	* @throws NullPointerException if the either list is
+	* null.
+	*/
+	@SuppressWarnings("unchecked")
+	public static <E extends Comparable<E>> E[] merge(E[] list1, E[] list2, String duplicateFileName) {
+		int indexL1 = 0;
+		int indexL2 = 0;
+		int indexL3 = 0;
 
-	      for (int index = 0; index < list.length-1; index++)
-	      {
-	         min = index;
-	         for (int i = index+1; i < list.length; i++)
-	            if (list[i].compareTo(list[min]) < 0)
-	               min = i;
+		@SuppressWarnings("rawtypes")
+		Comparable[] list3 = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
+				list1.length + list2.length);
 
-	         // Swap the values
-	         temp = list[min];
-	         list[min] = list[index];
-	         list[index] = temp;
+		while (indexL1 < list1.length && indexL2 < list2.length) {
+			if (list1[indexL1].compareTo(list2[indexL2]) < 0) {
+				list3[indexL3] = list1[indexL1];
+				indexL1++;
+			} else {
+				list3[indexL3] = list2[indexL2];
+				indexL2++;
+			}
+			indexL3++;
 		}
+		if (indexL1 < list1.length) {
+			for (int indexR = indexL1; indexR < list1.length; indexR++) {
+				list3[indexL3] = list1[indexR];
+				indexL3++;
+			}
+		} else {
+			for (int indexR = indexL2; indexR < list2.length; indexR++) {
+				list3[indexL3] = list2[indexR];
+				indexL3++;
+			}
+		}
+		return (E[]) list3;
 	}
 
 }
