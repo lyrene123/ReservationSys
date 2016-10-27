@@ -11,23 +11,31 @@ public class ListUtilitiesTest {
 
 		testSortArrays();
 
-		
-		Email[] emailList = new Email[4];
+		Email[] emailList = new Email[5];
 		emailList[0] = new Email("danielhbc@gmail.com");
 		emailList[1] = new Email("laborlyrene@gmail.com");
 		emailList[2] = new Email("alidali@gmail.com");
 		emailList[3] = new Email("pengKim@gmail.com");
+		emailList[4] = new Email("marcy@gmail.com");
 
+		String[] nameList = new String[] { "PengKim", "Ali", "Daniel", "Lyrene" };
 		File unsortedDir = new File("/datafiles/unsorted");
 		unsortedDir.mkdirs();
 
 		try {
-			ListUtilities.saveListToTextFile(emailList, "/datafiles/unsorted/nameDB.txt");
+			ListUtilities.saveListToTextFile(emailList,
+					"D:/LAPD2016/dcs317/Eclipse/ReservationSys/datafiles/duplicates.txt", true);
 		} catch (IOException e) {
 			System.out.println(e.getMessage() + "\n\nExiting the Application.");
 			System.exit(1);
 		}
 
+		/*
+		 * try { ListUtilities.saveListToTextFile (nameList,
+		 * "D:/LAPD2016/dcs317/Eclipse/ReservationSys/datafiles/duplicates.txt")
+		 * ; } catch (IOException e) { System.out.println(e.getMessage() +
+		 * "\n\nExiting the Application."); System.exit(1); }
+		 */
 	}
 
 	public static void testSortArrays() {
@@ -35,56 +43,68 @@ public class ListUtilitiesTest {
 		emailList[0] = new Email("danielhbc@gmail.com");
 		emailList[1] = new Email("laborlyrene@gmail.com");
 		emailList[2] = new Email("alidali@gmail.com");
-		
-		
 
 		Integer[] values = new Integer[] { 9, -3, 5, 0, 1 };
 		Double[] numbers = new Double[] { 8.1, 0.0, -1.1, 3.2, 5.4 };
 		String[] names = new String[] { "PengKim", "Ali", "Daniel", "Lyrene" };
-		Boolean[] bol = new Boolean[] {true, false, true, false};
+		Boolean[] bol = new Boolean[] { true, false, true, false };
 		Integer[] values2 = new Integer[] {};
 		Integer[] values3 = new Integer[8];
 
 		System.out.println("\nTesting the generic static sort method from ListUtilities Class");
 		System.out.println("-----------------------------------------------------------------");
 		ListUtilitiesTest.<Integer>
-		testSortArrays("Case 1: A valid Integer Array with full capacity", values, true);
+		testSort("Case 1: A valid Integer Array with full capacity", values, true);
 		ListUtilitiesTest.<String>
-		testSortArrays("Case 2: A valid String Array with full capacity", names, true);
+		testSort("Case 2: A valid String Array with full capacity", names, true);
 		ListUtilitiesTest.<Double>
-		testSortArrays("Case 3: A valid Double Array with full capacity", numbers, true);
+		testSort("Case 3: A valid Double Array with full capacity", numbers, true);
 		ListUtilitiesTest.<Email>
-		testSortArrays("Case 4: A Double Array not full to capacity", emailList, false);
+		testSort("Case 4: A Double Array not full to capacity", emailList, false);
 		ListUtilitiesTest.<Boolean>
-		testSortArrays("Case 5: A valid Boolean Array with full capacity", bol, true);
+		testSort("Case 5: A valid Boolean Array with full capacity", bol, true);
 		ListUtilitiesTest.<Integer>
-		testSortArrays("Case 6: Empty Array", values2, false);
+		testSort("Case 6: Empty Array", values2, false);
 		ListUtilitiesTest.<Integer>
-		testSortArrays("Case 7: Empty Array", values3, false);
-		
+		testSort("Case 7: Empty Array", values3, false);
+
 	}
 
-	public static void testSortEmptyArray() {
+	public static <T extends Comparable<T>> void testMerge(String testCase, T[] list1, T[] list2,
+			String duplicateFileName, boolean expectedValid) {
 
-		Integer[] values = new Integer[4];
 		try {
-			ListUtilities.<Integer>sort(values);
-			printArrayObjects(values);
-		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
+			System.out.println("   " + testCase);
+			System.out.print("\tArray List1: ");
+			System.out.println(Arrays.toString(list1));
+			System.out.print("\tArray List2: ");
+			System.out.println(Arrays.toString(list2));
+			ListUtilities.<T>merge(list1, list2, "duplicate");
+
+			if (expectedValid) {
+				System.out.println("\tExpected Result! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+			System.out.println("\tEnd of testeCase");
+
+		} catch (Exception e) {
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.println();
+			if (!expectedValid) {
+				System.out.println("\tExpected Error! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+		} finally {
+			System.out.println("____________________________________________________________");
 		}
 
 	}
 
-	public static void testSortOneElementArray() {
-		Integer[] values = new Integer[] { 42 };
-
-		ListUtilities.<Integer>sort(values);
-		printArrayObjects(values);
-
-	}
-
-	public static <T extends Comparable<T>> void testSortArrays(String testCase, T[] obj, boolean expectedValid) {
+	public static <T extends Comparable<T>> void testSort(String testCase, T[] obj, boolean expectedValid) {
 
 		try {
 			System.out.println("   " + testCase);
@@ -93,23 +113,20 @@ public class ListUtilitiesTest {
 			ListUtilities.<T>sort(obj);
 			System.out.print("\tArray After Sorting:  ");
 			System.out.println(Arrays.toString(obj));
-			if(expectedValid)
-			{
+			if (expectedValid) {
 				System.out.println("\tExpected Result! TEST OK");
-			}else{
+			} else {
 				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
 			}
 
 			System.out.println("\tEnd of testeCase");
 
 		} catch (Exception e) {
-			System.out.print(
-					"\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
 			System.out.println();
-			if(!expectedValid)
-			{
+			if (!expectedValid) {
 				System.out.println("\tExpected Error! TEST OK");
-			}else{
+			} else {
 				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
 			}
 
@@ -127,5 +144,5 @@ public class ListUtilitiesTest {
 			System.out.print(anArrayObject[i]);
 		}
 	}
-	
+
 }
