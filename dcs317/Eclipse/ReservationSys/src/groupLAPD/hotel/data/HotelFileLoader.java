@@ -258,15 +258,17 @@ public class HotelFileLoader {
 							+ " be amex, visa or mastercard only");
 				}
 				
-				
+				//if the  credit card is amex, set that card
 				if(creditName.equalsIgnoreCase("amex")){
 					Amex card = new Amex(creditNumber);
 					customers[i].setCreditCard(Optional.of(card));
 				}
+				//if the credit card is visa, set that card
 				else if(creditName.equalsIgnoreCase("visa")){
 					Visa card = new Visa(creditNumber);
 					customers[i].setCreditCard(Optional.of(card));
 				}
+				//if the credit card is mastercard, set that card
 				else{
 					MasterCard card = new MasterCard(creditNumber);
 					customers[i].setCreditCard(Optional.of(card));
