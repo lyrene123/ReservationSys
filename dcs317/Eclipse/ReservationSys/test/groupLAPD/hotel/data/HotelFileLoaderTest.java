@@ -254,8 +254,7 @@ public class HotelFileLoaderTest {
 		String badResFile3 = property + "";
 		TestGetReservationListFromSequentialFile
 		("Case 3: Reservation file does not exist", 
-				false, badResFile3);
-		
+				false, badResFile3);		
 	}
 	
 	

@@ -283,7 +283,7 @@ public class HotelFileLoader {
 		}
 		
 		return customers; //return the customers array
-			
+		
 	} 
 	/////
 	/**
