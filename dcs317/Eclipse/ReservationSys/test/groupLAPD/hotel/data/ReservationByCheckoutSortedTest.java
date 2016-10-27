@@ -3,12 +3,14 @@ package groupLAPD.hotel.data;
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Reservation;
 import groupLAPD.hotel.business.*;
+import groupLAPD.hotel.business.ReservationByCheckoutSorted;
 
-public class ReservationByCustSortedTest {
-	
-	public static void main (String[] args){
+public class ReservationByCheckoutSortedTest {
+
+	public static void main(String[] args) {
 		
-		testCompareMethod();				
+		testCompareMethod();
+
 	}
 	
 	public static void testCompareMethod(){
@@ -92,7 +94,16 @@ public class ReservationByCustSortedTest {
 		room2 = new DawsonRoom(602, RoomType.SUITE);
 		r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 3, 30);
 		r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 4, 15);
-		testCompareMethod(testCase9, r1, r2, "0 because I did not compare between check out date");
+		testCompareMethod(testCase9, r1, r2, "negative number");
+		
+		String testCase10 = "Case 10: Reservation 1 is greater than Reservation 2 (Different check out date).";
+		customer1 = new DawsonCustomer("Pengkim", "Sy", "pengkimsy@gmail.com");
+		customer2 = new DawsonCustomer("Pengkim", "Sy", "pengkimsy@gmail.com");
+		room1 = new DawsonRoom(602, RoomType.SUITE);
+		room2 = new DawsonRoom(602, RoomType.SUITE);
+		r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 5, 20);
+		r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 4, 15);
+		testCompareMethod(testCase10, r1, r2, "positive number");
 	}
 	
 	public static void testCompareMethod(String testCase, Reservation r1
@@ -101,7 +112,7 @@ public class ReservationByCustSortedTest {
 		System.out.println();
 		System.out.println("Test compare method:");
 				
-		ReservationByCustSorted reservationByCustSorted = new ReservationByCustSorted();
+		ReservationByCheckoutSorted reservationByCustSorted = new ReservationByCheckoutSorted();
 		int result = reservationByCustSorted.compare(r1, r2);
 		System.out.println("\t" + testCase);
 		System.out.println("\t\tReservation 1 : " + r1.toString());
@@ -111,4 +122,5 @@ public class ReservationByCustSortedTest {
 		
 		System.out.println();
 	}
+
 }
