@@ -62,9 +62,8 @@ public class ListUtilities {
 	 * @throws NullPointerException if the list is null.
 	 */
 
-	
-	public static <E extends Comparable<E>> void sort(E[] list) {
-		
+	public static <E extends Comparable<E>> void sort(E[] list) throws IllegalArgumentException, NullPointerException {
+
 		for (int n = 0; n < list.length; n++) {
 			if (list[n] == null) {
 				throw new NullPointerException("Error sorting list! Can't handle null element arrays");
@@ -76,34 +75,49 @@ public class ListUtilities {
 		// Sorting Array
 		Arrays.sort(list);
 	}
+
 	/*
-	* Efficiently merges two sorted lists of objects in ascending
-	* natural order. If the duplicate objects are in both lists,
-	* the object from list1 is merged into the resulting list, and
-	* both objects are written to the duplicate file.
-	*
-	* Precondition: Assumes that the lists are not null and that
-	* both lists contain objects that can be compared to
-	* each other and are filled to capacity.
-	*
-	* @param list1 A naturally sorted list of objects. Assumes
-	* that the list contains no duplicates and that
-	* its capacity is equal to its size.
-	* @param list2 A naturally sorted list of objects. Assumes
-	* that the list contains no duplicates and that
-	* its capacity is equal to its size.
-	* @param duplicateFileName The name of the file in
-	* datafiles\duplicates to which duplicate pairs
-	* will be appended.
-	*
-	* @throws IllegalArgumentException if either parameter is
-	* not full to capacity.
-	*
-	* @throws NullPointerException if the either list is
-	* null.
-	*/
+	 * Efficiently merges two sorted lists of objects in ascending natural
+	 * order. If the duplicate objects are in both lists, the object from list1
+	 * is merged into the resulting list, and both objects are written to the
+	 * duplicate file.
+	 *
+	 * Precondition: Assumes that the lists are not null and that both lists
+	 * contain objects that can be compared to each other and are filled to
+	 * capacity.
+	 *
+	 * @param list1 A naturally sorted list of objects. Assumes that the list
+	 * contains no duplicates and that its capacity is equal to its size.
+	 * 
+	 * @param list2 A naturally sorted list of objects. Assumes that the list
+	 * contains no duplicates and that its capacity is equal to its size.
+	 * 
+	 * @param duplicateFileName The name of the file in datafiles\duplicates to
+	 * which duplicate pairs will be appended.
+	 *
+	 * @throws IllegalArgumentException if either parameter is not full to
+	 * capacity.
+	 *
+	 * @throws NullPointerException if the either list is null.
+	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends Comparable<E>> E[] merge(E[] list1, E[] list2, String duplicateFileName) {
+	public static <E extends Comparable<E>> E[] merge(E[] list1, E[] list2, String duplicateFileName)
+			throws IllegalArgumentException, NullPointerException {
+
+		for (int n = 0; n < list1.length; n++) {
+			if (list1[n] == null) {
+				throw new NullPointerException("Exception error! Null elements in: " + list1);
+			} else if (list2[n] == null) {
+				throw new NullPointerException("Exception error! Null elements in: " + list2);
+			}
+		}
+		if (list1.length == 0) {
+			throw new IllegalArgumentException("Exception erro in: " + list1 + "Can't handle empty arrays.");
+		}
+		if (list2.length == 0) {
+			throw new IllegalArgumentException("Exception erro in: " + list2 + "Can't handle empty arrays.");
+		}
+
 		int indexL1 = 0;
 		int indexL2 = 0;
 		int indexL3 = 0;
@@ -132,6 +146,8 @@ public class ListUtilities {
 				list3[indexL3] = list2[indexR];
 				indexL3++;
 			}
+			// Saving merged Object list into a file
+
 		}
 		return (E[]) list3;
 	}
