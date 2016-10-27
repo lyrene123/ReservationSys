@@ -13,7 +13,7 @@ import dw317.hotel.business.*;
  * @author Lyrene Labor
  * @version September 2016
  */
-public class DawsonRoom implements Room {
+public final class DawsonRoom implements Room {
 
 	// declaring class fields:
 	
