@@ -255,7 +255,7 @@ public class DawsonReservation implements Reservation {
 	public String toString(){
 		//getting the user email
 		String email = ACUSTOMER.getEmail().toString();
-		int roomNumber = AROOM.getNumber();//getting user Room Number
+		int roomNumber = AROOM.getRoomNumber();//getting user Room Number
 
 		return email +"*"+ inYear +"*"+ inMonth +"*"+ inDay +"* "+ outYear 
 				+"*"+ outMonth +"*"+ outDay +"*"+ roomNumber; 
