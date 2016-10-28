@@ -34,7 +34,7 @@ public class ListUtilities {
 			throws FileNotFoundException, UnsupportedEncodingException {
 
 		PrintWriter outputFile = null;
-		File unsortedDir = new File("datafiles/duplicates");
+		File unsortedDir = new File("datafiles/unsorted");
 		unsortedDir.mkdirs();
 
 		try {
