@@ -91,9 +91,7 @@ public class SortMergeApp {
 			
 		}
 		
-		for(String r : resFile){
-			System.out.println("-----======"+property3+r);
-		}
+		
 	
 		for(int i = 0 ; i<custList.length; i++){
 		}
