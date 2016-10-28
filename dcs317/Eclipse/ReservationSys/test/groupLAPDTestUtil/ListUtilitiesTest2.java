@@ -1,14 +1,17 @@
 package groupLAPDTestUtil;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 
+import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Customer;
+import dw317.hotel.business.interfaces.Reservation;
 import dw317.lib.Email;
 import dw317.lib.creditcard.Amex;
 import dw317.lib.creditcard.CreditCard;
 import dw317.lib.creditcard.Visa;
-import groupLAPD.hotel.business.DawsonCustomer;
+import groupLAPD.hotel.business.*;
 import groupLAPD2016.util.ListUtilities;
 import groupLAPD2016.util.ListUtilitiesTest;
 
@@ -19,6 +22,7 @@ public class ListUtilitiesTest2 {
 
 			//testSort();
 			testMerge();
+			testSort2param();
 
 			Email[] emailList = new Email[3];
 			emailList[0] = new Email("danielhbc@gmail.com");
@@ -195,6 +199,93 @@ public class ListUtilitiesTest2 {
 				}
 				System.out.print(anArrayObject[i]);
 			}
+		}
+		
+		private static void testSort2param(){
+			
+			testSortByCustomer();
+			testSortByCheckoutDate();
+		}
+		
+		private static void testSortByCustomer(){
+			System.out.println("Test sort by customer");
+			
+			String testCase1 = "Case 1: The same reservation order";
+			DawsonCustomer customer1 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			DawsonCustomer customer2 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			DawsonCustomer customer3 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			DawsonRoom room1 = new DawsonRoom(602, RoomType.SUITE);
+			DawsonRoom room2 = new DawsonRoom(602, RoomType.SUITE);
+			DawsonReservation r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 3, 30);
+			DawsonReservation r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 3, 30);
+			DawsonReservation r3 = new DawsonReservation(customer3, room2, 2016, 3, 1, 2016, 3, 30);
+			Reservation[] reservation = {r1, r2, r3};			
+			ReservationByCustSorted sortByCustomer = new ReservationByCustSorted();
+			testSort2param(testCase1, reservation, sortByCustomer);
+			
+			String testCase2 = "Case 2: Different email";
+			customer1 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			customer2 = new DawsonCustomer("Ali", "Dali", "Alidali@gmail.com");
+			customer3 = new DawsonCustomer("Lyrene", "Labor", "Lyrenelabor@gmail.com");
+			r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 3, 30);
+			r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 3, 30);
+			r3 = new DawsonReservation(customer3, room2, 2016, 3, 1, 2016, 3, 30);
+			reservation[0] = r1;
+			reservation[1] = r2;
+			reservation[2] = r3;
+			sortByCustomer = new ReservationByCustSorted();
+			testSort2param(testCase2, reservation, sortByCustomer);
+			
+			System.out.println();		}
+		
+		private static void testSortByCheckoutDate(){
+			System.out.println("Test sort by check out date");
+			
+			String testCase1 = "Case 1: Different Check out date";
+			DawsonCustomer customer1 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			DawsonCustomer customer2 = new DawsonCustomer("Ali", "Dali", "Alidali@gmail.com");
+			DawsonCustomer customer3 = new DawsonCustomer("Lyrene", "Labor", "lyrenelabor@gmail.com");
+			DawsonRoom room1 = new DawsonRoom(602, RoomType.SUITE);
+			DawsonRoom room2 = new DawsonRoom(602, RoomType.SUITE);
+			DawsonReservation r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 3, 30);
+			DawsonReservation r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 4, 30);
+			DawsonReservation r3 = new DawsonReservation(customer3, room2, 2016, 3, 1, 2016, 5, 30);
+			Reservation[] reservation = {r1, r2, r3};			
+			ReservationByCheckoutSorted sortByCheckoutDate = new ReservationByCheckoutSorted();
+			testSort2param(testCase1, reservation, sortByCheckoutDate);
+			
+			String testCase2 = "Case 2: Same Check out date";
+			customer1 = new DawsonCustomer("pengkim", "Sy", "pengkimsy@gmail.com");
+			customer2 = new DawsonCustomer("Ali", "Dali", "Alidali@gmail.com");
+			customer3 = new DawsonCustomer("Lyrene", "Labor", "lyrenelabor@gmail.com");
+			r1 = new DawsonReservation(customer1, room1, 2016, 3, 1, 2016, 3, 30);
+			r2 = new DawsonReservation(customer2, room2, 2016, 3, 1, 2016, 3, 30);
+			r3 = new DawsonReservation(customer3, room2, 2016, 3, 1, 2016, 3, 30);
+			reservation[0] = r1;	
+			reservation[1] = r2;
+			reservation[2] = r3;
+			sortByCheckoutDate = new ReservationByCheckoutSorted();
+			testSort2param(testCase2, reservation, sortByCheckoutDate);
+			
+			System.out.println();
+		}
+		private static <E extends Comparable<E>>void testSort2param(String testCase
+				, E[] list, Comparator<E> sortOrder ){
+
+			System.out.println("\t" + testCase);
+			
+			System.out.println("\t\tBefore sort");
+			for(int i=0; i<list.length; i++){
+				System.out.print("\t\t"+ list[i].toString() + " ");
+			}
+			
+			ListUtilities.sort(list, sortOrder);
+			System.out.println("\n\t\tAfter sort");
+			for(int i=0; i<list.length; i++){
+				System.out.print("\t\t"+ list[i].toString() + " ");
+			}
+			
+			System.out.println();
 		}
 
 	}
