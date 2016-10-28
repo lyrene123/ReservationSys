@@ -38,22 +38,34 @@ public class SortMergeApp {
 		}catch(Exception e){
 			
 		}
-				
-	
+
+		
 		String path2 = "datafiles"+File.separator 
 				+ "unsorted" + File.separator + "customers" + File.separator;
 		String property2 = System.getProperty("user.dir") 
 				+ File.separator + path2;
+		
+		String sortedPath = System.getProperty("user.dir") + File.separator + "datafiles"
+								+ File.separator;
+		
 		File customerFiles = new File(property2);
 		String[] custFile =  customerFiles.list();
 
 		
+		File sorted = new File(sortedPath + "sorted");
+		try{
+			sorted.mkdir();
+		}catch(Exception e){
+			
+		}
 	
 		Customer[] custList = null;
-		for(String custfile: custFile){
+		for(String c: custFile){
 			try{
-				custList = HotelFileLoader.getCustomerListFromSequentialFile(path2+custfile);
-				System.out.println("custLis filled");
+				custList = HotelFileLoader.getCustomerListFromSequentialFile(path2+ c);
+				ListUtilities.sort(custList);
+				String fileName = sorted+File.separator+"sorted"+c;
+				ListUtilities.saveListToTextFile(custList, fileName);
 			}catch(IOException e){
 			}
 			System.out.println(custList);
@@ -63,34 +75,42 @@ public class SortMergeApp {
 			System.out.println(c);
 		}
 		
+		
+		
 	
 		String path3 = "datafiles"+File.separator 
 				+ "unsorted" + File.separator + "reservations" + File.separator;
 		String property3 = System.getProperty("user.dir")
-				+ File.separator + path3;
+				+ File.separator + path3 + File.separator;
 		
 		File reservationFiles = new File(property3);
 		String[] resFile =  reservationFiles.list();
 		
-		
+		for(String r : resFile){
+			System.out.println("-----======"+property3+r);
+		}
 	
+		for(int i = 0 ; i<custList.length; i++){
+		}
 		Reservation[] resList = null;
-		for(String resfile: resFile){
+		for(String r: resFile){
 			try{
 				resList = HotelFileLoader.getReservationListFromSequentialFile
-				(property3 + resFile, custList, roomList);
-				ListUtilities.sort(resList);
+				(path3 + r, custList, roomList);
+				System.out.println("-----------------------"+resList);
+				for(Reservation ra: resList){
+					System.out.println("THIS IS A RESLIST"+ra);
+				}
+				//ListUtilities.sort(resList);
+				String fileName = sorted+File.separator+"sorted"+r;
+				//ListUtilities.saveListToTextFile(resList, fileName);
 			}catch(IOException e){
-				
-			}catch(IllegalArgumentException c){
-				
 			}
-			System.out.println(resList);
+			
+			}
 		}
 		
 		
 		
 		
-		
-	}
 }
