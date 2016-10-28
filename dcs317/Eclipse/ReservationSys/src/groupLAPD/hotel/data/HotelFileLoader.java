@@ -185,7 +185,7 @@ public class HotelFileLoader {
 	private static int countNumOfItems(Scanner scan, StringBuilder sb){
 		
 		//initialize the variable of # of room to 0
-		int noOfRooms=0; 
+		int noOfItems=0; 
 						
 		//check each non empty line of the input file
 		while (scan.hasNext()) {
@@ -196,11 +196,11 @@ public class HotelFileLoader {
 			//each line
 			if(!(line.isEmpty())){
 				sb.append(line).append(ITEM_DELIMETER);
-				noOfRooms++; //increment number of rooms
+				noOfItems++; //increment number of rooms
 			}
 		}
 		
-		return noOfRooms; //return number of rooms
+		return noOfItems; //return number of rooms
 	}//end of countNumOfRooms
 
 	/**
