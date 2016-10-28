@@ -67,13 +67,11 @@ public class SortMergeApp {
 				String fileName = sorted+File.separator+"sorted"+c;
 				ListUtilities.saveListToTextFile(custList, fileName);
 			}catch(IOException e){
+			
 			}
-			System.out.println(custList);
 		}
 		
-		for(Customer c : custList){
-			System.out.println(c);
-		}
+		
 		
 		
 		
