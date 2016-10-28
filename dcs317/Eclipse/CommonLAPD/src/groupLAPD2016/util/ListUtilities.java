@@ -66,7 +66,7 @@ public class ListUtilities {
 	 * capacity.
 	 *
 	 * @throws NullPointerException if the list is null.
-	 *///////
+	 */
 
 	public static <E extends Comparable<E>> void sort(E[] list) throws IllegalArgumentException, NullPointerException {
 
@@ -131,12 +131,19 @@ public class ListUtilities {
 		int indexL1 = 0;
 		int indexL2 = 0;
 		int indexL3 = 0;
-		Comparable[] duplicateList = (Comparable[]) Array.newInstance(list1.getClass().getComponentType());
-
+		int indexL4 = 0;
+		
 		@SuppressWarnings("rawtypes")
 		Comparable[] list3 = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				list1.length + list2.length);
+		Comparable[] arrayDuplicates = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
+				list1.length + list2.length);
+				
 		while (indexL1 < list1.length && indexL2 < list2.length) {
+			if(list1[indexL1].compareTo(list2[indexL2]) == 0){
+				arrayDuplicates[indexL4] = list1[indexL1];
+				indexL4++;
+			}
 			if (list1[indexL1].compareTo(list2[indexL2]) < 0) {
 				list3[indexL3] = list1[indexL1];
 				indexL1++;
@@ -146,6 +153,24 @@ public class ListUtilities {
 			}
 			indexL3++;
 		}
+		int noCount = 0;
+		for(int i = 0; i<arrayDuplicates.length; i++){
+			if(arrayDuplicates[i] == null){
+				noCount++;
+			}
+		}
+				
+		@SuppressWarnings("rawtypes")
+		Comparable[] arrayDuplicatesNoNull = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),arrayDuplicates.length-noCount);
+		
+		int arrayDuplicatesNoNullIndex = 0;
+		for(int i = 0; i<arrayDuplicates.length; i++){
+			if(!(arrayDuplicates[i] == null)){
+				arrayDuplicatesNoNull[arrayDuplicatesNoNullIndex] = arrayDuplicates[i];
+				arrayDuplicatesNoNullIndex++;
+			}
+		}
+		
 		if (indexL1 < list1.length) {
 			for (int indexR = indexL1; indexR < list1.length; indexR++) {
 				list3[indexL3] = list1[indexR];
@@ -161,6 +186,8 @@ public class ListUtilities {
 
 		System.out.print("\tArray List3: ");
 		System.out.println(Arrays.toString(list3));
+		System.out.print("\tArray DuplicatesNoNull: ");
+		System.out.println(Arrays.toString(arrayDuplicatesNoNull));
 		
 		// create File object
 		StringBuilder path = new StringBuilder("datafiles/duplicates/");
@@ -168,7 +195,7 @@ public class ListUtilities {
 		System.out.println(path);
 		// Saving merged Object list into a file
 		try {
-			ListUtilities.saveListToTextFile(list3, path.toString(), true);
+			ListUtilities.saveListToTextFile(arrayDuplicatesNoNull, path.toString(), true);
 		} catch (IOException e) {
 			System.out.println(e.getMessage() + "\n\nExiting the Application.");
 			System.exit(1);
@@ -183,8 +210,11 @@ public class ListUtilities {
 		@SuppressWarnings("rawtypes")
 		Comparable[] arrayUnique = (Comparable[]) Array.newInstance(arrayWithDuplicates.getClass().getComponentType(),
 				arrayWithDuplicates.length);
+		Comparable[] arrayDuplicates = (Comparable[]) Array.newInstance(arrayWithDuplicates.getClass().getComponentType(),
+				arrayWithDuplicates.length);
 		int j = 0;
 		int i = 1;
+		int count = 0;
 		// return if the array length is less than 2
 		if (arrayWithDuplicates.length < 2) {
 			return arrayWithDuplicates;
@@ -192,15 +222,17 @@ public class ListUtilities {
 		while (i < arrayWithDuplicates.length) {
 			if (arrayWithDuplicates[i] == arrayWithDuplicates[j]) {
 				i++;
+				count++;
 			} else {
 				arrayWithDuplicates[++j] = arrayWithDuplicates[i++];
 			}
 		}
 		arrayUnique = new Comparable[j + 1];
-
+				
 		for (int indexU = 0; indexU < arrayUnique.length; indexU++) {
 			arrayUnique[indexU] = arrayWithDuplicates[indexU];
-		}
+			
+		} 
 		return (E[]) arrayUnique;
 	}
 	/**
