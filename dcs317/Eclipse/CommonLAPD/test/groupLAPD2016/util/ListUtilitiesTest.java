@@ -9,27 +9,31 @@ public class ListUtilitiesTest {
 
 	public static void main(String[] args) {
 
-		testSortArrays();
+		//testSort();
+		testMerge();
 
-		Email[] emailList = new Email[5];
+		Email[] emailList = new Email[3];
 		emailList[0] = new Email("danielhbc@gmail.com");
 		emailList[1] = new Email("laborlyrene@gmail.com");
 		emailList[2] = new Email("alidali@gmail.com");
-		emailList[3] = new Email("pengKim@gmail.com");
-		emailList[4] = new Email("marcy@gmail.com");
+		
 
-		String[] nameList = new String[] { "PengKim", "Ali", "Daniel", "Lyrene" };
+		/*String[] nameList = new String[] { "PengKim", "Ali", "Daniel", "Lyrene" };
 		File unsortedDir = new File("/datafiles/unsorted");
 		unsortedDir.mkdirs();
-
+		*/
+		/*StringBuilder path = new StringBuilder("datafiles/duplicates/");
+		path.append("duplicateTest.txt");
+		System.out.println(path);
+		
 		try {
 			ListUtilities.saveListToTextFile(emailList,
-					"D:/LAPD2016/dcs317/Eclipse/ReservationSys/datafiles/duplicates.txt", true);
+					path.toString(), true);
 		} catch (IOException e) {
 			System.out.println(e.getMessage() + "\n\nExiting the Application.");
 			System.exit(1);
 		}
-
+		*/
 		/*
 		 * try { ListUtilities.saveListToTextFile (nameList,
 		 * "D:/LAPD2016/dcs317/Eclipse/ReservationSys/datafiles/duplicates.txt")
@@ -38,7 +42,7 @@ public class ListUtilitiesTest {
 		 */
 	}
 
-	public static void testSortArrays() {
+	public static void testSort() {
 		Email[] emailList = new Email[4];
 		emailList[0] = new Email("danielhbc@gmail.com");
 		emailList[1] = new Email("laborlyrene@gmail.com");
@@ -69,6 +73,16 @@ public class ListUtilitiesTest {
 		testSort("Case 7: Empty Array", values3, false);
 
 	}
+	public static void testMerge(){
+		
+		String[] nameList2 = new String[] { "Ali", "Carlos", "Frank", "Lyrene" };
+		String[] nameList1 = new String[] { "Ali", "Frank","Lyrene"};
+		
+		
+		ListUtilitiesTest.<String>
+		testMerge("Case 1: Merging", nameList1, nameList2, "duplicateNames.txt", true);
+		
+	}
 
 	public static <T extends Comparable<T>> void testMerge(String testCase, T[] list1, T[] list2,
 			String duplicateFileName, boolean expectedValid) {
@@ -79,7 +93,7 @@ public class ListUtilitiesTest {
 			System.out.println(Arrays.toString(list1));
 			System.out.print("\tArray List2: ");
 			System.out.println(Arrays.toString(list2));
-			ListUtilities.<T>merge(list1, list2, "duplicate");
+			ListUtilities.<T>merge(list1, list2, duplicateFileName);
 
 			if (expectedValid) {
 				System.out.println("\tExpected Result! TEST OK");

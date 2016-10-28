@@ -4,7 +4,10 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class ListUtilities {
 	private static final Charset CHARACTER_ENCODING = StandardCharsets.UTF_8;
@@ -107,10 +110,14 @@ public class ListUtilities {
 		for (int n = 0; n < list1.length; n++) {
 			if (list1[n] == null) {
 				throw new NullPointerException("Exception error! Null elements in: " + list1);
-			} else if (list2[n] == null) {
-				throw new NullPointerException("Exception error! Null elements in: " + list2);
 			}
 		}
+		for (int n = 0; n < list2.length; n++) {
+			if (list2[n] == null) {
+				throw new NullPointerException("Exception error! Null elements in: " + list1);
+			}
+		}
+
 		if (list1.length == 0) {
 			throw new IllegalArgumentException("Exception erro in: " + list1 + "Can't handle empty arrays.");
 		}
@@ -125,7 +132,8 @@ public class ListUtilities {
 		@SuppressWarnings("rawtypes")
 		Comparable[] list3 = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				list1.length + list2.length);
-
+		int x = list1[indexL1].compareTo(list2[indexL2]);
+		System.out.println(x);
 		while (indexL1 < list1.length && indexL2 < list2.length) {
 			if (list1[indexL1].compareTo(list2[indexL2]) < 0) {
 				list3[indexL3] = list1[indexL1];
@@ -146,10 +154,52 @@ public class ListUtilities {
 				list3[indexL3] = list2[indexR];
 				indexL3++;
 			}
-			// Saving merged Object list into a file
-
 		}
+		list3 = removeDuplicates(list3);
+
+		System.out.print("\tArray List3: ");
+		System.out.println(Arrays.toString(list3));
+		
+		// create File object
+		StringBuilder path = new StringBuilder("datafiles/duplicates/");
+		path.append(duplicateFileName);
+		System.out.println(path);
+		// Saving merged Object list into a file
+		try {
+			ListUtilities.saveListToTextFile(list3, path.toString(), true);
+		} catch (IOException e) {
+			System.out.println(e.getMessage() + "\n\nExiting the Application.");
+			System.exit(1);
+		}
+
 		return (E[]) list3;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <E extends Comparable<E>> E[] removeDuplicates(E[] arrayWithDuplicates) {
+
+		@SuppressWarnings("rawtypes")
+		Comparable[] arrayUnique = (Comparable[]) Array.newInstance(arrayWithDuplicates.getClass().getComponentType(),
+				arrayWithDuplicates.length);
+		int j = 0;
+		int i = 1;
+		// return if the array length is less than 2
+		if (arrayWithDuplicates.length < 2) {
+			return arrayWithDuplicates;
+		}
+		while (i < arrayWithDuplicates.length) {
+			if (arrayWithDuplicates[i] == arrayWithDuplicates[j]) {
+				i++;
+			} else {
+				arrayWithDuplicates[++j] = arrayWithDuplicates[i++];
+			}
+		}
+		arrayUnique = new Comparable[j + 1];
+
+		for (int indexU = 0; indexU < arrayUnique.length; indexU++) {
+			arrayUnique[indexU] = arrayWithDuplicates[indexU];
+		}
+		return (E[]) arrayUnique;
 	}
 
 }
