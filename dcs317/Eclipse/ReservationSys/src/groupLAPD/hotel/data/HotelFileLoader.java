@@ -101,14 +101,38 @@ public class HotelFileLoader {
 		//build the customers array by calling the buildCustomerList method
 		buildCustomerList(customers, sb, filename);
 		
+		Customer[] customersListNoNull = buildCustomerListNoNull(customers);
+		
 		//close scanner if not null
 		if (scan != null) {
 			scan.close();
 		}
 		
-		return customers; //return the customers array
+		return customersListNoNull; //return the customers array
 		
 	} 
+	
+	private static Customer[] buildCustomerListNoNull
+	(Customer[] customers){
+		int nullCount = 0;
+		for(int i = 0; i<customers.length; i++){
+			if(customers[i]==null){
+				nullCount++;
+			}
+		}
+		
+		Customer[] customersNoNull = new Customer[customers.length-nullCount];
+		int customersNoNullIndex = 0;
+		for(int i =0; i<customers.length; i++){
+			if(!(customers[i]==null)){
+				customersNoNull[customersNoNullIndex] = customers[i];
+				customersNoNullIndex++;
+			}
+		}
+		
+		return customersNoNull;
+		
+	}
 
 	
 	/**
@@ -170,13 +194,36 @@ public class HotelFileLoader {
 		//build the room list by calling the roomListBuilder method
 		buildRoomList(rooms, sb, filename);
 		
+		Room[] roomsListNoNull = buildRoomListNoNull(rooms);
+		
 		//close scanner if not null
 		if (scan != null) {
 			scan.close();
 		}
 		//return the rooms array
-		return rooms;
+		return roomsListNoNull;
 	}//end of getRoomListFromSequentialFile method
+	
+	
+	private static Room[] buildRoomListNoNull(Room[] rooms){
+		int nullCount = 0;
+		for(int i = 0; i<rooms.length; i++){
+			if(rooms[i]==null){
+				nullCount++;
+			}
+		}
+		
+		Room[] roomsNoNull = new Room[rooms.length-nullCount];
+		int roomsNoNullIndex = 0;
+		for(int i =0; i<rooms.length; i++){
+			if(!(rooms[i]==null)){
+				roomsNoNull[roomsNoNullIndex] = rooms[i];
+				roomsNoNullIndex++;
+			}
+		}
+		
+		return roomsNoNull;
+	}
 	
 	/**
 	 * The getReservationListFromSequentialFile method 
@@ -239,35 +286,44 @@ public class HotelFileLoader {
 				String[] arrLineStr = aLine.split("\\*");
 
 
-				//checking if customer from reservation file
-				//exists in customer array
-				for(int i = 0; i < customerList.length; i++){
-					if(arrLineStr[0].equalsIgnoreCase(customerList[i].
-							getEmail().getAddress())){
-						customerArray.add(customerList[i]);	
-					}		
-				}
-				//checking if Room from reservation file
-				//exists in room array
-				for(int i = 0; i < roomList.length; i++){
-					if(arrLineStr[7].equals(String.valueOf(roomList[i].
-							getRoomNumber())) ){
-						roomArray.add(roomList[i]);	
+				try{
+					//checking if customer from reservation file
+					//exists in customer array
+					for(int i = 0; i < customerList.length; i++){
+						if(arrLineStr[0].equalsIgnoreCase(customerList[i].
+								getEmail().getAddress())){
+							customerArray.add(customerList[i]);	
+						}		
 					}
+					//checking if Room from reservation file
+					//exists in room array
+					for(int i = 0; i < roomList.length; i++){
+						if(arrLineStr[7].equals(String.valueOf(roomList[i].
+								getRoomNumber())) ){
+							roomArray.add(roomList[i]);	
+						}
+					}
+
+
+					//storing dates in corresponding arrayLists
+					checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
+					checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
+					checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
+					checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
+					checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
+					checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
+
+
+
+					numReserv++;
+				}
+				catch(IllegalArgumentException e){
+					System.out.println(e.getMessage());
+				}
+				catch(IndexOutOfBoundsException x){
+					System.out.println(x.getMessage());
 				}
 
-
-				//storing dates in corresponding arrayLists
-				checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
-				checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
-				checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
-				checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
-				checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
-				checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
-				
-				
-
-				numReserv++;
 			}
 		}
 		//close scanner	

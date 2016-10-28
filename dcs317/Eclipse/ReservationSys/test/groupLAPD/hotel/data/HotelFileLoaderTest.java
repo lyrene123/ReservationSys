@@ -40,42 +40,42 @@ public class HotelFileLoaderTest {
 		
 		String badRoomFile1 = path+"badRoomFile1.txt";
 		TestGetRoomListFromSequentialFile("Case 2: Room file "
-				+ "with non existing room type bleh", false, badRoomFile1);
+				+ "with non existing room type bleh", true, badRoomFile1);
 		
 		String badRoomFile2 = path+"badRoomFile2.txt";
 		TestGetRoomListFromSequentialFile("Case 3: Room file "
-				+ "with numerical room type 123", false, 
+				+ "with numerical room type 123", true, 
 				badRoomFile2);
 		
 		String badRoomFile3 = path+"badRoomFile3.txt";
 		TestGetRoomListFromSequentialFile("Case 4: Room file "
 				+ "with non-numerical room number normal", 
-				false, badRoomFile3);
+				true, badRoomFile3);
 		
 		String badRoomFile4 = path+"badRoomFile4.txt";
 		TestGetRoomListFromSequentialFile("Case 5: Room file "
 				+ "with entry with more than 2 fields", 
-				false, badRoomFile4);
+				true, badRoomFile4);
 		
 		String badRoomFile5 = path+"badRoomFile5.txt";
 		TestGetRoomListFromSequentialFile("Case 6: Room file "
 				+ "with entry with less than 2 fields", 
-				false, badRoomFile5);
+				true, badRoomFile5);
 		
 		String badRoomFile6 = path+"badRoomFile6.txt";
 		TestGetRoomListFromSequentialFile("Case 7: Room file "
 				+ "with entry containing wrong room number 110", 
-				false, badRoomFile6);
+				true, badRoomFile6);
 		
 		String badRoomFile7 = path+"badRoomFile7.txt";
 		TestGetRoomListFromSequentialFile("Case 8: Room file "
 				+ "with entry containing wrong room type for room number", 
-				false, badRoomFile7);
+				true, badRoomFile7);
 		
 		String badRoomFile8 = path+"badRoomFile8.txt";
 		TestGetRoomListFromSequentialFile("Case 9: Room file "
 				+ "with entry containing wrong room number for room type", 
-				false, badRoomFile8);
+				true, badRoomFile8);
 		
 		TestGetRoomListFromSequentialFile("Case 10: Room file "
 				+ "does not exist", 
@@ -140,48 +140,48 @@ public class HotelFileLoaderTest {
 		String badCustFile1 = path+"badCustFile1.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 2: Customer file with entry of 2 fields", 
-				false, badCustFile1);
+				true, badCustFile1);
 		
 		String badCustFile2 = path+"badCustFile2.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 3: Customer file with entry of 4 fields only", 
-				false, badCustFile2);
+				true, badCustFile2);
 		
 		String badCustFile3 = path+"badCustFile3.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 4: Customer file with entry of 1 field only", 
-				false, badCustFile3);
+				true, badCustFile3);
 		
 		String badCustFile4 = path+"badCustFile4.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 5: Customer file with entry of 6 fields only", 
-				false, badCustFile4);
+				true, badCustFile4);
 		
 		String badCustFile5 = path+"badCustFile5.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 6: Customer file with entry containing empty card type", 
-				false, badCustFile5);
+				true, badCustFile5);
 		
 		String badCustFile6 = path+"badCustFile6.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 7: Customer file with entry containing wrong card type", 
-				false, badCustFile6);
+				true, badCustFile6);
 		
 		String badCustFile7 = path+"badCustFile7.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 8: Customer file with entry containing wrong card number", 
-				false, badCustFile7);
+				true, badCustFile7);
 		
 		String badCustFile8 = path+"badCustFile8.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 9: Customer file with entry containing wrong email", 
-				false, badCustFile8);
+				true, badCustFile8);
 		
 		String badCustFile9 = path+"badCustFile9.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 10: Customer file with entry containing wrong "
 				+ "customer name", 
-				false, badCustFile9);	
+				true, badCustFile9);	
 	}
 	
 	public static void TestGetCustomerListFromSequentialFile
@@ -246,12 +246,12 @@ public class HotelFileLoaderTest {
 		String badResFile1 = path + "badResFile1.txt";
 		TestGetReservationListFromSequentialFile
 		("Case 2: Reservation file with Room not found", 
-				false, badResFile1);
+				true, badResFile1);
 		
 		String badResFile2 = path + "badResFile2.txt";
 		TestGetReservationListFromSequentialFile
 		("Case 3: Reservation file with Customer not found", 
-				false, badResFile2);
+				true, badResFile2);
 		
 		String badResFile3 = path + "";
 		TestGetReservationListFromSequentialFile
