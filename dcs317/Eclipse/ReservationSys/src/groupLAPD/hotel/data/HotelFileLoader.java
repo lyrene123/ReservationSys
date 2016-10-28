@@ -201,7 +201,7 @@ public class HotelFileLoader {
 		}
 		
 		return noOfItems; //return number of rooms
-	}//end of countNumOfRooms
+	}//end of countNumOfRooms..
 
 	/**
 	 * The validateRoomEntry method will validate each line of
