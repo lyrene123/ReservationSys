@@ -259,7 +259,7 @@ public class DawsonReservation implements Reservation {
 
 		return email +"*"+ inYear +"*"+ inMonth +"*"+ inDay +"* "+ outYear 
 				+"*"+ outMonth +"*"+ outDay +"*"+ roomNumber; 
-	}//end of toString()
+	}//end of toString().////
 
 
 	/**
