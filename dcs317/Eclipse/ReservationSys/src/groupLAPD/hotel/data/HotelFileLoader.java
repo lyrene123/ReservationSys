@@ -194,7 +194,7 @@ public class HotelFileLoader {
 			//append to the StringBuilder object each
 			//non-empty line with a new delimeter(,) to separate
 			//each line
-			if(!(line.isEmpty())){
+			if(!(line.trim().isEmpty())){
 				sb.append(line).append(ITEM_DELIMETER);
 				noOfItems++; //increment number of rooms
 			}
