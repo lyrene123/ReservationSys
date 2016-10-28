@@ -444,34 +444,41 @@ public class HotelFileLoader {
 		while(reader.hasNext()){
 			//storing line into String
 			String aLine = reader.nextLine();
-			//splitting according to the delimiter *
-			String[] arrLineStr = aLine.split("\\*");
-
-			//checking if customer from reservation file
-			//exists in customer array
-			for(int i = 0; i < customerList.length; i++){
-				if(arrLineStr[0].equalsIgnoreCase(customerList[i].
-						getEmail().getAddress())){
-					customerArray.add(customerList[i]);	
-				}		
-			}
-			//checking if Room from reservation file
-			//exists in room array
-			for(int i = 0; i < roomList.length; i++){
-				if(arrLineStr[7].equals(String.valueOf(roomList[i].
-						getRoomNumber())) ){
-					roomArray.add(roomList[i]);	
-				}
-			}
-			//storing dates in corresponding arrayLists
-			checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
-			checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
-			checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
-			checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
-			checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
-			checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
 			
-			numReserv++;
+			if(!(aLine.isEmpty())){
+				//splitting non empty lines
+				//according to the delimiter *
+				String[] arrLineStr = aLine.split("\\*");
+
+
+				//checking if customer from reservation file
+				//exists in customer array
+				for(int i = 0; i < customerList.length; i++){
+					if(arrLineStr[0].equalsIgnoreCase(customerList[i].
+							getEmail().getAddress())){
+						customerArray.add(customerList[i]);	
+					}		
+				}
+				//checking if Room from reservation file
+				//exists in room array
+				for(int i = 0; i < roomList.length; i++){
+					if(arrLineStr[7].equals(String.valueOf(roomList[i].
+							getRoomNumber())) ){
+						roomArray.add(roomList[i]);	
+					}
+				}
+
+
+				//storing dates in corresponding arrayLists
+				checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
+				checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
+				checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
+				checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
+				checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
+				checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
+
+				numReserv++;
+			}
 		}
 		//close scanner	
 		reader.close();
