@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -33,6 +34,8 @@ public class ListUtilities {
 			throws FileNotFoundException, UnsupportedEncodingException {
 
 		PrintWriter outputFile = null;
+		File unsortedDir = new File("datafiles/duplicates");
+		unsortedDir.mkdirs();
 
 		try {
 			FileOutputStream f = new FileOutputStream(filename, append);
@@ -42,7 +45,7 @@ public class ListUtilities {
 			for (Object obj : objects)
 				if (obj != null)
 					outputFile.println(obj);
-		} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 			throw new FileNotFoundException("Error saving list! Unable to access the device " + filename);
 		} finally {
 			if (outputFile != null)
@@ -128,12 +131,11 @@ public class ListUtilities {
 		int indexL1 = 0;
 		int indexL2 = 0;
 		int indexL3 = 0;
+		Comparable[] duplicateList = (Comparable[]) Array.newInstance(list1.getClass().getComponentType());
 
 		@SuppressWarnings("rawtypes")
 		Comparable[] list3 = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				list1.length + list2.length);
-		int x = list1[indexL1].compareTo(list2[indexL2]);
-		System.out.println(x);
 		while (indexL1 < list1.length && indexL2 < list2.length) {
 			if (list1[indexL1].compareTo(list2[indexL2]) < 0) {
 				list3[indexL3] = list1[indexL1];
@@ -200,6 +202,37 @@ public class ListUtilities {
 			arrayUnique[indexU] = arrayWithDuplicates[indexU];
 		}
 		return (E[]) arrayUnique;
+	}
+	/**
+	* Sorts a list of objects in the given order.
+	*
+	* Precondition: Assumes that the list is not null and that the
+	* list's capacity is equal to the list's size.
+	* 
+	* @author Pengkim Sy
+	*
+	* @param list A list of objects. Assumes that the
+	* list's capacity is equal to the list's size.
+	* @param sortOrder A Comparator object that defines the
+	* sort order
+	* @throws IllegalArgumentException if the parameter is
+	* not full to capacity.
+	*
+	* @throws NullPointerException if the list or sortOrder *
+	are null.
+	*/
+	public static <E extends Comparable<E>> void sort(E[] list, Comparator<? super E> sortOrder) 
+			throws IllegalArgumentException, NullPointerException{
+		
+		for(int i=0; i<list.length; i++){
+			if(list[i] == null)
+				throw new NullPointerException("Exception error! Null elements in: " + list[i]);
+		}
+		
+		if(list.length == 0)
+			throw new IllegalArgumentException("Exception erro in: " + list + "Can't handle empty arrays.");
+		
+		Arrays.sort(list, sortOrder);
 	}
 
 }
