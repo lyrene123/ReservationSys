@@ -1,7 +1,6 @@
 package groupLAPD.hotel.data;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import dw317.hotel.business.interfaces.Customer;
@@ -29,56 +28,58 @@ public class HotelFileLoaderTest {
 		System.out.println("\nTesting the "
 				+ "getRoomListFromSequentialFile method");
 		
-		String property = System.getProperty("user.dir");
-		property += File.separator + "datafiles"+File.separator;
-		String goodRoomFile = property+"rooms.txt";
+		String path = "datafiles"+File.separator;
+		String goodRoomFile = path+"rooms.txt";
 		TestGetRoomListFromSequentialFile
 			("Case 1: Room file with all correct entries", 
 					true, goodRoomFile);
-		
-		property = System.getProperty("user.dir")+File.separator+"test"
+		path = "test"
 				+File.separator +"groupLAPD"+
 				File.separator+"hotel"+File.separator+"data"+
 				File.separator+"datafilesTest"+File.separator;
 		
-		String badRoomFile1 = property+"badRoomFile1.txt";
+		String badRoomFile1 = path+"badRoomFile1.txt";
 		TestGetRoomListFromSequentialFile("Case 2: Room file "
 				+ "with non existing room type bleh", false, badRoomFile1);
 		
-		String badRoomFile2 = property+"badRoomFile2.txt";
+		String badRoomFile2 = path+"badRoomFile2.txt";
 		TestGetRoomListFromSequentialFile("Case 3: Room file "
 				+ "with numerical room type 123", false, 
 				badRoomFile2);
 		
-		String badRoomFile3 = property+"badRoomFile3.txt";
+		String badRoomFile3 = path+"badRoomFile3.txt";
 		TestGetRoomListFromSequentialFile("Case 4: Room file "
 				+ "with non-numerical room number normal", 
 				false, badRoomFile3);
 		
-		String badRoomFile4 = property+"badRoomFile4.txt";
+		String badRoomFile4 = path+"badRoomFile4.txt";
 		TestGetRoomListFromSequentialFile("Case 5: Room file "
 				+ "with entry with more than 2 fields", 
 				false, badRoomFile4);
 		
-		String badRoomFile5 = property+"badRoomFile5.txt";
+		String badRoomFile5 = path+"badRoomFile5.txt";
 		TestGetRoomListFromSequentialFile("Case 6: Room file "
 				+ "with entry with less than 2 fields", 
 				false, badRoomFile5);
 		
-		String badRoomFile6 = property+"badRoomFile6.txt";
+		String badRoomFile6 = path+"badRoomFile6.txt";
 		TestGetRoomListFromSequentialFile("Case 7: Room file "
 				+ "with entry containing wrong room number 110", 
 				false, badRoomFile6);
 		
-		String badRoomFile7 = property+"badRoomFile7.txt";
+		String badRoomFile7 = path+"badRoomFile7.txt";
 		TestGetRoomListFromSequentialFile("Case 8: Room file "
 				+ "with entry containing wrong room type for room number", 
 				false, badRoomFile7);
 		
-		String badRoomFile8 = property+"badRoomFile8.txt";
+		String badRoomFile8 = path+"badRoomFile8.txt";
 		TestGetRoomListFromSequentialFile("Case 9: Room file "
 				+ "with entry containing wrong room number for room type", 
 				false, badRoomFile8);
+		
+		TestGetRoomListFromSequentialFile("Case 10: Room file "
+				+ "does not exist", 
+				false, path+"holla.txt");
 		
 	}
 	
@@ -125,66 +126,62 @@ public class HotelFileLoaderTest {
 		System.out.println("\nTesting the "
 				+ "getCustomerListFromSequentialFile method");
 		
-		String property = System.getProperty("user.dir");
-		property += File.separator + "datafiles"+File.separator;
-		String goodCustFile = property+"customersLAPD.txt";
+		String path = "datafiles"+File.separator;
+		String goodCustFile = path+"customersLAPD.txt";
 		TestGetCustomerListFromSequentialFile
 			("Case 1: Customer file with all correct entries", 
 					true, goodCustFile);
 		
-		property = System.getProperty("user.dir")+
-				File.separator+"test"
+		path = "test"
 				+File.separator +"groupLAPD"+
 				File.separator+"hotel"+File.separator+"data"+
 				File.separator+"datafilesTest"+File.separator;
 		
-		String badCustFile1 = property+"badCustFile1.txt";
+		String badCustFile1 = path+"badCustFile1.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 2: Customer file with entry of 2 fields", 
 				false, badCustFile1);
 		
-		String badCustFile2 = property+"badCustFile2.txt";
+		String badCustFile2 = path+"badCustFile2.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 3: Customer file with entry of 4 fields only", 
 				false, badCustFile2);
 		
-		String badCustFile3 = property+"badCustFile3.txt";
+		String badCustFile3 = path+"badCustFile3.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 4: Customer file with entry of 1 field only", 
 				false, badCustFile3);
 		
-		String badCustFile4 = property+"badCustFile4.txt";
+		String badCustFile4 = path+"badCustFile4.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 5: Customer file with entry of 6 fields only", 
 				false, badCustFile4);
 		
-		String badCustFile5 = property+"badCustFile5.txt";
+		String badCustFile5 = path+"badCustFile5.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 6: Customer file with entry containing empty card type", 
 				false, badCustFile5);
 		
-		String badCustFile6 = property+"badCustFile6.txt";
+		String badCustFile6 = path+"badCustFile6.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 7: Customer file with entry containing wrong card type", 
 				false, badCustFile6);
 		
-		String badCustFile7 = property+"badCustFile7.txt";
+		String badCustFile7 = path+"badCustFile7.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 8: Customer file with entry containing wrong card number", 
 				false, badCustFile7);
 		
-		String badCustFile8 = property+"badCustFile8.txt";
+		String badCustFile8 = path+"badCustFile8.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 9: Customer file with entry containing wrong email", 
 				false, badCustFile8);
 		
-		String badCustFile9 = property+"badCustFile9.txt";
+		String badCustFile9 = path+"badCustFile9.txt";
 		TestGetCustomerListFromSequentialFile
 		("Case 10: Customer file with entry containing wrong "
 				+ "customer name", 
-				false, badCustFile9);
-		
-		
+				false, badCustFile9);	
 	}
 	
 	public static void TestGetCustomerListFromSequentialFile
@@ -224,34 +221,39 @@ public class HotelFileLoaderTest {
 		}
 
 		System.out.println("\n");	
-}
+	}
+	
+	///////////////////////////////////////
 	
 	public static void TestGetReservationListFromSequentialFile(){
 		
-		String property = System.getProperty("user.dir");
-		property += File.separator + "datafiles"+File.separator;
-		String goodResFile = property+"reservationsLAPD.txt";
+		System.out.println("\nTesting the "
+				+ "getReservationListFromSequentialFile method");
+		
+		
+		String path = "datafiles"+File.separator;
+		String goodResFile = path+"reservationsLAPD.txt";
+		
 		TestGetReservationListFromSequentialFile
 		("Case 1: Reservation file with all correct entries", 
 				true, goodResFile);
 		
-		property = System.getProperty("user.dir")+
-				File.separator+"test"
+		path = "test"
 				+File.separator +"groupLAPD"+
 				File.separator+"hotel"+File.separator+"data"+
 				File.separator+"datafilesTest"+File.separator;
 		
-		String badResFile1 = property + "badResFile1.txt";
+		String badResFile1 = path + "badResFile1.txt";
 		TestGetReservationListFromSequentialFile
 		("Case 2: Reservation file with Room not found", 
 				false, badResFile1);
 		
-		String badResFile2 = property + "badResFile2.txt";
+		String badResFile2 = path + "badResFile2.txt";
 		TestGetReservationListFromSequentialFile
 		("Case 3: Reservation file with Customer not found", 
-				false, badResFile1);
+				false, badResFile2);
 		
-		String badResFile3 = property + "";
+		String badResFile3 = path + "";
 		TestGetReservationListFromSequentialFile
 		("Case 3: Reservation file does not exist", 
 				false, badResFile3);		
@@ -266,9 +268,8 @@ public class HotelFileLoaderTest {
 
 		
 		
-		String property = System.getProperty("user.dir");
-		property += File.separator + "datafiles"+File.separator;
-		String goodRoomFile = property+"rooms.txt";
+		String path = "datafiles"+File.separator;
+		String goodRoomFile = path+"rooms.txt";
 		Room[] roomList = null;
 		try{
 			roomList = HotelFileLoader.getRoomListFromSequentialFile(goodRoomFile);
@@ -276,9 +277,7 @@ public class HotelFileLoaderTest {
 			System.out.println("Room File does not exist");
 		}
 		
-		String property2 = System.getProperty("user.dir");
-		property2 += File.separator + "datafiles"+File.separator;
-		String goodCustFile = property2+"customersLAPD.txt";
+		String goodCustFile = path+"customersLAPD.txt";
 		Customer[] custList = null;
 		try{
 			custList = HotelFileLoader.getCustomerListFromSequentialFile(goodCustFile);
