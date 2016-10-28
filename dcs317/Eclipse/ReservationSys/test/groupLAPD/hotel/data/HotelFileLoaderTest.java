@@ -298,7 +298,7 @@ public class HotelFileLoaderTest {
 						+ " fail but it didn't");
 			}
 		}catch(IllegalArgumentException e){
-			System.out.println("Customer not found or Room not found");
+			System.out.println(e.getMessage());
 		}catch(IOException d){
 			System.out.println("File not found" + filename);
 		}
