@@ -1,7 +1,5 @@
 package groupLAPD2016.util;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import dw317.lib.Email;
 
@@ -17,7 +15,7 @@ public class ListUtilitiesTest {
 		emailList[1] = new Email("laborlyrene@gmail.com");
 		emailList[2] = new Email("alidali@gmail.com");
 		
-
+				
 		/*String[] nameList = new String[] { "PengKim", "Ali", "Daniel", "Lyrene" };
 		File unsortedDir = new File("/datafiles/unsorted");
 		unsortedDir.mkdirs();
@@ -77,8 +75,12 @@ public class ListUtilitiesTest {
 		
 		String[] nameList2 = new String[] { "Ali", "Carlos", "Frank", "Lyrene" };
 		String[] nameList1 = new String[] { "Ali", "Frank","Lyrene"};
+		String[] nameList3 = new String[] { "j@doe.com*John*Doe*visa*4556737586899855"};
+		String[] nameList4 = new String[] { "j@doe.com*John*Doe**"};
 		
+
 		
+			
 		ListUtilitiesTest.<String>
 		testMerge("Case 1: Merging", nameList1, nameList2, "duplicateNames.txt", true);
 		
