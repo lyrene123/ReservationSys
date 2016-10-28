@@ -54,7 +54,7 @@ public class ListUtilities {
 	}
 	/*
 	 * Sorts a list of objects in ascending natural order using * selection
-	 * sort.
+	 * sort..
 	 *
 	 * Precondition: Assumes that the list is not null and that the list's
 	 * capacity is equal to the list's size.
@@ -66,7 +66,7 @@ public class ListUtilities {
 	 * capacity.
 	 *
 	 * @throws NullPointerException if the list is null.
-	 */
+	 *///////
 
 	public static <E extends Comparable<E>> void sort(E[] list) throws IllegalArgumentException, NullPointerException {
 
