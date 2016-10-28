@@ -13,10 +13,12 @@ public class SortMergeApp {
 
 	public static void main(String[] args){	
 
-		String property = System.getProperty("user.dir");
+		String path = "datafiles"+File.separator;
+		String property = System.getProperty("user.dir") 
+				+ File.separator + path;
 		System.out.println(property);
-		property += File.separator + "datafiles"+File.separator;
-		String roomFile = property + "rooms.txt";
+		String roomFile = path + "rooms.txt";
+		
 		
 		Room[] roomList = null;
 		try{
@@ -38,10 +40,10 @@ public class SortMergeApp {
 		}
 				
 	
-		
-		String property2 = System.getProperty("user.dir");
-		property2 += File.separator + "datafiles"+File.separator 
+		String path2 = "datafiles"+File.separator 
 				+ "unsorted" + File.separator + "customers" + File.separator;
+		String property2 = System.getProperty("user.dir") 
+				+ File.separator + path2;
 		File customerFiles = new File(property2);
 		String[] custFile =  customerFiles.list();
 
@@ -50,26 +52,26 @@ public class SortMergeApp {
 		Customer[] custList = null;
 		for(String custfile: custFile){
 			try{
-				custList = HotelFileLoader.getCustomerListFromSequentialFile(property2+custfile);
-				ListUtilities.sort(custList);
+				custList = HotelFileLoader.getCustomerListFromSequentialFile(path2+custfile);
+				System.out.println("custLis filled");
 			}catch(IOException e){
-				
-			}catch(IllegalArgumentException c){
-				
 			}
+			System.out.println(custList);
+		}
+		
+		for(Customer c : custList){
+			System.out.println(c);
 		}
 		
 	
-		String property3 = System.getProperty("user.dir");
-		property3 += File.separator + "datafiles"+File.separator 
+		String path3 = "datafiles"+File.separator 
 				+ "unsorted" + File.separator + "reservations" + File.separator;
+		String property3 = System.getProperty("user.dir")
+				+ File.separator + path3;
+		
 		File reservationFiles = new File(property3);
 		String[] resFile =  reservationFiles.list();
 		
-		for(String r : resFile){
-			System.out.println(property3+ r);
-		}
-
 		
 	
 		Reservation[] resList = null;
@@ -83,6 +85,7 @@ public class SortMergeApp {
 			}catch(IllegalArgumentException c){
 				
 			}
+			System.out.println(resList);
 		}
 		
 		
