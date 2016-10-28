@@ -264,6 +264,8 @@ public class HotelFileLoader {
 				checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
 				checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
 				checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
+				
+				
 
 				numReserv++;
 			}
@@ -274,6 +276,8 @@ public class HotelFileLoader {
 		//Creating reservation array
 		Reservation[] reservations = new Reservation[numReserv];
 
+		int nullCount = 0;
+		
 		//Creating Reservations using arrayLists
 		for(int i = 0; i < numReserv; i++){
 			//if room or customer does not exist 
@@ -282,15 +286,26 @@ public class HotelFileLoader {
 						roomArray.get(i),checkInYearArr.get(i), checkInMonthArr.
 						get(i), checkInDayArr.get(i), checkOutYearArr.get(i), 
 						checkOutMonthArr.get(i), checkOutDayArr.get(i));
+				
 				//throw illegalArgumentException
 			}catch(IndexOutOfBoundsException e){
-				throw new IllegalArgumentException("Invalid "
+				System.out.println("Invalid "
 						+ "entry in " + filename + ". A customer or"
-								+ " room does not exist.");
-				
+								+ " room does not exist.");	
 			}
-		}	
-		return reservations;
+		if(reservations[i] == null){
+			nullCount++;
+		}
+		}
+		Reservation[] filledReservation = new 
+				Reservation[reservations.length -nullCount];
+		
+		for(int i = 0; i<filledReservation.length; i++){
+			if(reservations[i] != null){
+			filledReservation[i] = reservations[i];
+			}
+		}
+		return filledReservation;
 	}//End of method
 	
 	/**
@@ -320,54 +335,72 @@ public class HotelFileLoader {
 			//and assign them to the customerEntry array of type String
 			String[] customerEntry = customerArray[i].split(DELIMETER);
 
-			//validate the customerEntry array
-			validateCustomerEntry(customerEntry);
+			try{
+				//validate the customerEntry array
+				validateCustomerEntry(customerEntry, filename);
 
-			//validate for each entry the email, firstname and lastname
-			//fields and throw the IllegalArgumentException generated
-			//from the Email or Name class if they occur
-			Email customerEmail = new Email(customerEntry[0]);
-			Name customerName = new Name(customerEntry[1], 
-					customerEntry[2]);
+				//validate for each entry the email, firstname and lastname
+				//fields and throw the IllegalArgumentException generated
+				//from the Email or Name class if they occur
 
-			//once validated, create a DawsonCustomer instance with 
-			//the values of the customerEntry array
-			customers[i] = new DawsonCustomer(customerName.getFirstName(), 
-					customerName.getLastName(), customerEmail.toString());
 
-			//if the customer entry contains information about 
-			//the customer's credit card then do the following
-			if(customerEntry.length==5){
-				//store the customer's credit card type
-				//and the credit card number in a variable
-				String creditName = customerEntry[3].trim();
-				String creditNumber = customerEntry[4].trim();
+				Email customerEmail = new Email(customerEntry[0]);
+				Name customerName = new Name(customerEntry[1], 
+						customerEntry[2]);
 
-				//If the credit card type is not amex, visa
-				// or mastercard, then throw an exception
-				if(!(creditName.equalsIgnoreCase("amex")||
-						creditName.equalsIgnoreCase("visa")||
-						creditName.equalsIgnoreCase("mastercard"))){
-					throw new IllegalArgumentException("\tThe credit card type"
-							+ " of a customer must not be empty and must"
-							+ " be amex, visa or mastercard only");
+				//once validated, create a DawsonCustomer instance with 
+				//the values of the customerEntry array
+				customers[i] = new DawsonCustomer(customerName.getFirstName(), 
+						customerName.getLastName(), customerEmail.toString());
+
+
+				//if the customer entry contains information about 
+				//the customer's credit card then do the following
+				if(customerEntry.length==5){
+					//store the customer's credit card type
+					//and the credit card number in a variable
+					String creditName = customerEntry[3].trim();
+					String creditNumber = customerEntry[4].trim();
+
+					//If the credit card type is not amex, visa
+					// or mastercard, then throw an exception
+					if(!(creditName.equalsIgnoreCase("amex")||
+							creditName.equalsIgnoreCase("visa")||
+							creditName.equalsIgnoreCase("mastercard"))){
+						System.out.println("\tThe credit card type"
+								+ " of a customer must not be empty and must"
+								+ " be amex, visa or mastercard only");
+					}
+
+					//if the  credit card is amex, set that card
+					if(creditName.equalsIgnoreCase("amex")){
+
+
+						Amex card = new Amex(creditNumber);
+						customers[i].setCreditCard(Optional.of(card));
+
+					}
+					//if the credit card is visa, set that card
+					else if(creditName.equalsIgnoreCase("visa")){
+
+						Visa card = new Visa(creditNumber);
+						customers[i].setCreditCard(Optional.of(card));
+
+
+					}
+					//if the credit card is mastercard, set that card
+					else{
+
+						MasterCard card = new MasterCard(creditNumber);
+						customers[i].setCreditCard(Optional.of(card));
+
+					}				
 				}
-
-				//if the  credit card is amex, set that card
-				if(creditName.equalsIgnoreCase("amex")){
-					Amex card = new Amex(creditNumber);
-					customers[i].setCreditCard(Optional.of(card));
-				}
-				//if the credit card is visa, set that card
-				else if(creditName.equalsIgnoreCase("visa")){
-					Visa card = new Visa(creditNumber);
-					customers[i].setCreditCard(Optional.of(card));
-				}
-				//if the credit card is mastercard, set that card
-				else{
-					MasterCard card = new MasterCard(creditNumber);
-					customers[i].setCreditCard(Optional.of(card));
-				}				
+			}
+			catch(IllegalArgumentException e){
+				System.out.println("Invalid entry inside file " + filename +
+						" containing customers data. " +
+						"\n" + e.getMessage());
 			}
 		}
 	}//end of buildCustomerList method
@@ -396,34 +429,41 @@ public class HotelFileLoader {
 			//for each entry of the roomArray, separate each field(*)
 			//and assign them to the roomEntry array of type String
 			String[] roomEntry = roomArray[i].split(DELIMETER);
-					
-			//validate the the room entry 
-			validateRoomEntry(roomEntry);
-					
-			//once validated, try creating a DawsonRoom instance
-			//with the values of the roomEntry and then assigning
-			//the instance into the rooms Array.
 			try{
-				rooms[i] = new DawsonRoom(Integer.parseInt(roomEntry[0]),
-						RoomType.valueOf(roomEntry[1].toUpperCase()));			
+				//validate the the room entry 
+				validateRoomEntry(roomEntry, filename);
+
+				//once validated, try creating a DawsonRoom instance
+				//with the values of the roomEntry and then assigning
+				//the instance into the rooms Array.
+				try{
+					rooms[i] = new DawsonRoom(Integer.parseInt(roomEntry[0]),
+							RoomType.valueOf(roomEntry[1].toUpperCase()));			
+				}
+				//catch NumberFormatException if it occurs
+				//and throw the following exception and message
+				catch(java.lang.NumberFormatException e){
+					throw new IllegalArgumentException("The file " + filename +
+							" have an invalid room entry: " +
+							e.getMessage() + "\n\tA room number must be numeric "
+							+ "and not empty.");
+				}
+				//catch IllegalArgumentException if it occurs
+				//and throw the following exception and message
+				catch(IllegalArgumentException x){
+					throw new IllegalArgumentException("\tThe file " + filename +
+							" have an invalid room entry: " +
+							x.getMessage() + "\n\t And the room type must not "
+							+ "be empty and must be "
+							+ "NORMAL, SUITE or PENTHOUSE.");
+				}
+
 			}
-			//catch NumberFormatException if it occurs
-			//and throw the following exception and message
-			catch(java.lang.NumberFormatException e){
-				throw new IllegalArgumentException("The file " + filename +
-						" have an invalid room entry: " +
-					e.getMessage() + "\n\tA room number must be numeric "
-									+ "and not empty.");
+			catch(IllegalArgumentException e){
+				System.out.println("Invalid entry inside file " + filename +
+						" containing rooms data. " +
+						"\n" + e.getMessage());
 			}
-			//catch IllegalArgumentException if it occurs
-			//and throw the following exception and message
-			catch(IllegalArgumentException x){
-				throw new IllegalArgumentException("\tThe file " + filename +
-						" have an invalid room entry: " +
-					x.getMessage() + "\n\t And the room type must not "
-								+ "be empty and must be "
-								+ "NORMAL, SUITE or PENTHOUSE.");
-			}										
 		}
 		
 	}//end of buildRoomList method
@@ -472,13 +512,15 @@ public class HotelFileLoader {
 	 * 			more or less than 2 fields 	
 	 * @author Lyrene Labor		
 	 */
-	private static void validateRoomEntry(String[] roomEntry) 
+	private static void validateRoomEntry(String[] roomEntry, String
+			filename) 
 			throws IllegalArgumentException {
 		//throw the following exception if a room entry
 		//has more than 2 fields
 		if (roomEntry.length != 2)
 			throw new IllegalArgumentException
-			("\tInvalid Room Entry found! A room entry must have"
+			("\tInvalid Room Entry found in file " + filename + 
+					". A room entry must have"
 					+ " 2 fields only");
 
 	}
@@ -495,13 +537,15 @@ public class HotelFileLoader {
 	 * @author Lyrene Labor
 	 *		
 	 */
-	private static void validateCustomerEntry(String[] customerEntry) 
+	private static void validateCustomerEntry(String[] customerEntry, 
+			String filename) 
 			throws IllegalArgumentException {
 		//throw the following exception if a customer entry
 		//has more than 5 fields
 		if (!(customerEntry.length==5 || customerEntry.length==3))
 			throw new IllegalArgumentException
-			("\tInvalid Customer Entry found! A customer entry must have"
+			("\tInvalid Customer Entry found in file "+filename+
+					". A customer entry must have"
 					+ " 5 fields or 3 fields only");
 	}//end of validateCustomerEntry method
 	  
