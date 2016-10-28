@@ -117,8 +117,8 @@ public class ListUtilitiesTest2 {
 			customerlist2[2] = jaya;
 					
 				
-			ListUtilitiesTest.<Customer>
-			testMerge("Case 1: Merging", customerlist, customerlist2, "duplicateNames.txt", true);
+			ListUtilitiesTest.<String>
+			testMerge("Case 1: Merging", nameList2, nameList1, "duplicateNames.txt", true);
 			
 		}
 
