@@ -335,8 +335,8 @@ public class HotelFileLoader {
 			if(customerEntry.length==5){
 				//store the customer's credit card type
 				//and the credit card number in a variable
-				String creditName = customerEntry[3];
-				String creditNumber = customerEntry[4];
+				String creditName = customerEntry[3].trim();
+				String creditNumber = customerEntry[4].trim();
 
 				//If the credit card type is not amex, visa
 				// or mastercard, then throw an exception
