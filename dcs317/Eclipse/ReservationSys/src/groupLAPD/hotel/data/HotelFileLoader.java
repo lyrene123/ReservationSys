@@ -305,6 +305,10 @@ public class HotelFileLoader {
 						+ "entry in " + filename + ". A customer or"
 						+ " room does not exist.");	
 			}
+			catch(IllegalArgumentException x){
+				System.out.println("Invalid "
+						+ "entry in " + filename + "\n" + x.getMessage());	
+			}
 			//count the number of null values inside the array
 			if(reservations[i] == null){
 				nullCount++;
