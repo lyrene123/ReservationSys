@@ -568,7 +568,7 @@ public class HotelFileLoader {
 	
 	
 	/**
-	 * countNumOfRooms will count the number of items present in a 
+	 * countNumOfItems will count the number of items present in a 
 	 * input file and will also store each line of the input file 
 	 * into a StringBuilder instance
 	 * @param scan Reference variable of type Scanner used
@@ -581,7 +581,7 @@ public class HotelFileLoader {
 	 */
 	private static int countNumOfItems(Scanner scan, StringBuilder sb){
 		
-		//initialize the variable of # of room to 0
+		//initialize the variable of # of items to 0
 		int noOfItems=0; 
 						
 		//check each non empty line of the input file
@@ -593,12 +593,12 @@ public class HotelFileLoader {
 			//each line
 			if(!(line.trim().isEmpty())){
 				sb.append(line).append(ITEM_DELIMETER);
-				noOfItems++; //increment number of rooms
+				noOfItems++; //increment number of items
 			}
 		}
 		
-		return noOfItems; //return number of rooms
-	}//end of countNumOfRooms....
+		return noOfItems; //return number of items
+	}//end of countNumOfItems method
 
 	
 	/**
@@ -646,4 +646,4 @@ public class HotelFileLoader {
 					". A customer entry must have"
 					+ " 5 fields or 3 fields only");
 	}//end of validateCustomerEntry method	  
-}
+}//end of HotelFileLoader class
