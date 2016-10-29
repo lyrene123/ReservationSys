@@ -188,7 +188,6 @@ public class ListUtilities {
 				noCount++;
 			}
 		}
-
 		Comparable[] arrayDuplicatesNoNull = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				arrayDuplicates.length - noCount);
 
@@ -211,17 +210,12 @@ public class ListUtilities {
 				indexL3++;
 			}
 		}
+		
 		list3 = removeDuplicates(list3);
-
-		System.out.print("\tArray List3: ");
-		System.out.println(Arrays.toString(list3));
-		System.out.print("\tArray DuplicatesNoNull: ");
-		System.out.println(Arrays.toString(arrayDuplicatesNoNull));
 
 		// create Path
 		StringBuilder path = new StringBuilder("datafiles/duplicates/");
 		path.append(duplicateFileName);
-		System.out.println(path);
 		// Saving merged Object list into a file
 		try {
 			ListUtilities.saveListToTextFile(arrayDuplicatesNoNull, path.toString(), true);
