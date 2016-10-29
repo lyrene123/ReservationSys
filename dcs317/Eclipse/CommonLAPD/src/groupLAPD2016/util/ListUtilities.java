@@ -45,65 +45,66 @@ public class ListUtilities {
 			for (Object obj : objects)
 				if (obj != null)
 					outputFile.println(obj);
-			} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException("Error saving list! Unable to access the device " + filename);
 		} finally {
 			if (outputFile != null)
 				outputFile.close();
 		}
 	}
-	
-		/*
-		 * Sorts a list of objects in ascending natural order using * selection
-		 * sort..
-		 *
-		 * Precondition: Assumes that the list is not null and that the list's
-		 * capacity is equal to the list's size.
-		 *
-		 * @param list A list of objects. Assumes that the list's capacity is equal
-		 * to the list's size.
-		 *
-		 * @throws IllegalArgumentException if the parameter is * not full to
-		 * capacity.
-		 *
-		 * @throws NullPointerException if the list is null.
-		 */
 
-		public static <E extends Comparable<E>> void sort(E[] list) throws IllegalArgumentException, NullPointerException {
+	/*
+	 * Sorts a list of objects in ascending natural order using * selection
+	 * sort..
+	 *
+	 * Precondition: Assumes that the list is not null and that the list's
+	 * capacity is equal to the list's size.
+	 *
+	 * @param list A list of objects. Assumes that the list's capacity is equal
+	 * to the list's size.
+	 *
+	 * @throws IllegalArgumentException if the parameter is * not full to
+	 * capacity.
+	 *
+	 * @throws NullPointerException if the list is null.
+	 */
 
-			//validating the list
-			for (int n = 0; n < list.length; n++) {
-				if (list[n] == null) {
-					//if a null value is found, then the list is not full to capacity
-					throw new IllegalArgumentException("Error sorting list! The list is not full to capacity");
-				}
+	public static <E extends Comparable<E>> void sort(E[] list) throws IllegalArgumentException, NullPointerException {
+
+		// validating the list
+		for (int n = 0; n < list.length; n++) {
+			if (list[n] == null) {
+				// if a null value is found, then the list is not full to
+				// capacity
+				throw new IllegalArgumentException("Error sorting list! The list is not full to capacity");
 			}
-			if (list.length == 0 || list == null) {
-				//if the list is null, then throw the nullpointerexception
-				throw new NullPointerException("Error sorting list! Can't handle empty or null arrays.");
-			}
-			
-			//the following loop will sort the list with selection sort method
-			for(int i=0; i<list.length-1; i++){
-				//store the index of the smallest object so far
-				int smallest = i;
-				
-				//this nested loop will look for the minimum value
-				//inthe list at a specific starting index
-				for(int j=i+1; j<list.length; j++){
-					 if(list[smallest].compareTo((list[j])) > 0){
-						 smallest = j;
-			         }
-				}
-				//place the smallest object found at position i
-				//and the object at position i will be placed at
-				//the smallest's previous position
-				E temp = list[smallest];
-				list[smallest] = list[i];
-				list[i] = temp;
-		    }
 		}
-	
+		if (list.length == 0 || list == null) {
+			// if the list is null, then throw the nullpointerexception
+			throw new NullPointerException("Error sorting list! Can't handle empty or null arrays.");
+		}
+
+		// the following loop will sort the list with selection sort method
+		for (int i = 0; i < list.length - 1; i++) {
+			// store the index of the smallest object so far
+			int smallest = i;
+
+			// this nested loop will look for the minimum value
+			// in the list at a specific starting index
+			for (int j = i + 1; j < list.length; j++) {
+				if (list[smallest].compareTo((list[j])) > 0) {
+					smallest = j;
+				}
+			}
+			// place the smallest object found at position i
+			// and the object at position i will be placed at
+			// the smallest's previous position
+			E temp = list[smallest];
+			list[smallest] = list[i];
+			list[i] = temp;
+		}
+	}
+
 	/*
 	 * Efficiently merges two sorted lists of objects in ascending natural
 	 * order. If the duplicate objects are in both lists, the object from list1
@@ -128,41 +129,47 @@ public class ListUtilities {
 	 *
 	 * @throws NullPointerException if the either list is null.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <E extends Comparable<E>> E[] merge(E[] list1, E[] list2, String duplicateFileName)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <E extends Comparable<E>> Comparable[] merge(E[] list1, E[] list2, String duplicateFileName)
 			throws IllegalArgumentException, NullPointerException {
 
+		// validating the list1
 		for (int n = 0; n < list1.length; n++) {
 			if (list1[n] == null) {
-				throw new NullPointerException("Exception error! Null elements in: " + list1);
+				// if a null value is found, then the list is not full to
+				// capacity
+				throw new IllegalArgumentException("Error merging list1! The list is not full to capacity");
 			}
 		}
+		// validating the list2
 		for (int n = 0; n < list2.length; n++) {
 			if (list2[n] == null) {
-				throw new NullPointerException("Exception error! Null elements in: " + list1);
+				// if a null value is found, then the list is not full to
+				// capacity
+				throw new IllegalArgumentException("Error merging list2! The list is not full to capacity");
 			}
 		}
-
-		if (list1.length == 0) {
-			throw new IllegalArgumentException("Exception erro in: " + list1 + "Can't handle empty arrays.");
+		if (list1.length == 0 || list1 == null) {
+			// if the list is null, then throw the nullpointerexception
+			throw new NullPointerException("Error merging list1! Can't handle empty or null arrays.");
 		}
-		if (list2.length == 0) {
-			throw new IllegalArgumentException("Exception erro in: " + list2 + "Can't handle empty arrays.");
+		if (list2.length == 0 || list2 == null) {
+			// if the list is null, then throw the nullpointerexception
+			throw new NullPointerException("Error sorting list2! Can't handle empty or null arrays.");
 		}
 
 		int indexL1 = 0;
 		int indexL2 = 0;
 		int indexL3 = 0;
 		int indexL4 = 0;
-		
-		@SuppressWarnings("rawtypes")
+
 		Comparable[] list3 = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				list1.length + list2.length);
 		Comparable[] arrayDuplicates = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
 				list1.length + list2.length);
-				
+
 		while (indexL1 < list1.length && indexL2 < list2.length) {
-			if(list1[indexL1].compareTo(list2[indexL2]) == 0){
+			if (list1[indexL1].compareTo(list2[indexL2]) == 0) {
 				arrayDuplicates[indexL4] = list1[indexL1];
 				indexL4++;
 			}
@@ -176,23 +183,23 @@ public class ListUtilities {
 			indexL3++;
 		}
 		int noCount = 0;
-		for(int i = 0; i<arrayDuplicates.length; i++){
-			if(arrayDuplicates[i] == null){
+		for (int i = 0; i < arrayDuplicates.length; i++) {
+			if (arrayDuplicates[i] == null) {
 				noCount++;
 			}
 		}
-				
-		@SuppressWarnings("rawtypes")
-		Comparable[] arrayDuplicatesNoNull = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),arrayDuplicates.length-noCount);
-		
+
+		Comparable[] arrayDuplicatesNoNull = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
+				arrayDuplicates.length - noCount);
+
 		int arrayDuplicatesNoNullIndex = 0;
-		for(int i = 0; i<arrayDuplicates.length; i++){
-			if(!(arrayDuplicates[i] == null)){
+		for (int i = 0; i < arrayDuplicates.length; i++) {
+			if (!(arrayDuplicates[i] == null)) {
 				arrayDuplicatesNoNull[arrayDuplicatesNoNullIndex] = arrayDuplicates[i];
 				arrayDuplicatesNoNullIndex++;
 			}
 		}
-		
+
 		if (indexL1 < list1.length) {
 			for (int indexR = indexL1; indexR < list1.length; indexR++) {
 				list3[indexL3] = list1[indexR];
@@ -210,27 +217,26 @@ public class ListUtilities {
 		System.out.println(Arrays.toString(list3));
 		System.out.print("\tArray DuplicatesNoNull: ");
 		System.out.println(Arrays.toString(arrayDuplicatesNoNull));
-		
-		// create File object
+
+		// create Path
 		StringBuilder path = new StringBuilder("datafiles/duplicates/");
 		path.append(duplicateFileName);
 		System.out.println(path);
 		// Saving merged Object list into a file
 		try {
 			ListUtilities.saveListToTextFile(arrayDuplicatesNoNull, path.toString(), true);
-			
+
 		} catch (IOException e) {
 			System.out.println(e.getMessage() + "\n\nExiting the Application.");
 			System.exit(1);
 		}
 
-		return (E[]) list3;
+		return list3;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <E extends Comparable<E>> E[] removeDuplicates(E[] arrayWithDuplicates) {
+	@SuppressWarnings({ "rawtypes" })
+	public static <E extends Comparable<E>> Comparable[] removeDuplicates(E[] arrayWithDuplicates) {
 
-		@SuppressWarnings("rawtypes")
 		Comparable[] arrayUnique = (Comparable[]) Array.newInstance(arrayWithDuplicates.getClass().getComponentType(),
 				arrayWithDuplicates.length);
 		int j = 0;
@@ -242,48 +248,50 @@ public class ListUtilities {
 		while (i < arrayWithDuplicates.length) {
 			if (arrayWithDuplicates[i] == arrayWithDuplicates[j]) {
 				i++;
-				
+
 			} else {
 				arrayWithDuplicates[++j] = arrayWithDuplicates[i++];
 			}
 		}
 		arrayUnique = new Comparable[j + 1];
-				
+
 		for (int indexU = 0; indexU < arrayUnique.length; indexU++) {
 			arrayUnique[indexU] = arrayWithDuplicates[indexU];
-			
-		} 
-		return (E[]) arrayUnique;
+
+		}
+		return arrayUnique;
 	}
+
 	/**
-	* Sorts a list of objects in the given order.
-	*
-	* Precondition: Assumes that the list is not null and that the
-	* list's capacity is equal to the list's size.
-	* 
-	* @author Pengkim Sy
-	*
-	* @param list A list of objects. Assumes that the
-	* list's capacity is equal to the list's size.
-	* @param sortOrder A Comparator object that defines the
-	* sort order
-	* @throws IllegalArgumentException if the parameter is
-	* not full to capacity.
-	*
-	* @throws NullPointerException if the list or sortOrder *
-	are null.
-	*/
-	public static <E extends Comparable<E>> void sort(E[] list, Comparator<E> sortOrder) 
-			throws IllegalArgumentException, NullPointerException{
-		
-		for(int i=0; i<list.length; i++){
-			if(list[i] == null)
+	 * Sorts a list of objects in the given order.
+	 *
+	 * Precondition: Assumes that the list is not null and that the list's
+	 * capacity is equal to the list's size.
+	 * 
+	 * @author Pengkim Sy
+	 *
+	 * @param list
+	 *            A list of objects. Assumes that the list's capacity is equal
+	 *            to the list's size.
+	 * @param sortOrder
+	 *            A Comparator object that defines the sort order
+	 * @throws IllegalArgumentException
+	 *             if the parameter is not full to capacity.
+	 *
+	 * @throws NullPointerException
+	 *             if the list or sortOrder * are null.
+	 */
+	public static <E extends Comparable<E>> void sort(E[] list, Comparator<E> sortOrder)
+			throws IllegalArgumentException, NullPointerException {
+
+		for (int i = 0; i < list.length; i++) {
+			if (list[i] == null)
 				throw new NullPointerException("Exception error! Null elements in: " + list[i]);
 		}
-		
-		if(list.length == 0)
+
+		if (list.length == 0)
 			throw new IllegalArgumentException("Exception erro in: " + list + "Can't handle empty arrays.");
-		
+
 		Arrays.sort(list, sortOrder);
 	}
 
