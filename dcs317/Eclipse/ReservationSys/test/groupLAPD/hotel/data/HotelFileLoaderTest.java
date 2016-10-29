@@ -8,8 +8,9 @@ import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.business.interfaces.Room;
 
 /**
- * 
- * @author Lyrene Labor
+ * Test application for the HotelFileLoader class
+ * and its public methods
+ * @author Lyrene Labor and Ali Dali
  *
  */
 public class HotelFileLoaderTest {
@@ -18,9 +19,7 @@ public class HotelFileLoaderTest {
 		
 		TestGetRoomListFromSequentialFile();
 		TestGetCustomerListFromSequentialFile();
-		TestGetReservationListFromSequentialFile();
-		
-		
+		TestGetReservationListFromSequentialFile();	
 	}
 	
 	public static void TestGetRoomListFromSequentialFile()

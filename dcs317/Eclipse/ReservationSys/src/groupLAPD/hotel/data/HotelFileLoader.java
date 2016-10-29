@@ -16,6 +16,7 @@ import dw317.hotel.business.interfaces.Room;
 import dw317.lib.Email;
 import dw317.lib.Name;
 import dw317.lib.creditcard.Amex;
+import dw317.lib.creditcard.CreditCard;
 import dw317.lib.creditcard.MasterCard;
 import dw317.lib.creditcard.Visa;
 import groupLAPD.hotel.business.DawsonCustomer;
@@ -32,7 +33,9 @@ import groupLAPD.hotel.business.DawsonRoom;
  */
 public class HotelFileLoader {
 
-	//private constants declaration for delimeters
+	//private constants declaration for delimiters
+	// (*) is for separating the fields in a line of a file
+	// (,) is for separating each lines from a file
 	private static final String DELIMETER = "\\*";
 	private static final String ITEM_DELIMETER = ",";
 	
@@ -46,14 +49,18 @@ public class HotelFileLoader {
 		//no implementation inside constructor 
 	}//end of constructor
 	
+	
 	/**
 	 * The getCustomerListFromSequentialFile method loads and reads every 
 	 * customer data entry from the input customer filename and copies every
-	 * customer data entry into a full-to-capacity array of type Customer.  
+	 * customer data entry as a DawsonCustomer instance
+	 * into a full-to-capacity array of type Customer.  
 	 * @param filename 
 	 * 			String containing the name of the file holding the
 	 * 			customer data
-	 * @return A full-to-capacity array of type Customer
+	 * @return A full-to-capacity array of type Customer containing
+	 * 			all valid customers data taken from the input file as 
+	 * 			DawsonCustomer instances.
 	 * @throws IOException 
 	 * 			Any other file input and output related errors such as
 	 * 			the scanner not closing properly must be handled
@@ -65,13 +72,12 @@ public class HotelFileLoader {
 	 */
 	public static Customer[] getCustomerListFromSequentialFile
 	(String filename) throws IOException, IllegalArgumentException{
-			
-				
+						
 		//get the full path of the filename
 		String path = System.getProperty("user.dir");
 		String fullFilePath = path+File.separator+filename+File.separator;
 		
-		//initialize scanner and noOfCustomers
+		//initialize scanner to null
 		Scanner scan=null;		
 		
 		//try creating an instance of Scanner in order to read from
@@ -101,6 +107,9 @@ public class HotelFileLoader {
 		//build the customers array by calling the buildCustomerList method
 		buildCustomerList(customers, sb, filename);
 		
+		//get rid of all the null values inside of the customers array
+		//by calling buildCustomerListNoNull method and assign the new customers
+		//array into customersListNoNull.
 		Customer[] customersListNoNull = buildCustomerListNoNull(customers);
 		
 		//close scanner if not null
@@ -110,39 +119,18 @@ public class HotelFileLoader {
 		
 		return customersListNoNull; //return the customers array
 		
-	} 
-	
-	private static Customer[] buildCustomerListNoNull
-	(Customer[] customers){
-		int nullCount = 0;
-		for(int i = 0; i<customers.length; i++){
-			if(customers[i]==null){
-				nullCount++;
-			}
-		}
-		
-		Customer[] customersNoNull = new Customer[customers.length-nullCount];
-		int customersNoNullIndex = 0;
-		for(int i =0; i<customers.length; i++){
-			if(!(customers[i]==null)){
-				customersNoNull[customersNoNullIndex] = customers[i];
-				customersNoNullIndex++;
-			}
-		}
-		
-		return customersNoNull;
-		
-	}
-
+	} //end of getCustomerListFromSequentialFile method
 	
 	/**
 	 * The getRoomListFromSequentialFile method loads and reads every 
 	 * room data entry from the input room filename and copies every
-	 * room data entry into a full-to-capacity array of type Room.  
+	 * room data entry as DawsonRoom instances into a full-to-capacity 
+	 * array of type Room.  
 	 * @param filename 
 	 * 			String containing the name of the file holding the
 	 * 			room data
-	 * @return A full-to-capacity array of type Room
+	 * @return A full-to-capacity array of type Room containing 
+	 * 			DawsonRoom objects 
 	 * @throws IOException 
 	 * 			Any other file input and output related errors such as
 	 * 			the scanner not closing properly must be handled
@@ -174,12 +162,6 @@ public class HotelFileLoader {
 					+ " data does not exist"
 					+ " or cannot be found");
 		}
-		catch(Exception e){
-			//if the file caused any other exceptions,
-			//throw the following exception and message
-			throw new IllegalArgumentException("The file " + filename +
-					" caused the following error: " + e.getMessage());
-		}
 		
 		//create a StringBuilder object
 		StringBuilder sb = new StringBuilder();
@@ -194,6 +176,8 @@ public class HotelFileLoader {
 		//build the room list by calling the roomListBuilder method
 		buildRoomList(rooms, sb, filename);
 		
+		//build another room list containing no null values
+		//store the non null rooms array as roomsListNoNull
 		Room[] roomsListNoNull = buildRoomListNoNull(rooms);
 		
 		//close scanner if not null
@@ -203,28 +187,7 @@ public class HotelFileLoader {
 		//return the rooms array
 		return roomsListNoNull;
 	}//end of getRoomListFromSequentialFile method
-	
-	
-	private static Room[] buildRoomListNoNull(Room[] rooms){
-		int nullCount = 0;
-		for(int i = 0; i<rooms.length; i++){
-			if(rooms[i]==null){
-				nullCount++;
-			}
-		}
 		
-		Room[] roomsNoNull = new Room[rooms.length-nullCount];
-		int roomsNoNullIndex = 0;
-		for(int i =0; i<rooms.length; i++){
-			if(!(rooms[i]==null)){
-				roomsNoNull[roomsNoNullIndex] = rooms[i];
-				roomsNoNullIndex++;
-			}
-		}
-		
-		return roomsNoNull;
-	}
-	
 	/**
 	 * The getReservationListFromSequentialFile method 
 	 * loads and reads a reservation file, it will check 
@@ -237,8 +200,6 @@ public class HotelFileLoader {
 	 * 			room[] : to check if room in reservation exists
 	 * @return an array of Reservations that is filled
 	 * @throws IOException: When file does not exist or not found
-	 * 			IllegalArgumentException: When Room or Customer
-	 * 				not found
 	 * @return a Reservation Array
 	 * @author Ali Dali
 	 **/
@@ -304,7 +265,6 @@ public class HotelFileLoader {
 						}
 					}
 
-
 					//storing dates in corresponding arrayLists
 					checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
 					checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
@@ -312,8 +272,6 @@ public class HotelFileLoader {
 					checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
 					checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
 					checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
-
-
 
 					numReserv++;
 				}
@@ -336,80 +294,77 @@ public class HotelFileLoader {
 		
 		//Creating Reservations using arrayLists
 		for(int i = 0; i < numReserv; i++){
-			//if room or customer does not exist 
+			//if room or customer does not exist, catch the exception
 			try{
 				reservations[i] = new DawsonReservation(customerArray.get(i),
 						roomArray.get(i),checkInYearArr.get(i), checkInMonthArr.
 						get(i), checkInDayArr.get(i), checkOutYearArr.get(i), 
 						checkOutMonthArr.get(i), checkOutDayArr.get(i));
-				
-				//throw illegalArgumentException
 			}catch(IndexOutOfBoundsException e){
 				System.out.println("Invalid "
 						+ "entry in " + filename + ". A customer or"
-								+ " room does not exist.");	
+						+ " room does not exist.");	
 			}
-		if(reservations[i] == null){
-			nullCount++;
+			//count the number of null values inside the array
+			if(reservations[i] == null){
+				nullCount++;
+			}
 		}
-		}
+		
+		//create another reservation array that will only hold 
+		//non null objects
 		Reservation[] filledReservation = new 
 				Reservation[reservations.length -nullCount];
+		int filledIndex = 0;
 		
-		for(int i = 0; i<filledReservation.length; i++){
+		for(int i = 0; i<reservations.length; i++){
 			if(reservations[i] != null){
-			filledReservation[i] = reservations[i];
+				filledReservation[filledIndex] = reservations[i];
+				filledIndex++;
 			}
 		}
 		return filledReservation;
 	}//End of method
+
 	
 	/**
 	 * The buildCustomerList method will populate the customers 
-	 * array based on the data found inside the customers input file
-	 * @param customers - Array of type customers holding all
-	 * 					customer data from the input file
+	 * array passed as input with DawsonCustomer objects
+	 * based on the data found inside the customers input file
+	 * @param customers - Array of type customers to populate
+	 * 						with DawsonCustomer objects
 	 * @param filename reference string for the input filename
 	 * @param sb - reference of type StringBuilder containing
 	 * 			all lines of the input file
-	 * @throws IllegalArgumentException
-	 * 			when the input file contains invalid room data
-	 * 			such as invalid email, customer name, 
-	 * 			credit card number, credit type. 
 	 * @author Lyrene Labor
 	 */
 	private static void buildCustomerList(Customer customers[], 
-			StringBuilder sb,String filename) 
-					throws IllegalArgumentException{
+			StringBuilder sb,String filename) {
 		
 		//create a String array holding each line of the input file
 		String customerArray[] = sb.toString().trim().split(ITEM_DELIMETER);
 				
-		//iterate through each entry of the String customerArray array
+		//iterate through each entry of the String customerArray 
 		for (int i = 0; i < customers.length; i++) {
-			//for each entry of the customerArray, separate each field(*)
+			//for an entry of the customerArray, separate each field(*)
 			//and assign them to the customerEntry array of type String
 			String[] customerEntry = customerArray[i].split(DELIMETER);
 
+			//try the following block of code and catch any exception
+			//and display the error message
 			try{
 				//validate the customerEntry array
 				validateCustomerEntry(customerEntry, filename);
 
 				//validate for each entry the email, firstname and lastname
-				//fields and throw the IllegalArgumentException generated
-				//from the Email or Name class if they occur
-
-
+				//fields, any IllegalArgumentException generated
+				//from the Email or Name class will be caught
 				Email customerEmail = new Email(customerEntry[0]);
 				Name customerName = new Name(customerEntry[1], 
 						customerEntry[2]);
 
-				//once validated, create a DawsonCustomer instance with 
-				//the values of the customerEntry array
-				customers[i] = new DawsonCustomer(customerName.getFirstName(), 
-						customerName.getLastName(), customerEmail.toString());
-
-
+				CreditCard customerCard = null;
+				
 				//if the customer entry contains information about 
 				//the customer's credit card then do the following
 				if(customerEntry.length==5){
@@ -419,40 +374,40 @@ public class HotelFileLoader {
 					String creditNumber = customerEntry[4].trim();
 
 					//If the credit card type is not amex, visa
-					// or mastercard, then throw an exception
+					// or mastercard, then display an error message
 					if(!(creditName.equalsIgnoreCase("amex")||
 							creditName.equalsIgnoreCase("visa")||
 							creditName.equalsIgnoreCase("mastercard"))){
-						System.out.println("\tThe credit card type"
+						throw new IllegalArgumentException("\tThe credit card type"
 								+ " of a customer must not be empty and must"
 								+ " be amex, visa or mastercard only");
 					}
 
 					//if the  credit card is amex, set that card
 					if(creditName.equalsIgnoreCase("amex")){
-
-
-						Amex card = new Amex(creditNumber);
-						customers[i].setCreditCard(Optional.of(card));
-
+						customerCard = new Amex(creditNumber);
 					}
 					//if the credit card is visa, set that card
-					else if(creditName.equalsIgnoreCase("visa")){
-
-						Visa card = new Visa(creditNumber);
-						customers[i].setCreditCard(Optional.of(card));
-
-
+					if(creditName.equalsIgnoreCase("visa")){
+						customerCard = new Visa(creditNumber);
 					}
 					//if the credit card is mastercard, set that card
-					else{
-
-						MasterCard card = new MasterCard(creditNumber);
-						customers[i].setCreditCard(Optional.of(card));
-
+					if(creditName.equalsIgnoreCase("mastercard")){
+						customerCard = new MasterCard(creditNumber);
 					}				
 				}
+							
+				//if no errors occurred so far, 
+				//create a DawsonCustomer instance 
+				customers[i] = new DawsonCustomer(customerName.getFirstName(), 
+						customerName.getLastName(), customerEmail.toString());
+				
+				//if the customer has info about their credit card, set them
+				if(customerEntry.length==5){
+					customers[i].setCreditCard(Optional.of(customerCard));
+				}				
 			}
+			//any error that occurs, display the error message
 			catch(IllegalArgumentException e){
 				System.out.println("Invalid entry inside file " + filename +
 						" containing customers data. " +
@@ -461,30 +416,72 @@ public class HotelFileLoader {
 		}
 	}//end of buildCustomerList method
 	
+	/**
+	 * The buildCustomerListNoNull method will count the number of
+	 * null values from a Customer array and will copy the content of
+	 * Customer array into another array but without the null values
+	 * @param customers an array of type Customer with null values
+	 * @return an array of type Customer containing instances
+	 * 			of DawsonCustomer with no null values
+	 * @author Lyrene Labor
+	 */
+	private static Customer[] buildCustomerListNoNull
+	(Customer[] customers){
+		
+		int nullCount = 0;
+		
+		//the following loop will count the number of null values
+		//inside the array
+		for(int i = 0; i<customers.length; i++){
+			if(customers[i]==null){
+				nullCount++;
+			}
+		}
+		
+		//create another Customer array that will contain non null values
+		Customer[] customersNoNull = new Customer[customers.length-nullCount];
+		int customersNoNullIndex = 0;
+		
+		//the following loop will assign all non-null values of the customers
+		//array into the customersNoNull array
+		for(int i =0; i<customers.length; i++){
+			if(!(customers[i]==null)){
+				customersNoNull[customersNoNullIndex] = customers[i];
+				customersNoNullIndex++;
+			}
+		}
+		
+		//return the array containing no null values
+		return customersNoNull;
+		
+	}//end of buildCustomerListNoNull method
+	
 	
 	/**
 	 * The buildRoomList method will populate the array of type
-	 * Room based on the room data of an input filename
-	 * @param rooms reference of type room for the room array 
-	 * 			holding all room data from the room input data
+	 * Room passed as input with DawsonRoom objects
+	 * based on the room data of an input filename
+	 * @param rooms - array of type rooms to populate with
+	 * 			DawsonRoom objects
 	 * @param sb reference of type StringBuilder containing
 	 * 			all lines of the input file
 	 * @param filename reference string for the filename
-	 * @throws IllegalArgumentException
-	 * 			when the input file contains invalid room data
-	 * 			such as invalid room number and invalid room type
 	 * @author Lyrene Labor
 	 */
 	private static void buildRoomList(Room rooms[], StringBuilder sb,
-			String filename) throws IllegalArgumentException{
+			String filename) {
 		//create a String array holding each line of the input file
 		String[] roomArray = sb.toString().split(ITEM_DELIMETER);
 		
 		//iterate through each entry of the roomArray 
 		for (int i = 0; i < rooms.length; i++) {
+			
 			//for each entry of the roomArray, separate each field(*)
 			//and assign them to the roomEntry array of type String
 			String[] roomEntry = roomArray[i].split(DELIMETER);
+			
+			//try the following block of code and any error that
+			//occur, display the error message
 			try{
 				//validate the the room entry 
 				validateRoomEntry(roomEntry, filename);
@@ -507,33 +504,74 @@ public class HotelFileLoader {
 				//catch IllegalArgumentException if it occurs
 				//and throw the following exception and message
 				catch(IllegalArgumentException x){
-					throw new IllegalArgumentException("\tThe file " + filename +
+					throw new IllegalArgumentException("\tThe file "+filename+
 							" have an invalid room entry: " +
 							x.getMessage() + "\n\t And the room type must not "
 							+ "be empty and must be "
 							+ "NORMAL, SUITE or PENTHOUSE.");
 				}
-
 			}
+			//any errors or exception that occur or thrown,
+			//display the error message
 			catch(IllegalArgumentException e){
-				System.out.println("Invalid entry inside file " + filename +
+				System.out.println("Invalid entry inside file "+filename+
 						" containing rooms data. " +
 						"\n" + e.getMessage());
 			}
-		}
-		
+		}		
 	}//end of buildRoomList method
 	
+	
 	/**
-	 * countNumOfRooms will count the number of rooms present in the 
-	 * input file of getRoomListFromSequentialFile method and will also
-	 * store each line of the input file into a StringBuilder instance
+	 * The buildRoomListNoNull method will count the number of
+	 * null values from a Room array and will copy the content of
+	 * Room array into another array but without its null values
+	 * @param rooms an array of type Room containing DawsonRoom objects
+	 * 			and null values
+	 * @return an array of type Room containing DawsonRoom objects
+	 * 			and no null values
+	 * @author Lyrene Labor
+	 */
+	private static Room[] buildRoomListNoNull(Room[] rooms){
+		
+		int nullCount = 0;
+		
+		//the following loop will count the number null values
+		//in rooms array
+		for(int i = 0; i<rooms.length; i++){
+			if(rooms[i]==null){
+				nullCount++;
+			}
+		}
+		
+		//create another rooms array that will hold only non null 
+		//objects
+		Room[] roomsNoNull = new Room[rooms.length-nullCount];
+		int roomsNoNullIndex = 0;
+		
+		//the following loop will copy the non null values of rooms array
+		//into roomsNoNull method
+		for(int i =0; i<rooms.length; i++){
+			if(!(rooms[i]==null)){
+				roomsNoNull[roomsNoNullIndex] = rooms[i];
+				roomsNoNullIndex++;
+			}
+		}
+		
+		//return an array with no values
+		return roomsNoNull;
+	}// end of buildRoomListNoNull method
+	
+	
+	/**
+	 * countNumOfRooms will count the number of items present in a 
+	 * input file and will also store each line of the input file 
+	 * into a StringBuilder instance
 	 * @param scan Reference variable of type Scanner used
-	 * 			to scan the input data file of 
-	 *  		getRoomListFromSequentialFile
+	 * 			to scan the input data file 
 	 * @param sb reference of type StringBuilder containing
-	 * 			all lines of the input room file
-	 * @return int value representing the number of rooms 
+	 * 			all lines of the input file
+	 * @return int value representing the number of items 
 	 * 			inside the input file
 	 * @author Lyrene Labor
 	 */
@@ -558,6 +596,7 @@ public class HotelFileLoader {
 		return noOfItems; //return number of rooms
 	}//end of countNumOfRooms....
 
+	
 	/**
 	 * The validateRoomEntry method will validate each line of
 	 * the file containing the rooms data and will check if each
@@ -578,14 +617,13 @@ public class HotelFileLoader {
 			("\tInvalid Room Entry found in file " + filename + 
 					". A room entry must have"
 					+ " 2 fields only");
-
 	}
 	
 	
 	/**
 	 * The validateCustomerEntry method will validate each line of
 	 * the file containing the customers data and will check if each
-	 * line only contains 5 fields
+	 * line strictly only contains 5 fields or 3 fields.
 	 * @param roomEntry An array of type String containing a 
 	 * 			customer entry or line 
 	 * @throws IllegalArgumentException If a customer entry contains 
@@ -603,6 +641,5 @@ public class HotelFileLoader {
 			("\tInvalid Customer Entry found in file "+filename+
 					". A customer entry must have"
 					+ " 5 fields or 3 fields only");
-	}//end of validateCustomerEntry method
-	  
+	}//end of validateCustomerEntry method	  
 }
