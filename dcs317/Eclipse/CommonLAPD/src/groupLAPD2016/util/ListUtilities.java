@@ -243,11 +243,18 @@ public class ListUtilities {
 			FileOutputStream duplicateFile = new FileOutputStream(filename, true);
 			OutputStreamWriter out = new OutputStreamWriter(duplicateFile, CHARACTER_ENCODING);
 			duplicateOutputFile = new PrintWriter(new BufferedWriter(out));
+			
+			for(int i = 0; i < objects.length; i=i+2){
+				if (objects[i] != null){
+					duplicateOutputFile.println(objects[i] + "(merged)");
+					duplicateOutputFile.println(objects[i+1]);
+				}
+			}
 
-			for (Object obj : objects)
+			/*for (Object obj : objects)
 				if (obj != null)
 					duplicateOutputFile.println(obj + "(merged)");
-
+*/
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException("Error saving list! Unable to access the device " + filename);
 		} finally {
@@ -390,7 +397,8 @@ public class ListUtilities {
 		while (indexL1 < list1.length && indexL2 < list2.length) {
 			if (list1[indexL1].compareTo(list2[indexL2]) == 0) {
 				arrayDuplicates[indexL4] = list1[indexL1];
-				indexL4++;
+				arrayDuplicates[indexL4+1] = list2[indexL2];
+				indexL4 = indexL4 + 2;
 			}
 			if (list1[indexL1].compareTo(list2[indexL2]) < 0) {
 				list3[indexL3] = list1[indexL1];
@@ -496,6 +504,31 @@ public class ListUtilities {
 		}
 		return arrayUnique;
 	}
+	public static <E extends Comparable<E>> Comparable[] mergeAllDuplicates(E[] list1, E[] list2, String duplicateFileName){
+		
+		int indexL1 = 0;
+		int indexL2 = 0;
+		//int indexL3 = 0;
+		int indexL4 = 0;
+		
+		int mergedLengthArray = list1.length + list2.length;
+
+		Comparable[] arrayDuplicates = (Comparable[]) Array.newInstance(list1.getClass().getComponentType(),
+				mergedLengthArray);
+		
+		for(int indexL3 = 0; indexL3 < mergedLengthArray; indexL3 = indexL3 + 2){
+			if (list1[indexL3].compareTo(list2[indexL3]) == 0){ 
+			arrayDuplicates[indexL3] = list1[indexL3];
+			arrayDuplicates[indexL3+1] = list2[indexL3];
+			indexL3++;
+			}
+		}
+		
+		return arrayDuplicates;
+		
+	}
+		
+	
 
 	/**
 	 * Sorts a list of objects in the given order.
