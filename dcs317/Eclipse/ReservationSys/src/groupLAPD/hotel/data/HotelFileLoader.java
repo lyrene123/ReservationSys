@@ -196,11 +196,12 @@ public class HotelFileLoader {
 	 * in a separate arrayList which will be used at the end 
 	 * to create a Reservation array with all the arrayList
 	 * @param filename: String containing the path of reservations file
-	 * 			customer[]: to check if customer in reservation exists
-	 * 			room[] : to check if room in reservation exists
-	 * @return an array of Reservations that is filled
+	 * @param customerList - array of type Customer containing objects 
+	 * 			of DawsonCustomer
+	 * @param roomList - array of type Room containing objects 
+	 * 			of DawsonRoom
+	 * @return an array of DawsonReservation objects that is filled
 	 * @throws IOException: When file does not exist or not found
-	 * @return a Reservation Array
 	 * @author Ali Dali
 	 **/
 	public static Reservation[] getReservationListFromSequentialFile
@@ -346,7 +347,8 @@ public class HotelFileLoader {
 			StringBuilder sb,String filename) {
 		
 		//create a String array holding each line of the input file
-		String customerArray[] = sb.toString().trim().split(ITEM_DELIMETER);
+		String customerArray[] = 
+				sb.toString().trim().split(ITEM_DELIMETER);
 				
 		//iterate through each entry of the String customerArray 
 		for (int i = 0; i < customers.length; i++) {
@@ -360,7 +362,7 @@ public class HotelFileLoader {
 				//validate the customerEntry array
 				validateCustomerEntry(customerEntry, filename);
 
-				//validate for each entry the email, firstname and lastname
+				//validate the email,first and last name
 				//fields, any IllegalArgumentException generated
 				//from the Email or Name class will be caught
 				Email customerEmail = new Email(customerEntry[0]);
