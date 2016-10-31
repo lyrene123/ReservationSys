@@ -53,7 +53,7 @@ public class HotelFileLoader {
 	/**
 	 * The getCustomerListFromSequentialFile method loads and reads every 
 	 * customer data entry from the input customer filename and copies every
-	 * customer data entry as a DawsonCustomer instance
+	 * valid customer data entry as a DawsonCustomer instance
 	 * into a full-to-capacity array of type Customer.  
 	 * @param filename 
 	 * 			String containing the name of the file holding the
@@ -62,7 +62,7 @@ public class HotelFileLoader {
 	 * 			all valid customers data taken from the input file as 
 	 * 			DawsonCustomer instances.
 	 * @throws IOException 
-	 * 			Any other file input and output related errors such as
+	 * 			Any file input and output related errors such as
 	 * 			the scanner not closing properly must be handled
 	 * 			by the class or method calling this method.
 	 * @throws IllegalArgumentException
@@ -124,7 +124,7 @@ public class HotelFileLoader {
 	/**
 	 * The getRoomListFromSequentialFile method loads and reads every 
 	 * room data entry from the input room filename and copies every
-	 * room data entry as DawsonRoom instances into a full-to-capacity 
+	 * valid room data entry as DawsonRoom instances into a full-to-capacity 
 	 * array of type Room.  
 	 * @param filename 
 	 * 			String containing the name of the file holding the
@@ -132,7 +132,7 @@ public class HotelFileLoader {
 	 * @return A full-to-capacity array of type Room containing 
 	 * 			DawsonRoom objects 
 	 * @throws IOException 
-	 * 			Any other file input and output related errors such as
+	 * 			Any file input and output related errors such as
 	 * 			the scanner not closing properly must be handled
 	 * 			by the class or method calling this method.
 	 * @throws IllegalArgumentException
@@ -195,9 +195,10 @@ public class HotelFileLoader {
 	 * the customer and room exist and will store everything
 	 * in a separate arrayList which will be used at the end 
 	 * to create a Reservation array with all the arrayList
-	 * @param filename: String containing the path of reservations file
-	 * 			customer[]: to check if customer in reservation exists
-	 * 			room[] : to check if room in reservation exists
+	 * @param filename: String reference to a reservations file
+	 * @param customer[]: customer array containing DawsonCustomer
+	 * 						objects
+	 * @param room[] : Room array containing DawsonRoom objects
 	 * @return an array of Reservations that is filled
 	 * @throws IOException: When file does not exist or not found
 	 * @return a Reservation Array
@@ -587,7 +588,7 @@ public class HotelFileLoader {
 
 
 	/**
-	 * countNumOfRooms will count the number of items present in a 
+	 * countNumOfItems will count the number of items present in a 
 	 * input file and will also store each line of the input file 
 	 * into a StringBuilder instance
 	 * @param scan Reference variable of type Scanner used
@@ -600,7 +601,7 @@ public class HotelFileLoader {
 	 */
 	private static int countNumOfItems(Scanner scan, StringBuilder sb){
 
-		//initialize the variable of # of room to 0
+		//initialize the variable of # of items to 0
 		int noOfItems=0; 
 
 		//check each non empty line of the input file
@@ -612,13 +613,13 @@ public class HotelFileLoader {
 			//each line
 			if(!(line.trim().isEmpty())){
 				sb.append(line).append(ITEM_DELIMETER);
-				noOfItems++; //increment number of rooms
+				noOfItems++; //increment number of items
 			}
 		}
 
-		return noOfItems; //return number of rooms
-	}//end of countNumOfRooms....
-
+		return noOfItems; //return number of item
+	}//end of countNumOfItems
+	
 
 	/**
 	 * The validateRoomEntry method will validate each line of
@@ -658,7 +659,7 @@ public class HotelFileLoader {
 			String filename) 
 					throws IllegalArgumentException {
 		//throw the following exception if a customer entry
-		//has more than 5 fields
+		//doesn't have 5 or 3 fields only
 		if (!(customerEntry.length==5 || customerEntry.length==3))
 			throw new IllegalArgumentException
 			("\tInvalid Customer Entry found in file "+filename+
