@@ -187,7 +187,7 @@ public class ListUtilities {
 			throws FileNotFoundException, UnsupportedEncodingException {
 
 		PrintWriter outputFile = null;
-		File unsortedDir = new File("datafiles/unsorted");
+		File unsortedDir = new File("datafiles" + File.separator + "unsorted");
 		unsortedDir.mkdirs();
 
 		try {
@@ -237,7 +237,7 @@ public class ListUtilities {
 			throws FileNotFoundException, UnsupportedEncodingException {
 
 		PrintWriter duplicateOutputFile = null;
-		File duplicatesDir = new File("datafiles/duplicates");
+		File duplicatesDir = new File("datafiles" + File.separator + "duplicates");
 		duplicatesDir.mkdirs();
 
 		try {
@@ -252,10 +252,6 @@ public class ListUtilities {
 				}
 			}
 
-			/*
-			 * for (Object obj : objects) if (obj != null)
-			 * duplicateOutputFile.println(obj + "(merged)");
-			 */
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException("Error saving list! Unable to access the device " + filename);
 		} finally {
@@ -425,7 +421,7 @@ public class ListUtilities {
 		list3 = removeDuplicates(list3);
 
 		// create Path
-		StringBuilder path = new StringBuilder("datafiles/duplicates/");
+		StringBuilder path = new StringBuilder("datafiles" + File.separator + "duplicates/");
 		path.append(duplicateFileName);
 
 		// Saving duplicate list into a file in the relative path
