@@ -38,7 +38,7 @@ public class HotelFileLoader {
 	// (,) is for separating each lines from a file
 	private static final String DELIMETER = "\\*";
 	private static final String ITEM_DELIMETER = ",";
-	
+
 
 	/**
 	 * The private no-parameter constructor prevents
@@ -48,8 +48,8 @@ public class HotelFileLoader {
 	private HotelFileLoader() { 
 		//no implementation inside constructor 
 	}//end of constructor
-	
-	
+
+
 	/**
 	 * The getCustomerListFromSequentialFile method loads and reads every 
 	 * customer data entry from the input customer filename and copies every
@@ -72,14 +72,14 @@ public class HotelFileLoader {
 	 */
 	public static Customer[] getCustomerListFromSequentialFile
 	(String filename) throws IOException, IllegalArgumentException{
-						
+
 		//get the full path of the filename
 		String path = System.getProperty("user.dir");
 		String fullFilePath = path+File.separator+filename+File.separator;
-		
+
 		//initialize scanner to null
 		Scanner scan=null;		
-		
+
 		//try creating an instance of Scanner in order to read from
 		//the input file
 		try{
@@ -93,34 +93,34 @@ public class HotelFileLoader {
 					+ "data does not exist"
 					+ " or cannot be found");
 		}
-		
+
 		//create a StringBuilder object
 		StringBuilder sb = new StringBuilder();
-		
+
 		//count num of customers inside the input file
 		//by calling the countNumOfItems method
 		int noOfCustomers=countNumOfItems(scan, sb);
-				
+
 		///create a customers array with the size of number of customers
 		Customer customers[] = new Customer[noOfCustomers];
-		
+
 		//build the customers array by calling the buildCustomerList method
 		buildCustomerList(customers, sb, filename);
-		
+
 		//get rid of all the null values inside of the customers array
 		//by calling buildCustomerListNoNull method and assign the new customers
 		//array into customersListNoNull.
 		Customer[] customersListNoNull = buildCustomerListNoNull(customers);
-		
+
 		//close scanner if not null
 		if (scan != null) {
 			scan.close();
 		}
-		
+
 		return customersListNoNull; //return the customers array
-		
+
 	} //end of getCustomerListFromSequentialFile method
-	
+
 	/**
 	 * The getRoomListFromSequentialFile method loads and reads every 
 	 * room data entry from the input room filename and copies every
@@ -142,13 +142,13 @@ public class HotelFileLoader {
 	 */
 	public static Room[] getRoomListFromSequentialFile(String filename)
 			throws IOException, IllegalArgumentException {
-		
+
 		//get the fullpath of the filename
 		String path = System.getProperty("user.dir");
 		String fullFilePath = path+File.separator+filename+File.separator;
-		
+
 		Scanner scan=null; //initialize scanner to null
-		
+
 		//create instance of Scanner to read a file and catch exceptions
 		//if they occur
 		try{
@@ -162,24 +162,24 @@ public class HotelFileLoader {
 					+ " data does not exist"
 					+ " or cannot be found");
 		}
-		
+
 		//create a StringBuilder object
 		StringBuilder sb = new StringBuilder();
-				
+
 		//count the number of rooms from the input file 
 		//by calling the countNumOfItems method
 		int noOfRooms = countNumOfItems(scan, sb);
-		
+
 		//create a Room array with the size of number of rooms
 		Room rooms[] = new Room[noOfRooms];
-		
+
 		//build the room list by calling the roomListBuilder method
 		buildRoomList(rooms, sb, filename);
-		
+
 		//build another room list containing no null values
 		//store the non null rooms array as roomsListNoNull
 		Room[] roomsListNoNull = buildRoomListNoNull(rooms);
-		
+
 		//close scanner if not null
 		if (scan != null) {
 			scan.close();
@@ -187,7 +187,7 @@ public class HotelFileLoader {
 		//return the rooms array
 		return roomsListNoNull;
 	}//end of getRoomListFromSequentialFile method
-		
+
 	/**
 	 * The getReservationListFromSequentialFile method 
 	 * loads and reads a reservation file, it will check 
@@ -196,12 +196,11 @@ public class HotelFileLoader {
 	 * in a separate arrayList which will be used at the end 
 	 * to create a Reservation array with all the arrayList
 	 * @param filename: String containing the path of reservations file
-	 * @param customerList - array of type Customer containing objects 
-	 * 			of DawsonCustomer
-	 * @param roomList - array of type Room containing objects 
-	 * 			of DawsonRoom
-	 * @return an array of DawsonReservation objects that is filled
+	 * 			customer[]: to check if customer in reservation exists
+	 * 			room[] : to check if room in reservation exists
+	 * @return an array of Reservations that is filled
 	 * @throws IOException: When file does not exist or not found
+	 * @return a Reservation Array
 	 * @author Ali Dali
 	 **/
 	public static Reservation[] getReservationListFromSequentialFile
@@ -210,14 +209,17 @@ public class HotelFileLoader {
 			Room[] roomList)
 					throws IOException, IllegalArgumentException{
 
+		boolean customerExist = false;
+		boolean roomExist = false;
+
 		//get the full path of the filename
 		String path = System.getProperty("user.dir");
 		String fullFilePath = path+File.separator+filename+File.separator;
-		
+
 		//creating file using filename	
 		File fileObj = new File(fullFilePath);
 		Scanner reader = null;
-		
+
 		//to check if file exist or not
 		try{
 			reader = new Scanner(fileObj);
@@ -234,14 +236,14 @@ public class HotelFileLoader {
 		ArrayList<Integer> checkOutYearArr = new ArrayList<>();
 		ArrayList<Integer> checkOutMonthArr = new ArrayList<>();
 		ArrayList<Integer> checkOutDayArr = new ArrayList<>();	
-		
+
 		int numReserv = 0;//count number of Reservations
 
 		//takes every line and splits it using the delimiter
 		while(reader.hasNext()){
 			//storing line into String
 			String aLine = reader.nextLine();
-			
+
 			if(!(aLine.isEmpty())){
 				//splitting non empty lines
 				//according to the delimiter *
@@ -251,30 +253,44 @@ public class HotelFileLoader {
 				try{
 					//checking if customer from reservation file
 					//exists in customer array
+					Customer cust =  null;
 					for(int i = 0; i < customerList.length; i++){
 						if(arrLineStr[0].equalsIgnoreCase(customerList[i].
 								getEmail().getAddress())){
-							customerArray.add(customerList[i]);	
+							cust = customerList[i];
+							customerExist = true;						
 						}		
 					}
 					//checking if Room from reservation file
-					//exists in room array
+					//exists in room array;
+					Room room = null;
 					for(int i = 0; i < roomList.length; i++){
-						if(arrLineStr[7].equals(String.valueOf(roomList[i].
-								getRoomNumber())) ){
-							roomArray.add(roomList[i]);	
+						if(customerExist){
+							if(arrLineStr[7].equals(String.valueOf(roomList[i].
+									getRoomNumber())) ){
+								room = roomList[i];
+								roomExist = true;
+							}
 						}
 					}
 
-					//storing dates in corresponding arrayLists
-					checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
-					checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
-					checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
-					checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
-					checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
-					checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
+					//checking if both Room and Customer exist
+					if(customerExist && roomExist){
+						//storing dates in corresponding arrayLists
+						roomArray.add(room);
+						customerArray.add(cust);
+						checkInYearArr.add(Integer.parseInt(arrLineStr[1])); 
+						checkInMonthArr.add(Integer.parseInt(arrLineStr[2]));
+						checkInDayArr.add(Integer.parseInt(arrLineStr[3]));
+						checkOutYearArr.add(Integer.parseInt(arrLineStr[4]));
+						checkOutMonthArr.add(Integer.parseInt(arrLineStr[5]));
+						checkOutDayArr.add(Integer.parseInt(arrLineStr[6]));
 
-					numReserv++;
+						numReserv++;
+
+						customerExist = false;
+						roomExist = false;
+					}
 				}
 				catch(IllegalArgumentException e){
 					System.out.println(e.getMessage());
@@ -284,6 +300,8 @@ public class HotelFileLoader {
 				}
 
 			}
+
+		
 		}
 		//close scanner	
 		reader.close();
@@ -292,7 +310,7 @@ public class HotelFileLoader {
 		Reservation[] reservations = new Reservation[numReserv];
 
 		int nullCount = 0;
-		
+
 		//Creating Reservations using arrayLists
 		for(int i = 0; i < numReserv; i++){
 			//if room or customer does not exist, catch the exception
@@ -315,13 +333,13 @@ public class HotelFileLoader {
 				nullCount++;
 			}
 		}
-		
+
 		//create another reservation array that will only hold 
 		//non null objects
 		Reservation[] filledReservation = new 
 				Reservation[reservations.length -nullCount];
 		int filledIndex = 0;
-		
+
 		for(int i = 0; i<reservations.length; i++){
 			if(reservations[i] != null){
 				filledReservation[filledIndex] = reservations[i];
@@ -331,7 +349,7 @@ public class HotelFileLoader {
 		return filledReservation;
 	}//End of method
 
-	
+
 	/**
 	 * The buildCustomerList method will populate the customers 
 	 * array passed as input with DawsonCustomer objects
@@ -345,11 +363,10 @@ public class HotelFileLoader {
 	 */
 	private static void buildCustomerList(Customer customers[], 
 			StringBuilder sb,String filename) {
-		
+
 		//create a String array holding each line of the input file
-		String customerArray[] = 
-				sb.toString().trim().split(ITEM_DELIMETER);
-				
+		String customerArray[] = sb.toString().trim().split(ITEM_DELIMETER);
+
 		//iterate through each entry of the String customerArray 
 		for (int i = 0; i < customers.length; i++) {
 			//for an entry of the customerArray, separate each field(*)
@@ -362,7 +379,7 @@ public class HotelFileLoader {
 				//validate the customerEntry array
 				validateCustomerEntry(customerEntry, filename);
 
-				//validate the email,first and last name
+				//validate for each entry the email, firstname and lastname
 				//fields, any IllegalArgumentException generated
 				//from the Email or Name class will be caught
 				Email customerEmail = new Email(customerEntry[0]);
@@ -370,7 +387,7 @@ public class HotelFileLoader {
 						customerEntry[2]);
 
 				CreditCard customerCard = null;
-				
+
 				//if the customer entry contains information about 
 				//the customer's credit card then do the following
 				if(customerEntry.length==5){
@@ -402,12 +419,12 @@ public class HotelFileLoader {
 						customerCard = new MasterCard(creditNumber);
 					}				
 				}
-							
+
 				//if no errors occurred so far, 
 				//create a DawsonCustomer instance 
 				customers[i] = new DawsonCustomer(customerName.getFirstName(), 
 						customerName.getLastName(), customerEmail.toString());
-				
+
 				//if the customer has info about their credit card, set them
 				if(customerEntry.length==5){
 					customers[i].setCreditCard(Optional.of(customerCard));
@@ -421,7 +438,7 @@ public class HotelFileLoader {
 			}
 		}
 	}//end of buildCustomerList method
-	
+
 	/**
 	 * The buildCustomerListNoNull method will count the number of
 	 * null values from a Customer array and will copy the content of
@@ -433,9 +450,9 @@ public class HotelFileLoader {
 	 */
 	private static Customer[] buildCustomerListNoNull
 	(Customer[] customers){
-		
+
 		int nullCount = 0;
-		
+
 		//the following loop will count the number of null values
 		//inside the array
 		for(int i = 0; i<customers.length; i++){
@@ -443,11 +460,11 @@ public class HotelFileLoader {
 				nullCount++;
 			}
 		}
-		
+
 		//create another Customer array that will contain non null values
 		Customer[] customersNoNull = new Customer[customers.length-nullCount];
 		int customersNoNullIndex = 0;
-		
+
 		//the following loop will assign all non-null values of the customers
 		//array into the customersNoNull array
 		for(int i =0; i<customers.length; i++){
@@ -456,13 +473,13 @@ public class HotelFileLoader {
 				customersNoNullIndex++;
 			}
 		}
-		
+
 		//return the array containing no null values
 		return customersNoNull;
-		
+
 	}//end of buildCustomerListNoNull method
-	
-	
+
+
 	/**
 	 * The buildRoomList method will populate the array of type
 	 * Room passed as input with DawsonRoom objects
@@ -478,14 +495,14 @@ public class HotelFileLoader {
 			String filename) {
 		//create a String array holding each line of the input file
 		String[] roomArray = sb.toString().split(ITEM_DELIMETER);
-		
+
 		//iterate through each entry of the roomArray 
 		for (int i = 0; i < rooms.length; i++) {
-			
+
 			//for each entry of the roomArray, separate each field(*)
 			//and assign them to the roomEntry array of type String
 			String[] roomEntry = roomArray[i].split(DELIMETER);
-			
+
 			//try the following block of code and any error that
 			//occur, display the error message
 			try{
@@ -526,8 +543,8 @@ public class HotelFileLoader {
 			}
 		}		
 	}//end of buildRoomList method
-	
-	
+
+
 	/**
 	 * The buildRoomListNoNull method will count the number of
 	 * null values from a Room array and will copy the content of
@@ -539,9 +556,9 @@ public class HotelFileLoader {
 	 * @author Lyrene Labor
 	 */
 	private static Room[] buildRoomListNoNull(Room[] rooms){
-		
+
 		int nullCount = 0;
-		
+
 		//the following loop will count the number null values
 		//in rooms array
 		for(int i = 0; i<rooms.length; i++){
@@ -549,12 +566,12 @@ public class HotelFileLoader {
 				nullCount++;
 			}
 		}
-		
+
 		//create another rooms array that will hold only non null 
 		//objects
 		Room[] roomsNoNull = new Room[rooms.length-nullCount];
 		int roomsNoNullIndex = 0;
-		
+
 		//the following loop will copy the non null values of rooms array
 		//into roomsNoNull method
 		for(int i =0; i<rooms.length; i++){
@@ -563,14 +580,14 @@ public class HotelFileLoader {
 				roomsNoNullIndex++;
 			}
 		}
-		
+
 		//return an array with no values
 		return roomsNoNull;
 	}// end of buildRoomListNoNull method
-	
-	
+
+
 	/**
-	 * countNumOfItems will count the number of items present in a 
+	 * countNumOfRooms will count the number of items present in a 
 	 * input file and will also store each line of the input file 
 	 * into a StringBuilder instance
 	 * @param scan Reference variable of type Scanner used
@@ -582,27 +599,27 @@ public class HotelFileLoader {
 	 * @author Lyrene Labor
 	 */
 	private static int countNumOfItems(Scanner scan, StringBuilder sb){
-		
-		//initialize the variable of # of items to 0
+
+		//initialize the variable of # of room to 0
 		int noOfItems=0; 
-						
+
 		//check each non empty line of the input file
 		while (scan.hasNext()) {
-			
+
 			String line = scan.nextLine();
 			//append to the StringBuilder object each
 			//non-empty line with a new delimeter(,) to separate
 			//each line
 			if(!(line.trim().isEmpty())){
 				sb.append(line).append(ITEM_DELIMETER);
-				noOfItems++; //increment number of items
+				noOfItems++; //increment number of rooms
 			}
 		}
-		
-		return noOfItems; //return number of items
-	}//end of countNumOfItems method
 
-	
+		return noOfItems; //return number of rooms
+	}//end of countNumOfRooms....
+
+
 	/**
 	 * The validateRoomEntry method will validate each line of
 	 * the file containing the rooms data and will check if each
@@ -615,7 +632,7 @@ public class HotelFileLoader {
 	 */
 	private static void validateRoomEntry(String[] roomEntry, String
 			filename) 
-			throws IllegalArgumentException {
+					throws IllegalArgumentException {
 		//throw the following exception if a room entry
 		//has more than 2 fields
 		if (roomEntry.length != 2)
@@ -624,8 +641,8 @@ public class HotelFileLoader {
 					". A room entry must have"
 					+ " 2 fields only");
 	}
-	
-	
+
+
 	/**
 	 * The validateCustomerEntry method will validate each line of
 	 * the file containing the customers data and will check if each
@@ -639,7 +656,7 @@ public class HotelFileLoader {
 	 */
 	private static void validateCustomerEntry(String[] customerEntry, 
 			String filename) 
-			throws IllegalArgumentException {
+					throws IllegalArgumentException {
 		//throw the following exception if a customer entry
 		//has more than 5 fields
 		if (!(customerEntry.length==5 || customerEntry.length==3))
@@ -648,4 +665,4 @@ public class HotelFileLoader {
 					". A customer entry must have"
 					+ " 5 fields or 3 fields only");
 	}//end of validateCustomerEntry method	  
-}//end of HotelFileLoader class
+}
