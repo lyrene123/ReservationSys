@@ -3,7 +3,7 @@ package dw317.hotel.data;
 /**
  * This exception signals that the provided Reservation does
  * not exist.
- * @author Ali Dali
+ * @author Ali Dali    
  */
 public class NonExistingReservationException extends Exception {
 

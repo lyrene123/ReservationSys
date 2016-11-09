@@ -13,7 +13,7 @@ public class SequentialTextFileList implements ListPersistenceObject{
 	private final String roomFilename;
 	private final String customerFilename;
 	private final String reservationFilename;
-
+          
 	/**
 	 * Constructor requires the filenames of the files containing the sorted
 	 * string representations of the Rooms, Customers, and Reservations.

@@ -2,7 +2,7 @@ package dw317.hotel.data;
 
 /**
  * This exception signals that the provided Reservation exists already.
- * @author Ali Dali
+ * @author Ali Dali     
  */
 public class DuplicateReservationException extends Exception{
 	

@@ -1,5 +1,5 @@
 package dw317.hotel.data.interfaces;
-
+      
 import java.io.IOException;
 import java.util.List;
 
