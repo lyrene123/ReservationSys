@@ -16,6 +16,7 @@ import dw317.hotel.data.DuplicateReservationException;
 import dw317.hotel.data.NonExistingReservationException;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import dw317.hotel.data.interfaces.ReservationDAO;
+import groupLAPD.hotel.business.DawsonHotelFactory;
 
 /**
  * 
@@ -29,24 +30,57 @@ public class ReservationListDB implements ReservationDAO {
 	private List<Room> allRooms;  
 	private final ListPersistenceObject listPersistenceObject;  
 	private final HotelFactory factory; 
-		
-	public ReservationListDB(List<Reservation> database,List<Room> allRooms,
-		ListPersistenceObject listPersistenceObject,HotelFactory factory ){
-		
+	
+	/**
+	 * 
+	 * @param listPersistenceObject
+	 * @author Lyrene Labor
+	 */
+	public ReservationListDB (ListPersistenceObject listPersistenceObject){
 		this.listPersistenceObject = listPersistenceObject;
-		this.factory = factory;
-		this.database = database;
+		this.factory = DawsonHotelFactory.DAWSON;
+		this.database = this.listPersistenceObject.getReservationDatabase();
 		this.allRooms = this.listPersistenceObject.getRoomDatabase();
-		
 	}
 	
 	/**
 	 * 
+	 * @param listPersistenceObject
+	 * @param factory
+	 * @author Lyrene Labor
+	 */
+	public ReservationListDB (ListPersistenceObject listPersistenceObject,
+			HotelFactory factory){
+		this.listPersistenceObject = listPersistenceObject;
+		this.factory = factory;
+		this.database = this.listPersistenceObject.getReservationDatabase();
+		this.allRooms = this.listPersistenceObject.getRoomDatabase();		
+	}
+	
+	
+	/**
+	 * 
+	 * @author Lyrene Labor
+	 */
+	@Override
+	public String toString(){
+		String dataString = "Number of reservations in database: " + 
+								this.database.size() + "\n";
+		for(int i = 0; i<this.database.size(); i++){
+			dataString += this.database.get(i).toString() + "\n";
+		}
+		return dataString;
+	}
+	
+	
+	/**
+	 * 
+	 * @author Lyrene Labor
 	 */
 	@Override
 	public void add(Reservation reserv) 
 			throws DuplicateReservationException {
-		// TODO Auto-generated method stub
+		
 
 	}
 

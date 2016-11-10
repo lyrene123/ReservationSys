@@ -3,6 +3,8 @@
  */
 package groupLAPD.hotel.data;
 
+import dw317.hotel.data.interfaces.ListPersistenceObject;
+
 /**
  * 
  * 
@@ -15,8 +17,14 @@ public class ReservationListDBTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		ListPersistenceObject file = new 
+				SequentialTextFileList("datafiles/database/rooms.txt", 
+										"datafiles/database/customer.txt",
+										"datafiles/database/reservations.txt");
+		ReservationListDB reserv = new ReservationListDB(file);
+		System.out.println(reserv.toString());
+		
 	}
 
 }
