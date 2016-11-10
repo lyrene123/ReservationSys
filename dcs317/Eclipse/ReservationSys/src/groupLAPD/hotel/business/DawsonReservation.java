@@ -78,12 +78,12 @@ public class DawsonReservation implements Reservation {
 	 */
 	public int compareTo(Reservation otherRes){
 		//checks checkIn Date is equal to other checkIn date
-		if(this.checkInDate.compareTo(otherRes.getCheckInDate()) == 0){
+		if(this.AROOM.compareTo(otherRes.getRoom()) == 0){
 			//check which Room is bigger
-			return this.AROOM.compareTo(otherRes.getRoom());
+			return this.checkInDate.compareTo(otherRes.getCheckInDate());
 		}else
 			//checks which checkIn date is bigger
-			return this.checkInDate.compareTo(otherRes.getCheckInDate());
+			return this.AROOM.compareTo(otherRes.getRoom());
 	}//end of compareTo()
 
 
