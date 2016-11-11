@@ -197,7 +197,7 @@ public class ReservationListDB implements ReservationDAO {
 	 * not it will return an empty arraList
 	 * @param Customer Cust (the customer we are looking for)
 	 * @return ArrayList reservList (filed of reservations or empty)
-	 * @author Lyrene Labor
+	 * @author Lyrene Labor, Ali Dali
 	 */
 	@Override
 	public List<Reservation> getReservations(Customer cust) {
@@ -219,20 +219,23 @@ public class ReservationListDB implements ReservationDAO {
 	 * @param Reservation reserv (the Reservation we want to remove)
 	 * @throws  NonExistingReservationException if Reservation not 
 	 * 			found.
-	 * @author Lyrene Labor
+	 * @author Lyrene Labor, Ali Dali
 	 */
 	@Override
 	public void cancel(Reservation reserv) 
 			throws NonExistingReservationException {
 
+		boolean found = false;
 		for(int i = 0; i < database.size(); i++){
 			if(database.get(i).equals(reserv)){
 				database.remove(i);
-			}else{
+				found = true;
+			}
+			}if(!found){
 				throw new NonExistingReservationException();
 			}
 		}
-	}
+
 
 	
 	/**

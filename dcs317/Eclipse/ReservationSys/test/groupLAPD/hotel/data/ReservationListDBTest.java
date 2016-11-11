@@ -6,10 +6,13 @@ package groupLAPD.hotel.data;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.List;
+
 import dw317.hotel.business.RoomType;
+import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.business.interfaces.HotelFactory;
 import dw317.hotel.business.interfaces.Reservation;
-import dw317.hotel.data.DuplicateReservationException;
+
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import groupLAPD.hotel.business.DawsonCustomer;
 import groupLAPD.hotel.business.DawsonHotelFactory;
@@ -34,36 +37,103 @@ public class ReservationListDBTest {
 		testTwoParamConst();
 		testToString();
 		testAdd();
-		/**ListPersistenceObject file = new 
-				SequentialTextFileList("datafiles/database/rooms.txt", 
-										"datafiles/database/customers.txt",
-										"datafiles/database/reservations.txt");
-		ReservationListDB reserv = new ReservationListDB(file);
-		System.out.println(reserv.toString());
+		testGetReservation();
+		testCancel();
+
+	}
+	
+	public static void testCancel(){
+		System.out.println("--------------------Testing Cancel-------------------");
+
+		DawsonCustomer goodCustomer = new DawsonCustomer("Ginette","Tremblay","tremgin4@alloqc.ca");
+		DawsonRoom goodRoom = new DawsonRoom (304, RoomType.NORMAL);
+		DawsonReservation reserv1 = new DawsonReservation(goodCustomer, goodRoom, 2016, 12, 1, 2016, 12, 26);
 		
+		testCancel("Case 1: The reservation we want to remove exists", reserv1, true);
 		
-		DawsonCustomer c1 = new DawsonCustomer("LYRENE", "LABOR", "leaveMeAlone@live.com");
-		DawsonCustomer c2 = new DawsonCustomer("WATERMELON", "LABOR", "StopAndLeave@live.com");
-		DawsonRoom room1 = new DawsonRoom(601, RoomType.SUITE);
-		DawsonRoom room2 = new DawsonRoom(101, RoomType.NORMAL);
-		DawsonReservation r1 = new DawsonReservation(c1,room1, 2016, 
-				9, 9, 2016, 10, 19);
-		DawsonReservation r2 = new DawsonReservation(c2,room2, 2015, 
-				10, 11, 2015, 10, 12);
-		System.out.println("---------------------------");
-		System.out.println();
-		System.out.println("JUST A TEST: " + r1.compareTo(r2));
+		DawsonCustomer customer2 = new DawsonCustomer("Ali","Tremblay","Ali@gmail.com");
+		DawsonRoom room2 = new DawsonRoom (305, RoomType.NORMAL);
+		DawsonReservation reserv2 = new DawsonReservation(customer2, room2, 2016, 12, 1, 2016, 12, 26);
 		
+		testCancel("Case 2: The reservation we want to remove does not exist", reserv2, false);
+
+		
+	}
+	
+	public static void testCancel(String testCase, Reservation reserv, boolean expected){
+		System.out.println(testCase);
+
+		String custFile = "datafiles/database/customers.txt";
+		String roomFile = "datafiles/database/rooms.txt";
+		String reservFile = "datafiles/database/reservations.txt";
+		ReservationListDB r1 =  null;
 		
 		try{
-			reserv.add(r1);
-		} catch(DuplicateReservationException e){
-			System.out.println("ERROR: " + e.getMessage());
+		ListPersistenceObject file = new 
+				SequentialTextFileList(roomFile,custFile,reservFile);
+		System.out.println("\tThe ListPersistenceObject instance was created");
+		r1 = new ReservationListDB(file);
+		r1.cancel(reserv);
+		System.out.println(reserv + " --> removed");
+		if(!expected){
+			System.out.println("Expected test to fail but it didnt");
 		}
-		System.out.println(reserv.toString());*/
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			if(expected){
+				System.out.println("Expected this to succeed but it didnt");
+			}
+		}	
+		System.out.println();
+		System.out.println(r1.toString());
 	}
 	
 	
+	public static void testGetReservation(){
+		
+		System.out.println("--------------------Testing getReservations-------------------");
+
+		
+		DawsonCustomer goodCustomer = new DawsonCustomer("Ginette","Tremblay","tremgin4@alloqc.ca");
+		
+		testGetReservations("case 1: customer is availble in databe", goodCustomer, true);
+		
+		DawsonCustomer badCustomer = new DawsonCustomer("Ali","Dali","ali@hotmail.com");
+
+		testGetReservations("case 2: customer is not availble in databe", badCustomer, true);	
+	}
+	
+	
+	public static void testGetReservations(String testCase, Customer cust, boolean expectedResult){
+			
+		System.out.println(testCase);
+		
+		List<Reservation> reservationList = null;
+		String custFile = "datafiles/database/customers.txt";
+		String roomFile = "datafiles/database/rooms.txt";
+		String reservFile = "datafiles/database/reservations.txt";
+		ReservationListDB r1 =  null;
+		
+		try{
+		ListPersistenceObject file = new 
+				SequentialTextFileList(roomFile,custFile,reservFile);
+		System.out.println("\tThe ListPersistenceObject instance was created");
+		r1 = new ReservationListDB(file);
+		reservationList = r1.getReservations(cust);
+		if(!expectedResult){
+			System.out.println("Expected test to fail but it didnt");
+		}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			if(expectedResult){
+				System.out.println("Expected this to succeed but it didnt");
+			}
+		}
+		
+		for(Reservation c : reservationList){
+			System.out.println(c);
+		}
+}
 	private static void setupReservations(){
 		String[] reservs = new String[5];
 		reservs [0] = "david_ferguson1@google.ca*2015*9*24*2015*9*29*102";
@@ -333,3 +403,4 @@ public class ReservationListDBTest {
 	}
 
 }
+
