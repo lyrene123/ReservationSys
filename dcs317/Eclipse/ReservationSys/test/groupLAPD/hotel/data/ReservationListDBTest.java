@@ -440,11 +440,11 @@ public class ReservationListDBTest {
 				"testfiles/testReservations2.txt",
 				r3,true);
 		
-		DawsonRoom room4 = new DawsonRoom(701, RoomType.SUITE);
-		DawsonReservation r4 = new DawsonReservation(c1,room4, 2009, 
-				9, 9, 2009, 9, 10);
+		DawsonRoom room4 = new DawsonRoom(101, RoomType.NORMAL);
+		DawsonReservation r4 = new DawsonReservation(c1,room4, 1990, 
+				9, 9, 1990, 9, 10);
 		testAdd("case 10: testing with another reservation file"
-				+ " testfiles/testReservations3.txt. ADDING AT THE END", 
+				+ " testfiles/testReservations3.txt. ADDING AT THE BEGINNING", 
 				"datafiles/database/rooms.txt",
 				"datafiles/database/customers.txt",
 				"testfiles/testReservations3.txt",
