@@ -17,25 +17,33 @@ import dw317.hotel.data.NonExistingReservationException;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import dw317.hotel.data.interfaces.ReservationDAO;
 import groupLAPD.hotel.business.DawsonHotelFactory;
-import groupLAPD.hotel.business.DawsonReservation;
 
 /**
- * 
- * 
- * @author Lyrene Labor, Daniel Cavalcanti
- *
+ * The ReservationListDB class which implements the
+ * ReservationDAO interface represents the reservation 
+ * database as an internal list. The concrete 
+ * ReservationListDB provides ReservationDAO 
+ * functionality. 
+ * @version November 2016
+ * @author Lyrene Labor, Daniel Cavalcanti, Ali Dali
  */
 public class ReservationListDB implements ReservationDAO {
-	
-	private List<Reservation> database;  
-	private List<Room> allRooms;  
-	private final ListPersistenceObject listPersistenceObject;  
+	//fields declaration
+	private List<Reservation> database; //List for reservations
+	private List<Room> allRooms; //List for rooms  
+	//ListPersistenceObject to read from a file
+	private final ListPersistenceObject listPersistenceObject; 
+	//HotelFactory in order to create instances of Reservation 
 	private final HotelFactory factory; 
 	
 	/**
-	 * 
-	 * 
-	 * @param listPersistenceObject
+	 * The 1 parameter ReservationListDB Constructor method will assign
+	 * a value for the final ListPersistenceObject field with the input
+	 * value and will use that field to fill the reservations and rooms
+	 * database fields. In addition, the constructor will also set a value
+	 * for the final HotelFactory field. 
+	 * @param listPersistenceObject - Reference value of a 
+	 * 								listPersistenceObject object
 	 * @author Lyrene Labor
 	 */
 	public ReservationListDB (ListPersistenceObject listPersistenceObject){
@@ -46,9 +54,15 @@ public class ReservationListDB implements ReservationDAO {
 	}
 	
 	/**
-	 * 
-	 * @param listPersistenceObject
-	 * @param factory
+	 * The 2 parameter ReservationListDB Constructor method will take as 
+	 * input two values: one for the final ListPersistenceObject field 
+	 * which will then be used to fill the reservations and rooms database 
+	 * fields and another input value used to set a value for the final
+	 * HotelFactory field. 
+	 * @param listPersistenceObject - Reference value of a 
+	 * 								listPersistenceObject object
+	 * @param factory - Reference value of a 
+	 * 					HotelFactory object
 	 * @author Lyrene Labor
 	 */
 	public ReservationListDB (ListPersistenceObject listPersistenceObject,
@@ -61,7 +75,9 @@ public class ReservationListDB implements ReservationDAO {
 	
 	
 	/**
-	 * 
+	 * The toString method will return a string representation containing
+	 * all reservation instances of the reservations database
+	 * @return A String representation of all reservations from database 
 	 * @author Lyrene Labor
 	 */
 	@Override
@@ -76,12 +92,18 @@ public class ReservationListDB implements ReservationDAO {
 	
 	
 	/**
-	 * 
+	 * The add method takes as input a reservation object and will add
+	 * a copy of the new reservation object into the reservations database 
+	 * if it does not overlap with any existing reservations in the database.
+	 * The add method will add the new reservations object in the 
+	 * correct order.
+	 * @param reserv - Reference value of a Reservation object
 	 * @author Lyrene Labor
 	 */
 	@Override
 	public void add(Reservation reserv) 
 			throws DuplicateReservationException {
+		//check for any overlap with reserv and an existing reservation
 		for(int i = 0; i<this.database.size(); i++){
 			if(this.database.get(i).overlap(reserv)){
 				throw new DuplicateReservationException();
@@ -96,55 +118,53 @@ public class ReservationListDB implements ReservationDAO {
 				reserv.getCheckOutDate().getYear(), 
 				reserv.getCheckOutDate().getMonthValue(),
 				reserv.getCheckOutDate().getDayOfMonth());
+		//add the new reservation in the correct order
 		insertToOrderedList(copyReserv, this.database);
 	}
 	
 	/**
-	 * 
-	 * @param reserv
-	 * @param database
+	 * The insertToOrderedList method takes 2 input: a reservation
+	 * object and a List of reservations. The method will add the 
+	 * input reservation into the ordered List of reservations 
+	 * by performing a Binary Search throughout the whole List.
+	 * @param reserv - A reservation object to add to the 
+	 * 					reservation List
+	 * @param database - A List of reservation objects
+	 * @author Lyrene Labor
 	 */
 	private static void insertToOrderedList(Reservation reserv, 
-											List<Reservation> database ){
-		boolean isAdded = false;
-		
-		int left = 0;
-		int right = database.size() - 1;
-		int middle = (left + right)/2;
+											List<Reservation> database ){	
+		int left = 0;//lower bound position
+		int right = database.size() - 1;//higher bound position
+		int middle = (left + right)/2;//position of the middle value
+		int position = -1;//position of the new reservation to add
 		while(right>=left){
+			//if value at the middle is smaller than the new reservation
+			//check the next value after it and update position
 			if(database.get(middle).compareTo(reserv) < 0){
+				position = middle+1;
 				left = middle + 1;
 			}
-			else if(database.get(middle).compareTo(reserv)>0){
-				right = middle-1;
+			//if value at the middle is bigger than the new reservation
+			//check the next value before it and update position
+			if(database.get(middle).compareTo(reserv)>0){				
+				position = middle+1;
+				right = middle - 1;
 			}
-			else{
-				database.add(middle, reserv);
-				isAdded = true;
-			}
+			middle = (left + right)/2; //update middle position
 		}
 		
-		if(isAdded == false){
+		if(position!=-1){
+			//if position has been updated, add the new reservation
+			//in the List based on position
+			database.add(position, reserv);
+		}
+		else{
+			//if position has not been updated, add the new reservation
+			//in the List at the end
 			database.add(reserv);
 		}
-		
-		/**for(int i = 0; i< database.size(); i++){
-			//if the element from database is smaller than reserv, 
-			//skip to the next element
-			if(database.get(i).compareTo(reserv) < 0){
-				continue;
-			}
-			else{
-				//otherwise add reserv to the current position of the loop
-				database.add(reserv);
-				isAdded = true;
-			}
-		}
-		//if reserv hasn't been added, add at the end of the List
-		if(isAdded == false){
-			database.add(reserv);		
-		}*/
-	}
+	}//end of insertToOrderedList method
 	
 
 	/**
