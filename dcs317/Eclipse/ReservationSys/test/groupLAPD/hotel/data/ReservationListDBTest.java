@@ -282,8 +282,26 @@ public class ReservationListDBTest {
 				r2,true);
 		
 		DawsonRoom room3 = new DawsonRoom(801, RoomType.PENTHOUSE);
-		DawsonReservation r3 = new DawsonReservation(c1,room3, 1990, 
-				9, 9, 1990, 9, 10);
+		DawsonReservation r3 = new DawsonReservation(c1,room3, 3000, 
+				9, 9, 3000, 9, 10);
+		testAdd("case 7: testing with good merged reservation file"
+				+ " from datafiles/database folder. ADDING AT THE END", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"datafiles/database/reservations.txt",
+				r3,true);
+		testAdd("case 8: testing with another reservation file"
+				+ " testfiles/testReservations.txt. ADDING AT THE END", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations.txt",
+				r3,true);
+		testAdd("case 9: testing with another reservation file"
+				+ " testfiles/testReservations2.txt. ADDING AT THE END", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations2.txt",
+				r3,true);
 		teardown();				
 	}
 

@@ -141,21 +141,31 @@ public class ReservationListDB implements ReservationDAO {
 		int position = -1;//position of the new reservation to add
 		while(right>=left){			
 			try{
+				//if the value @ middle of database is smaller than reserv
+				//and the next value after middle is bigger, then position
+				//should be after the middle position
 				if(database.get(middle).compareTo(reserv) < 0
 						&& database.get(middle+1).compareTo(reserv) > 0){
 					position = middle+1;
-					break;
-				}		
+					break;//break since position is now found
+				}	
+				//if the value @ middle of database is smaller than reserv
+				//and same thing for the next value after middle, then
+				//update left position
 				if(database.get(middle).compareTo(reserv)<0
 						&& database.get(middle+1).compareTo(reserv) < 0){				
 					left = middle+1;
 				}	
+				//if the value @ middle of database is bigger than reserv
+				//then update right position
 				if(database.get(middle).compareTo(reserv)>0){				
 					right = middle-1;
 				}
 
 				middle = (left + right)/2; //update middle position
-			}catch(IndexOutOfBoundsException e){				
+			}catch(IndexOutOfBoundsException e){	
+				//if our search has now reached the right or left borders
+				//then exit the while loop
 				break;
 			}
 		}
@@ -166,10 +176,13 @@ public class ReservationListDB implements ReservationDAO {
 			database.add(position, reserv);
 		}
 		else{
+			//if position has not been updated, do the following
 			if(database.get(0).compareTo(reserv)>0){
+				//if our searching reached the right border:
 				database.add(0,reserv);
 			}
 			if(database.get(database.size()-1).compareTo(reserv)<0){
+				//if our searching reached the left border:
 				database.add(reserv);
 			}			
 		}
