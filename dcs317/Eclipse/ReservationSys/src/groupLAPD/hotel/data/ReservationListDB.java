@@ -281,22 +281,38 @@ public class ReservationListDB implements ReservationDAO {
 	
 	/**
 	 * 
+	 * @author Daniel Cavalcanti
 	 */
 	@Override
 	public List<Room> getFreeRooms(LocalDate checkin,
 			LocalDate checkout) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Room> reservedRoomstemp = getReservedRooms(checkin, checkout);
+		List<Room> freeRooms = this.allRooms;
+		freeRooms.removeAll(reservedRoomstemp);	
+
+		return freeRooms;
 	}
 
 	/**
 	 * 
+	 * @author Daniel Cavalcanti
 	 */
 	@Override
 	public List<Room> getFreeRooms(LocalDate checkin,
 			LocalDate checkout, RoomType roomType) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Room> unreservedRoomtemp = getFreeRooms(checkin,checkout);
+		List<Room> freeRoomsByType = new ArrayList<Room>();
+
+		for(int i = 0; i<unreservedRoomtemp.size(); i++){
+			if(unreservedRoomtemp.get(i).getRoomType().compareTo(roomType) == 0){
+				freeRoomsByType.add(unreservedRoomtemp.get(i));
+			}
+		}
+
+		return freeRoomsByType;
+
 	}
 
 	/**

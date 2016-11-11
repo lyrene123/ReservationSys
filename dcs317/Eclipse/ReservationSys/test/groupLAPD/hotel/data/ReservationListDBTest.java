@@ -23,7 +23,7 @@ import groupLAPD2016.util.ListUtilities;
 /**
  * 
  * 
- * @author Lyrene Labor, Daniel Cavalcanti
+ * @author Lyrene Labor, Daniel Cavalcanti, Ali Dali
  *
  */
 public class ReservationListDBTest {
@@ -39,6 +39,7 @@ public class ReservationListDBTest {
 		testAdd();
 		testGetReservation();
 		testCancel();
+		testDisconnect();
 
 	}
 	
@@ -388,6 +389,74 @@ public class ReservationListDBTest {
 			r1.add(r2);
 			System.out.println("\tDatabase content after adding:");
 			System.out.println("\t" + r1.toString());
+			if (!expected)
+				System.out.print("\n\tError! You expected this case to "
+						+ "fail but it didn't. ");
+		}catch (Exception x) {
+			System.out.print("\n\tError! There was an unexpected exception"
+					+ " type " + x.getClass() +  " "  + 				
+					x.getMessage());
+			if (expected)
+				System.out.print("\n\tYou expected this case to succeed but"
+						+ " it didn't ");
+		}
+		System.out.println("\n");		
+	}
+	
+	
+	private static void testDisconnect(){
+		System.out.println("TESTING THE DISCONNECT METHOD ");
+		setupReservations();
+		
+		DawsonCustomer c1 = new DawsonCustomer("LYRENE", "LABOR", 
+				"leaveMeAlone@live.com");
+		DawsonCustomer c2 = new DawsonCustomer("ALI", "DALI", 
+				"buyMeAGift@live.com");
+		DawsonRoom room1 = new DawsonRoom(302, RoomType.NORMAL);
+		DawsonRoom room2 = new DawsonRoom(303, RoomType.NORMAL);
+		DawsonReservation r1 = new DawsonReservation(c1,room1, 2010, 
+				9, 9, 2010, 9, 10);
+		DawsonReservation r2 = new DawsonReservation(c2,room2, 2000, 
+				9, 9, 2000, 9, 10);
+		
+		testDisconnect("case 1: testing with reservation file"
+				+ " from datafiles/database folder.", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations.txt",
+				r1,r2,true);
+		
+	}
+	
+	
+	
+	private static void testDisconnect(String test, String rooms, String cust, 
+			String reserv,Reservation r2, Reservation r3, boolean expected){
+		System.out.println("   " + test);
+		try{
+			ListPersistenceObject file = new 
+					SequentialTextFileList(rooms,cust,reserv);
+			System.out.println("\tThe ListPersistenceObject instance was created");
+			
+			ReservationListDB r1 = new ReservationListDB(file);
+			System.out.println("\n\tThe ReservationListDB instance was created");
+			
+			System.out.println("\n\tNow adding 2 new reservations: "
+					+ "\n\t" + r2.toString()
+					+"\n\t" + r3.toString());	
+			r1.add(r2);
+			r1.add(r3);
+			
+			System.out.println("\n\tContent of database after adding: ");
+			System.out.println("\t" + r1.toString());
+			
+			System.out.println("\n\tNow disconnecting and reconnecting");
+			r1.disconnect();
+			ReservationListDB saved = new ReservationListDB(file);
+			
+			System.out.println("\n\tDatabase content after disconnecting:");
+			System.out.println("\t" + saved.toString());
+			
 			if (!expected)
 				System.out.print("\n\tError! You expected this case to "
 						+ "fail but it didn't. ");
