@@ -197,7 +197,7 @@ public class ReservationListDB implements ReservationDAO {
 	 * This method takes an input a customer and checks the
 	 * database for that customer if it is found it will add 
 	 * all the reservations of that customer to an ArrayList if
-	 * not it will return an empty arraList
+	 * not it will return an empty arrayList
 	 * @param Customer Cust (the customer we are looking for)
 	 * @return ArrayList reservList (filed of reservations or empty)
 	 * @author Lyrene Labor, Ali Dali
@@ -206,8 +206,9 @@ public class ReservationListDB implements ReservationDAO {
 	public List<Reservation> getReservations(Customer cust) {
 		
 		ArrayList<Reservation> reservList = new ArrayList<>();
-		
+		//loop through database to check if reservation of cust exists
 		for(int i = 0; i < database.size(); i++){
+			//if reservations of cust found, add it to the array list
 			if(database.get(i).getCustomer().equals(cust)){
 				reservList.add(database.get(i));
 			}
@@ -230,12 +231,15 @@ public class ReservationListDB implements ReservationDAO {
 			throws NonExistingReservationException {
 
 		boolean found = false;
+		//loop through the database to check if reserv exists
 		for(int i = 0; i < database.size(); i++){
 			if(database.get(i).equals(reserv)){
+				//remove if reserv exists in database
 				database.remove(i);
 				found = true;
 			}
 		}if(!found){
+			//if not found, throw an exception
 			throw new NonExistingReservationException();
 		}
 	}//end of cancel method
@@ -320,7 +324,14 @@ public class ReservationListDB implements ReservationDAO {
 	 */
 	@Override
 	public void clearAllPast() {
-		// TODO Auto-generated method stub
+
+		LocalDate currentDate = LocalDate.now();
+		for (int i = 0; i < this.database.size(); i++) {
+			if (this.database.get(i).getCheckOutDate().isBefore(currentDate)) {
+				this.database.remove(i);
+				i--;
+			}
+		}
 
 	}
 
