@@ -184,7 +184,7 @@ public class ReservationListDB implements ReservationDAO {
 				//if our searching reached the right border:
 				database.add(0,reserv);
 			}
-			if(database.get(database.size()-1).compareTo(reserv)<0){
+			else{
 				//if our searching reached the left border:
 				database.add(reserv);
 			}			
@@ -321,6 +321,7 @@ public class ReservationListDB implements ReservationDAO {
 
 	/**
 	 * 
+	 * @author Daniel Cavalcanti
 	 */
 	@Override
 	public void clearAllPast() {
