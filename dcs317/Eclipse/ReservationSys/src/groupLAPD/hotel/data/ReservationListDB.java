@@ -5,6 +5,7 @@ package groupLAPD.hotel.data;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import dw317.hotel.business.RoomType;
@@ -166,31 +167,58 @@ public class ReservationListDB implements ReservationDAO {
 		}
 	}//end of insertToOrderedList method
 	
+	
+	
+	/**
+	 * This method takes an input a customer and checks the
+	 * database for that customer if it is found it will add 
+	 * all the reservations of that customer to an ArrayList if
+	 * not it will return an empty arraList
+	 * @param Customer Cust (the customer we are looking for)
+	 * @return ArrayList reservList (filed of reservations or empty)
+	 * @author Lyrene Labor
+	 */
+	@Override
+	public List<Reservation> getReservations(Customer cust) {
+		
+		ArrayList<Reservation> reservList = new ArrayList<>();
+		
+		for(int i = 0; i < database.size(); i++){
+			if(database.get(i).getCustomer().equals(cust)){
+				reservList.add(database.get(i));
+			}
+		}
+		return reservList;
+	}
 
+	/**
+	 * This method method will look through the database for
+	 * the specified Reservation and if found it will remove it
+	 * if not it will throw a NonExistingReservationException
+	 * @param Reservation reserv (the Reservation we want to remove)
+	 * @throws  NonExistingReservationException if Reservation not 
+	 * 			found.
+	 * @author Lyrene Labor
+	 */
+	@Override
+	public void cancel(Reservation reserv) 
+			throws NonExistingReservationException {
+
+		for(int i = 0; i < database.size(); i++){
+			if(database.get(i).equals(reserv)){
+				database.remove(i);
+			}else{
+				throw new NonExistingReservationException();
+			}
+		}
+	}
+
+	
 	/**
 	 * 
 	 */
 	@Override
 	public void disconnect() throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public List<Reservation> getReservations(Customer cust) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public void cancel(Reservation reserv) 
-			throws NonExistingReservationException {
 		// TODO Auto-generated method stub
 
 	}
