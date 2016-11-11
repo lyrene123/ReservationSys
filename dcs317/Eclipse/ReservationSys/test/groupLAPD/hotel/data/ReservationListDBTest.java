@@ -235,31 +235,58 @@ public class ReservationListDBTest {
 	private static void testAdd(){
 		System.out.println("TESTING THE ADD METHOD ");
 		setupReservations();
-		DawsonCustomer c1 = new DawsonCustomer("LYRENE", "LABOR", "leaveMeAlone@live.com");
-		DawsonRoom room1 = new DawsonRoom(404, RoomType.NORMAL);
-		DawsonReservation r1 = new DawsonReservation(c1,room1, 2020, 
-				9, 9, 2020, 9, 10);
+		DawsonCustomer c1 = new DawsonCustomer("LYRENE", "LABOR", 
+									"leaveMeAlone@live.com");
+		DawsonRoom room1 = new DawsonRoom(302, RoomType.NORMAL);
+		DawsonReservation r1 = new DawsonReservation(c1,room1, 2010, 
+				9, 9, 2010, 9, 10);
 		testAdd("case 1: testing with good merged reservation file"
-							+ " from datafiles/database folder", 
-							"datafiles/database/rooms.txt",
-							"datafiles/database/customers.txt",
-							"datafiles/database/reservations.txt",
-							r1,true);
+				+ " from datafiles/database folder. ADDING AT THE MIDDLE", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"datafiles/database/reservations.txt",
+				r1,true);
 		testAdd("case 2: testing with another reservation file"
-							+ " testfiles/testReservations.txt", 
+				+ " testfiles/testReservations.txt. ADDING AT THE MIDDLE", 
 				"datafiles/database/rooms.txt",
 				"datafiles/database/customers.txt",
 				"testfiles/testReservations.txt",
 				r1,true);
 		testAdd("case 3: testing with another reservation file"
-				+ " testfiles/testReservations2.txt", 
-	"datafiles/database/rooms.txt",
-	"datafiles/database/customers.txt",
-	"testfiles/testReservations2.txt",
-	r1,true);
+				+ " testfiles/testReservations2.txt. ADDING AT THE MIDDLE", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations2.txt",
+				r1,true);
+		
+		DawsonRoom room2 = new DawsonRoom(101, RoomType.NORMAL);
+		DawsonReservation r2 = new DawsonReservation(c1,room2, 1990, 
+				9, 9, 1990, 9, 10);
+		testAdd("case 4: testing with good merged reservation file"
+				+ " from datafiles/database folder. ADDING AT THE BEGINNING", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"datafiles/database/reservations.txt",
+				r2,true);
+		testAdd("case 5: testing with another reservation file"
+				+ " testfiles/testReservations.txt. ADDING AT THE BEGINNING", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations.txt",
+				r2,true);
+		testAdd("case 6: testing with another reservation file"
+				+ " testfiles/testReservations2.txt. ADDING AT THE BEGINNING", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations2.txt",
+				r2,true);
+		
+		DawsonRoom room3 = new DawsonRoom(801, RoomType.PENTHOUSE);
+		DawsonReservation r3 = new DawsonReservation(c1,room3, 1990, 
+				9, 9, 1990, 9, 10);
 		teardown();				
 	}
-	
+
 	
 	private static void testAdd(String test, String rooms, String cust, 
 			String reserv, Reservation r2, boolean expected){

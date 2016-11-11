@@ -136,23 +136,28 @@ public class ReservationListDB implements ReservationDAO {
 	private static void insertToOrderedList(Reservation reserv, 
 											List<Reservation> database ){	
 		int left = 0;//lower bound position
-		int right = database.size() - 1;//higher bound position
+		int right = database.size();//higher bound position
 		int middle = (left + right)/2;//position of the middle value
 		int position = -1;//position of the new reservation to add
-		while(right>=left){
-			//if value at the middle is smaller than the new reservation
-			//check the next value after it and update position
-			if(database.get(middle).compareTo(reserv) < 0){
-				position = middle+1;
-				left = middle + 1;
+		while(right>=left){			
+			try{
+				if(database.get(middle).compareTo(reserv) < 0
+						&& database.get(middle+1).compareTo(reserv) > 0){
+					position = middle+1;
+					break;
+				}		
+				if(database.get(middle).compareTo(reserv)<0
+						&& database.get(middle+1).compareTo(reserv) < 0){				
+					left = middle+1;
+				}	
+				if(database.get(middle).compareTo(reserv)>0){				
+					right = middle-1;
+				}
+
+				middle = (left + right)/2; //update middle position
+			}catch(IndexOutOfBoundsException e){				
+				break;
 			}
-			//if value at the middle is bigger than the new reservation
-			//check the next value before it and update position
-			if(database.get(middle).compareTo(reserv)>0){				
-				position = middle+1;
-				right = middle - 1;
-			}
-			middle = (left + right)/2; //update middle position
 		}
 		
 		if(position!=-1){
@@ -161,9 +166,12 @@ public class ReservationListDB implements ReservationDAO {
 			database.add(position, reserv);
 		}
 		else{
-			//if position has not been updated, add the new reservation
-			//in the List at the end
-			database.add(reserv);
+			if(database.get(0).compareTo(reserv)>0){
+				database.add(0,reserv);
+			}
+			if(database.get(database.size()-1).compareTo(reserv)<0){
+				database.add(reserv);
+			}			
 		}
 	}//end of insertToOrderedList method
 	
