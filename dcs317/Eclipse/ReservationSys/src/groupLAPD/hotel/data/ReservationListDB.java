@@ -6,6 +6,8 @@ package groupLAPD.hotel.data;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import dw317.hotel.business.RoomType;
@@ -18,6 +20,7 @@ import dw317.hotel.data.NonExistingReservationException;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import dw317.hotel.data.interfaces.ReservationDAO;
 import groupLAPD.hotel.business.DawsonHotelFactory;
+import groupLAPD2016.util.ListUtilities;
 
 /**
  * The ReservationListDB class which implements the
@@ -210,8 +213,9 @@ public class ReservationListDB implements ReservationDAO {
 			}
 		}
 		return reservList;
-	}
+	}//end of getReservations method
 
+	
 	/**
 	 * This method method will look through the database for
 	 * the specified Reservation and if found it will remove it
@@ -231,32 +235,50 @@ public class ReservationListDB implements ReservationDAO {
 				database.remove(i);
 				found = true;
 			}
-			}if(!found){
-				throw new NonExistingReservationException();
-			}
+		}if(!found){
+			throw new NonExistingReservationException();
 		}
-
+	}//end of cancel method
+	
+	
+	/**
+	 * The disconnect method is implement to make the reservation 
+	 * database transactions persistent. This method will save the database 
+	 * to disk and will then assign null to the database field.
+	 * @throws IOException - if any error occurs when saving database
+	 * 							to a file.
+	 * @author Lyrene Labor						
+	 */
+	@Override
+	public void disconnect() throws IOException {	 
+		this.listPersistenceObject.saveReservationDatabase(this.database);
+	}//end of disconnect method
 
 	
 	/**
 	 * 
-	 */
-	@Override
-	public void disconnect() throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * 
+	 * @author Daniel Cavalcanti
 	 */
 	@Override
 	public List<Room> getReservedRooms(LocalDate checkin,
 			LocalDate checkout) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		ArrayList<Room> reservedRooms = new ArrayList<Room>();
 
+		for(int i = 0; i<this.database.size(); i++){
+			if(this.database.get(i).getCheckInDate().isBefore(checkout)){
+				if(this.database.get(i).getCheckOutDate().isAfter(checkin)){
+					reservedRooms.add(this.database.get(i).getRoom());
+				}
+			}
+		}
+		HashSet<Room> listToSet = new HashSet<Room>(reservedRooms);
+		List<Room> listWithoutDuplicates = new ArrayList<Room>(listToSet);
+		Collections.sort(listWithoutDuplicates);
+
+		return listWithoutDuplicates;
+	}
+	
+	
 	/**
 	 * 
 	 */
