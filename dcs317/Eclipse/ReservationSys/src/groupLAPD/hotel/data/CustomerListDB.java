@@ -14,6 +14,7 @@ import dw317.hotel.data.NonExistingCustomerException;
 import dw317.hotel.data.interfaces.CustomerDAO;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import dw317.lib.Email;
+import dw317.lib.Name;
 import dw317.lib.creditcard.CreditCard;
 import groupLAPD.hotel.business.DawsonHotelFactory;
 import groupLAPD2016.util.ListUtilities;
@@ -58,13 +59,46 @@ public class CustomerListDB implements CustomerDAO{
 				+ " already exists in the database.");
 		} 
 		
-		database.add(cust);
+		Name name = cust.getName();
+		Customer customer = factory.getCustomerInstance(name.getFirstName()
+				, name.getLastName(), cust.getEmail().toString());
+		
+		
+		int indexToAdd = findIndexToAdd(database, customer.getEmail());
+		database.add(indexToAdd, customer);
+	}
+	
+	private static int findIndexToAdd(List<Customer> customerList, Email email){
+		int startIndex = 0; 
+		int endIndex = customerList.size() - 1;
+		int midIndex = (startIndex + endIndex) / 2;
+
+		if(customerList.get(startIndex).getEmail().compareTo(email) > 0){
+			return startIndex;
+		}
+
+		if(customerList.get(endIndex).getEmail().compareTo(email) < 0){
+			return endIndex;
+		}
+		
+		while(startIndex <= endIndex){
+
+			if(customerList.get(midIndex + 1).getEmail().compareTo(email) > 0){
+				if(customerList.get(midIndex).getEmail().compareTo(email) < 0)
+					return midIndex + 1;
+			}
+			if(customerList.get(midIndex).getEmail().compareTo(email) > 0){
+				endIndex = midIndex - 1;
+			}
 			
-		Customer[] customer = new Customer[database.size()];
-		database.toArray(customer);
-		ListUtilities.sort(customer);
-		database = Arrays.asList(customer);
-		//System.out.println(database.getClass());
+			if(customerList.get(midIndex).getEmail().compareTo(email) < 0){
+				startIndex = midIndex + 1;
+			}
+				
+			midIndex = (startIndex + endIndex)/2;
+		}
+
+		return -1;
 	}
 
 	@Override
@@ -99,13 +133,13 @@ public class CustomerListDB implements CustomerDAO{
 	/**
 	 * This method is to search all the customer list base on the email
 	 *  This will return the index of matched customer in the list.
-	 * @param arrList	List of customer that needs to be searched
+	 * @param customerList	List of customer that needs to be searched
 	 * @param email	
 	 * @return index of the matched customer
 	 */
-	private static int binarySearch(List<Customer> arrList, Email email) {
+	private static int binarySearch(List<Customer> customerList, Email email) {
 		int startIndex = 0; 
-		int endIndex = arrList.size() - 1;
+		int endIndex = customerList.size() - 1;
 		int midIndex = (startIndex + endIndex) / 2;
 		/*System.out.println("startIndex : " + startIndex);
 		System.out.println("endIndex : " + endIndex);
@@ -120,14 +154,14 @@ public class CustomerListDB implements CustomerDAO{
 		
 		while(startIndex <= endIndex){
 			//System.out.println("result of compareTo : " + arrList.get(midIndex).getEmail().compareTo(email));
-			if(arrList.get(midIndex).getEmail().compareTo(email) == 0){
+			if(customerList.get(midIndex).getEmail().compareTo(email) == 0){
 				return midIndex;
 			}
-			if(arrList.get(midIndex).getEmail().compareTo(email) > 0){
+			if(customerList.get(midIndex).getEmail().compareTo(email) > 0){
 				endIndex = midIndex - 1;
 			}
 			
-			if(arrList.get(midIndex).getEmail().compareTo(email) < 0){
+			if(customerList.get(midIndex).getEmail().compareTo(email) < 0){
 				startIndex = midIndex + 1;
 			}
 				
