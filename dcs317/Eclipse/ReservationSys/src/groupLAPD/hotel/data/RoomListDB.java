@@ -10,7 +10,7 @@ import dw317.hotel.data.interfaces.ListPersistenceObject;
 
 /**
  * Concrete class that provides RoomDAO functionality
- * @author Jaya
+ * @author Provide by teacher
  */
 public class RoomListDB implements RoomDAO {
 
