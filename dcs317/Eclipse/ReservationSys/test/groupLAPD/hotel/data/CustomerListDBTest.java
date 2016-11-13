@@ -20,11 +20,11 @@ public class CustomerListDBTest {
 
 	public static void main(String[] args) {
 
-		//testToString();
-		//testAdd();
+		testToString();
+		testAdd();
 		testDisconnect();
-		//testGetCustomer();
-		//testUpdate();
+		testGetCustomer();
+		testUpdate();
 	}
 	
 	private static void setup()
@@ -69,8 +69,7 @@ public class CustomerListDBTest {
 					"testfiles/testReservations.txt");
 		}
 		catch(IOException io){
-			System.out.println
-			("Error creating file in setUp()");
+			System.out.println("Error creating file in setUp()");
 		}
 	}	
 	
@@ -91,23 +90,25 @@ public class CustomerListDBTest {
 	
 	private static void testToString(){
 		setup();
+		
+		System.out.println("Testing toString()");
+		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
 						"testfiles/testReservations.txt");
-		CustomerListDB db = new CustomerListDB(file);
-		CustomerListDB db2Param = new CustomerListDB(file, DawsonHotelFactory.DAWSON);
 		
-		System.out.println("1 parametor constructor : ");
+		CustomerListDB db = new CustomerListDB(file);
+		
+		System.out.println("Case 1: 1 parametor constructor");
 		System.out.println(db.toString());
 		System.out.println();
-		System.out.println("2 parmaetor constructor : ");
-		System.out.println(db2Param.toString());
-
+		
 		teardown();
 	}
 	
 	private static void testAdd(){
 		setup();
+		System.out.println("Testing Add() : ");	
 		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
@@ -116,25 +117,36 @@ public class CustomerListDBTest {
 		CustomerListDB db = new CustomerListDB(file);
 		
 		Customer alreadyExistCust = new DawsonCustomer("Raj", "Wong", "lyrence.l.labor@yahoo.com");
-		Customer lastOflistCust = new DawsonCustomer("Donald", "Trump", "donald.trump@zaha.com");
+		Customer lastOflistCust = new DawsonCustomer("Donald", "Trump", "donald.trump@zzzz.com");
 		Customer startOflistCust = new DawsonCustomer("hilary", "clinton", "hilaryclinton@012.com");
 		
-		try {
-			//db.add(alreadyExistCust);
+		try {			
+			System.out.println("Case 1 : added " + lastOflistCust + " to the last of the list");
 			db.add(lastOflistCust);
-			db.add(startOflistCust);			
+			System.out.println(db.toString());
+			System.out.println();
+			
+			System.out.println("Case 2 : added " + startOflistCust + " to the first of the list");
+			db.add(startOflistCust);
+			System.out.println(db.toString());
+			System.out.println();
+			
+			System.out.println("Case 3 : added an existed customer to database");
+			db.add(alreadyExistCust);
 		} catch (DuplicateCustomerException e){
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println("Testing Add() : ");		
-		System.out.println(db.toString());
+		
+		System.out.println();
 		
 		teardown();
 	}
 	
 	private static void testDisconnect(){
 		setup();
+		
+		System.out.println("Testing Diconnect() :");
 		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
@@ -143,32 +155,35 @@ public class CustomerListDBTest {
 		CustomerListDB db = new CustomerListDB(file);
 		
 		Customer customer = new DawsonCustomer("Halary", "Clinton", "halary.clinton@yahoo.com");
+		Customer customer1 = new DawsonCustomer("Pengkim", "Sy", "pengkim@abc.ca");
+		
 		try {
-			db.add(customer);
+			db.add(customer);			
+			System.out.println("Case 1 : added an existed customer to database");
+			db.add(customer1);
 		} catch (DuplicateCustomerException e) {
 			System.out.println(e.getMessage());
 		}
 		
 		try {
-			db.disconnect();			
-			
+			db.disconnect();	
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		SequentialTextFileList customerDatabase = new SequentialTextFileList
-				("testfiles/testRooms.txt", "backupDatabase/customerDatabase.txt", 
-						"testfiles/testReservation.txt");
-		db = new CustomerListDB(customerDatabase);
-		
 
+		db = new CustomerListDB(file);
+		
+		System.out.println("Case 2 : added a non-existed customer to database");
 		System.out.println(db.toString());
+		System.out.println();
 		
 		teardown();
 	}
 	
 	private static void testGetCustomer(){
 		setup();
+		
+		System.out.println("Testing getCustomer() :");
 		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
@@ -178,18 +193,22 @@ public class CustomerListDBTest {
 		
 		Email notMatchedEmail = new Email("halary.clinton@yahoo.com");
 		Email matchedEmail = new Email("raj@aing.ru");
-		try {			
+		try {
+			System.out.println("Case 1: not matched email");
 			System.out.println(db.getCustomer(matchedEmail).toString());
+			System.out.println("Case 2: matched email");
 			db.getCustomer(notMatchedEmail);
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
 		
+		System.out.println();
 		teardown();
 	}
 	
 	private static void testUpdate(){
 		setup();
+		System.out.println("Testing update() :");
 		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
@@ -200,39 +219,32 @@ public class CustomerListDBTest {
 		Email maciniEmail = new Email("joe.mancini@mail.me");
 		CreditCard amexCard = new Amex("344322624384908");
 		
-		Email lyrenceEmail = new Email("lyrence.l.labor@yahoo.com");
+		Email pengkimEmail = new Email("pengkim@abc.ca");
 		CreditCard visaCard = new Visa("4774341863020040");
 		
 		Email notExistEmail = new Email("asldfkj@laskdjf.com");
 		try {
 			db.update(maciniEmail, amexCard);
-			db.update(lyrenceEmail, visaCard);
+			db.update(pengkimEmail, visaCard);
 			db.update(notExistEmail, amexCard);
 		} catch (NonExistingCustomerException e) {
-			//System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		
-		try {			
+		try {
+			System.out.println("Case 1 : No credit card before");
 			System.out.println(db.getCustomer(maciniEmail).toString());
-			System.out.println(db.getCustomer(lyrenceEmail).toString());
+			
+			System.out.println("Case 2 : already have a creditcard");
+			System.out.println(db.getCustomer(pengkimEmail).toString());
+			
+			System.out.println("Case 3 : Not existing email");
 			System.out.println(db.getCustomer(notExistEmail).toString());
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
 		
-		//System.out.println(db.toString());
+		System.out.println();
 		teardown();
 	}
-	
-	/*private static void testBinarySearch(){
-		
-		List<Customer> custs = new ArrayList<>();
-		custs.add(new DawsonCustomer("wong", "raj", "raj@aing.ru"));
-		custs.add(new DawsonCustomer("Joe", "Mancini", "joe.mancini@mail.me"));
-		
-		Email email = new Email("joe.mancini@mail.me");
-		
-		System.out.println(custs.toString());
-		System.out.println(CustomerListDB.binarySearch(custs, email));
-	}*/
 }

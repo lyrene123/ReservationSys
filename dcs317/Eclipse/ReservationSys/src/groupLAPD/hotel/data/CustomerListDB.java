@@ -103,44 +103,6 @@ public class CustomerListDB implements CustomerDAO{
 		database.add(indexToAdd, customer);
 	}
 	
-	/**
-	 * The  method takes 2 input: a List of reservations and an email.
-	 * The method will find the perfect index in customer list base on
-	 * the provided email, and it will return that index.
-	 * @param customerList - A list of customer objects
-	 */
-	private static int findIndexToAdd(List<Customer> customerList, Email email){
-		int startIndex = 0; 
-		int endIndex = customerList.size() - 1;
-		int midIndex = (startIndex + endIndex) / 2;
-
-		if(customerList.get(startIndex).getEmail().compareTo(email) > 0){
-			return startIndex;
-		}
-
-		if(customerList.get(endIndex).getEmail().compareTo(email) < 0){
-			return endIndex;
-		}
-		
-		while(startIndex <= endIndex){
-
-			if(customerList.get(midIndex + 1).getEmail().compareTo(email) > 0){
-				if(customerList.get(midIndex).getEmail().compareTo(email) < 0)
-					return midIndex + 1;
-			}
-			if(customerList.get(midIndex).getEmail().compareTo(email) > 0){
-				endIndex = midIndex - 1;
-			}
-			
-			if(customerList.get(midIndex).getEmail().compareTo(email) < 0){
-				startIndex = midIndex + 1;
-			}
-				
-			midIndex = (startIndex + endIndex)/2;
-		}
-
-		return -1;
-	}
 
 	/**
 	 * The disconnect method is implement to make the customer 
@@ -205,6 +167,45 @@ public class CustomerListDB implements CustomerDAO{
 		return -1;
 	}
 
+	/**
+	 * The  method takes 2 input: a List of reservations and an email.
+	 * The method will find the perfect index in customer list base on
+	 * the provided email, and it will return that index.
+	 * @param customerList - A list of customer objects
+	 */
+	private static int findIndexToAdd(List<Customer> customerList, Email email){
+		int startIndex = 0; 
+		int endIndex = customerList.size() - 1;
+		int midIndex = (startIndex + endIndex) / 2;
+
+		if(customerList.get(startIndex).getEmail().compareTo(email) > 0){
+			return startIndex;
+		}
+
+		if(customerList.get(endIndex).getEmail().compareTo(email) < 0){
+			return endIndex+1;
+		}
+		
+		while(startIndex <= endIndex){
+
+			if(customerList.get(midIndex + 1).getEmail().compareTo(email) > 0){
+				if(customerList.get(midIndex).getEmail().compareTo(email) < 0)
+					return midIndex + 1;
+			}
+			if(customerList.get(midIndex).getEmail().compareTo(email) > 0){
+				endIndex = midIndex - 1;
+			}
+			
+			if(customerList.get(midIndex).getEmail().compareTo(email) < 0){
+				startIndex = midIndex + 1;
+			}
+				
+			midIndex = (startIndex + endIndex)/2;
+		}
+
+		return -1;
+	}
+	
 	/**
 	 * This method is used to update the customer in the database.
 	 * It accepts 2 parameters, an email to search for customer and
