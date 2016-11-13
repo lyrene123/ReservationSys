@@ -86,12 +86,13 @@ public class ReservationListDB implements ReservationDAO {
 	 */
 	@Override
 	public String toString(){
-		String dataString = "Number of reservations in database: " + 
-								this.database.size() + "\n";
+		StringBuilder dataString = new StringBuilder();
+		dataString.append("Number of reservations in database: " + 
+								this.database.size() + "\n");
 		for(int i = 0; i<this.database.size(); i++){
-			dataString += this.database.get(i).toString() + "\n";
+			dataString.append(this.database.get(i).toString() + "\n");
 		}
-		return dataString;
+		return dataString.toString();
 	}
 	
 	
@@ -102,6 +103,8 @@ public class ReservationListDB implements ReservationDAO {
 	 * The add method will add the new reservations object in the 
 	 * correct order.
 	 * @param reserv - Reference value of a Reservation object
+	 * @throws DuplicateReservationException - if the input reservation
+	 * 										already exists in the database
 	 * @author Lyrene Labor
 	 */
 	@Override
@@ -191,6 +194,7 @@ public class ReservationListDB implements ReservationDAO {
 	@Override
 	public void disconnect() throws IOException {	 
 		this.listPersistenceObject.saveReservationDatabase(this.database);
+		this.database = null;
 	}//end of disconnect method
 
 	

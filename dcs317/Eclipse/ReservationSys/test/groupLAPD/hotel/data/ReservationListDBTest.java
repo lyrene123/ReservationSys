@@ -37,16 +37,16 @@ public class ReservationListDBTest {
 	 */
 	public static void main(String[] args) {
 		
-		//testOneParamConst();
-		//testTwoParamConst();
-		//testToString();
-		//testAdd();
-		//testGetReservation();
-		//testCancel();
-		//testDisconnect();
-		//testGetFreeRooms();
-		//testGetReservedRooms();
-		//testOverloadedGeFreeRooms();
+		testOneParamConst();
+		testTwoParamConst();
+		testToString();
+		testAdd();
+		testGetReservation();
+		testCancel();
+		testDisconnect();
+		testGetFreeRooms();
+		testGetReservedRooms();
+		testOverloadedGeFreeRooms();
 		testClearAllPast();
 
 	}
@@ -196,7 +196,7 @@ public class ReservationListDBTest {
 		DawsonCustomer customer3 = new DawsonCustomer("Joe","Mancini",
 				"joe.mancini@mail.me");
 		
-		testGetReservations("case 3: customer is not availble in databe", 
+		testGetReservations("case 3: customer is availble in databe", 
 				customer3,"testFiles/testReservations.txt", true);	
 		
 		teardown();
@@ -488,10 +488,10 @@ public class ReservationListDBTest {
 		System.out.println("---------TESTING THE DISCONNECT METHOD--------");
 		setupReservations();
 		
-		DawsonCustomer c1 = new DawsonCustomer("LYRENE", "LABOR", 
-				"leaveMeAlone@live.com");
-		DawsonCustomer c2 = new DawsonCustomer("ALI", "DALI", 
-				"buyMeAGift@live.com");
+		DawsonCustomer c1 = new DawsonCustomer("Cosmin", "Corbosi", 
+				"cosmin.corbosi@emperor.ro");
+		DawsonCustomer c2 = new DawsonCustomer("Dorothy", "Dorothy", 
+				"dorothy-black@facebook.com");
 		DawsonRoom room1 = new DawsonRoom(302, RoomType.NORMAL);
 		DawsonRoom room2 = new DawsonRoom(303, RoomType.NORMAL);
 		DawsonReservation r1 = new DawsonReservation(c1,room1, 2010, 
@@ -511,7 +511,14 @@ public class ReservationListDBTest {
 				"datafiles/database/rooms.txt",
 				"datafiles/database/customers.txt",
 				"testfiles/testReservations2.txt",
-				r1,r2,true);	
+				r1,r2,true);
+		testDisconnect("case 3: testing with testReservations3.txt file"
+				+ " from testFiles folder.", 
+				"datafiles/database/rooms.txt",
+				"datafiles/database/customers.txt",
+				"testfiles/testReservations3.txt",
+				r1,r2,true);
+		teardown();
 	}
 	
 	
