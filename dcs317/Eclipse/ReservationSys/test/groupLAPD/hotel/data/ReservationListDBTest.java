@@ -3,14 +3,14 @@ package groupLAPD.hotel.data;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.time.LocalDate;
 import java.util.List;
 
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.business.interfaces.HotelFactory;
 import dw317.hotel.business.interfaces.Reservation;
-
+import dw317.hotel.business.interfaces.Room;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import groupLAPD.hotel.business.DawsonCustomer;
 import groupLAPD.hotel.business.DawsonHotelFactory;
@@ -37,13 +37,17 @@ public class ReservationListDBTest {
 	 */
 	public static void main(String[] args) {
 		
-		testOneParamConst();
-		testTwoParamConst();
-		testToString();
-		testAdd();
-		testGetReservation();
-		testCancel();
-		testDisconnect();
+		//testOneParamConst();
+		//testTwoParamConst();
+		//testToString();
+		//testAdd();
+		//testGetReservation();
+		//testCancel();
+		//testDisconnect();
+		//testGetFreeRooms();
+		//testGetReservedRooms();
+		//testOverloadedGeFreeRooms();
+		testClearAllPast();
 
 	}
 	
@@ -551,6 +555,352 @@ public class ReservationListDBTest {
 						+ " it didn't ");
 		}
 		System.out.println("\n");		
+	}
+
+	public static void testGetReservedRooms() {
+
+		// searched period test 1
+		LocalDate checkin1 = LocalDate.of(2016, 4, 21);
+		LocalDate checkout1 = LocalDate.of(2016, 4, 25);
+		// searched period test 2
+		LocalDate checkin2 = LocalDate.of(2016, 5, 12);
+		LocalDate checkout2 = LocalDate.of(2016, 6, 05);
+		// searched period test 3
+		LocalDate checkin3 = LocalDate.of(2015, 4, 21);
+		LocalDate checkout3 = LocalDate.of(2015, 5, 25);
+		// searched period test 4
+		LocalDate checkin4 = LocalDate.of(2008, 4, 21);
+		LocalDate checkout4 = LocalDate.of(2008, 6, 25);
+		// searched period test 5
+		LocalDate checkin5 = LocalDate.of(2016, 10, 21);
+		LocalDate checkout5 = LocalDate.of(2016, 11, 12);
+		// searched period test 6
+		LocalDate checkin6 = LocalDate.of(2016, 8, 21);
+		LocalDate checkout6 = LocalDate.of(2016, 4, 25);
+		// searched period test 7
+		LocalDate checkin7 = LocalDate.of(1977, 6, 21);
+		LocalDate checkout7 = LocalDate.of(1977, 7, 25);
+		// searched period test 8
+		LocalDate checkin8 = LocalDate.of(2016, 2, 21);
+		LocalDate checkout8 = LocalDate.of(2016, 4, 25);
+
+		System.out.println("\nTESTING THE THE GETRESERVEDROOMS METHOD FROM RESERVATIONLISTDB CLASS");
+		System.out.println("-----------------------------------------------------------------");
+		testGetReservedRooms("Case 1: Valid Reserved Rooms search", checkin1, checkout1, true);
+		testGetReservedRooms("Case 2: Valid Reserved Rooms search", checkin2, checkout2, true);
+		testGetReservedRooms("Case 3: Valid Reserved Rooms search", checkin3, checkout3, true);
+		testGetReservedRooms("Case 4: Valid Reserved Rooms search", checkin4, checkout4, true);
+		testGetReservedRooms("Case 5: Valid Reserved Rooms search", checkin5, checkout5, true);
+		testGetReservedRooms("Case 6: Invalid Reserved Rooms search: Check In After Check Out", checkin6, checkout6,
+				false);
+		testGetReservedRooms("Case 7: Valid Reserved Rooms search", checkin7, checkout7, true);
+		testGetReservedRooms("Case 8: Valid Reserved Rooms search", checkin8, checkout8, true);
+
+	}
+
+	public static void testGetReservedRooms(String testCase, LocalDate checkin, LocalDate checkout, boolean expected) {
+
+		String roomsFile = "datafiles/database/rooms.txt";
+		String customersFile = "datafiles/database/customers.txt";
+		String reservListFile = "datafiles/database/reservations.txt";
+
+		try {
+			System.out.println("   " + testCase);
+			System.out.print("\tPeriod Searched: ");
+			System.out.println("\n\t-------------------------");
+			System.out.print("\tCheck In Date: ");
+			System.out.print(checkin.toString());
+			System.out.print("\n\tCheck Out Date: ");
+			System.out.println(checkout.toString());
+			System.out.println("\t---------------------------");
+
+			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			System.out.println("\tThe ListPersistenceObject instance was created");
+
+			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
+			List<Room> reservedRooms = ListDB.getReservedRooms(checkin, checkout);
+
+			System.out.println("\tList of Reserved Rooms Found: ");
+			System.out.println("\t-------------------------------------------------------");
+			printObject(reservedRooms);
+			System.out.println("\t-------------------------------------------------------");
+			if (expected) {
+				System.out.println("\tExpected Result! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+			System.out.println("\tEnd of testeCase");
+
+		} catch (Exception e) {
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.println();
+			if (!expected) {
+				System.out.println("\tExpected Error! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+		} finally {
+			System.out.println("_____________________________________________________________________");
+		}
+
+	}
+
+	public static void testGetFreeRooms() {
+
+		// searched period test 1
+		LocalDate checkin1 = LocalDate.of(2016, 4, 21);
+		LocalDate checkout1 = LocalDate.of(2016, 4, 25);
+		// searched period test 2
+		LocalDate checkin2 = LocalDate.of(2016, 5, 12);
+		LocalDate checkout2 = LocalDate.of(2016, 6, 05);
+		// searched period test 3
+		LocalDate checkin3 = LocalDate.of(2015, 4, 21);
+		LocalDate checkout3 = LocalDate.of(2015, 4, 25);
+		// searched period test 4
+		LocalDate checkin4 = LocalDate.of(2008, 4, 01);
+		LocalDate checkout4 = LocalDate.of(2008, 4, 03);
+		// searched period test 5
+		LocalDate checkin5 = LocalDate.of(2008, 10, 21);
+		LocalDate checkout5 = LocalDate.of(2008, 11, 12);
+		// searched period test 6
+		LocalDate checkin6 = LocalDate.of(2009, 8, 21);
+		LocalDate checkout6 = LocalDate.of(2009, 4, 25);
+		// searched period test 7
+		LocalDate checkin7 = LocalDate.of(2016, 6, 21);
+		LocalDate checkout7 = LocalDate.of(2017, 11, 25);
+		// searched period test 8
+		LocalDate checkin8 = LocalDate.of(1977, 2, 12);
+		LocalDate checkout8 = LocalDate.of(2018, 2, 15);
+
+		System.out.println("\nTESTING THE THE GETFREEROOMS METHOD FROM RESERVATIONLISTDB CLASS");
+		System.out.println("-----------------------------------------------------------------");
+		testGetFreeRooms("Case 1: Valid Free Rooms search", checkin1, checkout1, true);
+		testGetFreeRooms("Case 2: Valid Free Rooms search", checkin2, checkout2, true);
+		testGetFreeRooms("Case 3: Valid Free Rooms search", checkin3, checkout3, true);
+		testGetFreeRooms("Case 4: Valid Free Rooms search", checkin4, checkout4, true);
+		testGetFreeRooms("Case 5: Valid Free Rooms search", checkin5, checkout5, true);
+		testGetFreeRooms("Case 6: Invalid Free Rooms search: Check In After Check Out", checkin6, checkout6, false);
+		testGetFreeRooms("Case 7: Valid Free Rooms search", checkin7, checkout7, true);
+		testGetFreeRooms("Case 8: Valid Free Rooms search", checkin8, checkout8, true);
+
+	}
+
+	public static void testGetFreeRooms(String testCase, LocalDate checkin, LocalDate checkout, boolean expected) {
+
+		String roomsFile = "datafiles/database/rooms.txt";
+		String customersFile = "datafiles/database/customers.txt";
+		String reservListFile = "datafiles/database/reservations.txt";
+
+		try {
+			System.out.println("   " + testCase);
+			System.out.print("\tPeriod Searched: ");
+			System.out.println("\n\t-------------------------");
+			System.out.print("\tCheck In Date: ");
+			System.out.print(checkin.toString());
+			System.out.print("\n\tCheck Out Date: ");
+			System.out.println(checkout.toString());
+			System.out.println("\t---------------------------");
+
+			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			System.out.println("\tThe ListPersistenceObject instance was created");
+
+			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
+			List<Room> freeRooms = ListDB.getFreeRooms(checkin, checkout);
+
+			System.out.println("\tList of Reserved Rooms: ");
+			System.out.println("\t-------------------------------------------------------");
+			printObject(freeRooms);
+			System.out.println("\t-------------------------------------------------------");
+			if (expected) {
+				System.out.println("\tExpected Result! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+			System.out.println("\tEnd of testeCase");
+
+		} catch (Exception e) {
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.println();
+			if (!expected) {
+				System.out.println("\tExpected Error! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+		} finally {
+			System.out.println("_____________________________________________________________________");
+		}
+
+	}
+
+	public static void testOverloadedGeFreeRooms() {
+
+		// searched period test 1
+		LocalDate checkin1 = LocalDate.of(2016, 4, 21);
+		LocalDate checkout1 = LocalDate.of(2016, 4, 25);
+		// searched period test 2
+		LocalDate checkin2 = LocalDate.of(2016, 5, 12);
+		LocalDate checkout2 = LocalDate.of(2016, 6, 05);
+		// searched period test 3
+		LocalDate checkin3 = LocalDate.of(2015, 4, 21);
+		LocalDate checkout3 = LocalDate.of(2015, 4, 25);
+		// searched period test 4
+		LocalDate checkin4 = LocalDate.of(2008, 4, 01);
+		LocalDate checkout4 = LocalDate.of(2008, 4, 03);
+		// searched period test 5
+		LocalDate checkin5 = LocalDate.of(2008, 10, 21);
+		LocalDate checkout5 = LocalDate.of(2008, 11, 12);
+		// searched period test 6
+		LocalDate checkin6 = LocalDate.of(2009, 8, 21);
+		LocalDate checkout6 = LocalDate.of(2009, 4, 25);
+		// searched period test 7
+		LocalDate checkin7 = LocalDate.of(2016, 6, 21);
+		LocalDate checkout7 = LocalDate.of(2017, 11, 25);
+		// searched period test 8
+		LocalDate checkin8 = LocalDate.of(1977, 2, 12);
+		LocalDate checkout8 = LocalDate.of(2018, 2, 15);
+
+		System.out.println("\nTESTING THE THE OVERLOADED GETFREEROOMS METHOD FROM RESERVATIONLISTDB CLASS");
+		System.out.println("-----------------------------------------------------------------------------");
+		testOverloadedGeFreeRooms("Case 1: Valid Free Rooms search by given Room Type", checkin1, checkout1, RoomType.SUITE, true);
+		testOverloadedGeFreeRooms("Case 2: Valid Free Rooms search by given Room Type", checkin2, checkout2, RoomType.PENTHOUSE, true);
+		testOverloadedGeFreeRooms("Case 3: Valid Free Rooms search by given Room Type", checkin3, checkout3, RoomType.NORMAL, true);
+		testOverloadedGeFreeRooms("Case 4: Valid Free Rooms search by given Room Type", checkin4, checkout4, RoomType.SUITE, true);
+		testOverloadedGeFreeRooms("Case 5: Valid Free Rooms search by given Room Type", checkin5, checkout5, RoomType.PENTHOUSE, true);
+		testOverloadedGeFreeRooms("Case 6: Invalid Free Rooms search by given Room Type: Check In After Check Out", checkin6, checkout6,
+				RoomType.SUITE, false);
+		testOverloadedGeFreeRooms("Case 7: Valid Free Rooms search by given Room Type", checkin7, checkout7, RoomType.PENTHOUSE, true);
+		testOverloadedGeFreeRooms("Case 8: Valid Free Rooms search by given Room Type", checkin8, checkout8, RoomType.SUITE, true);
+
+	}
+
+	public static void testOverloadedGeFreeRooms(String testCase, LocalDate checkin, LocalDate checkout,
+			RoomType roomType, boolean expected) {
+
+		String roomsFile = "datafiles/database/rooms.txt";
+		String customersFile = "datafiles/database/customers.txt";
+		String reservListFile = "datafiles/database/reservations.txt";
+
+		try {
+			System.out.println("   " + testCase);
+			System.out.print("\tPeriod Searched: ");
+			System.out.println("\n\t-------------------------");
+			System.out.print("\tCheck In Date: ");
+			System.out.print(checkin.toString());
+			System.out.print("\n\tCheck Out Date: ");
+			System.out.println(checkout.toString());
+			System.out.print("\tRoom Type Searched: ");
+			System.out.println(roomType.toString());
+			System.out.println("\t---------------------------");
+
+			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			System.out.println("\tThe ListPersistenceObject instance was created");
+
+			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
+			List<Room> freeRooms = ListDB.getFreeRooms(checkin, checkout, roomType);
+
+			System.out.println("\tList of free Rooms of Type" + " " + roomType.toString());
+			System.out.println("\t-------------------------------------------------------");
+			printObject(freeRooms);
+			System.out.println("\t-------------------------------------------------------");
+			if (expected) {
+				System.out.println("\tExpected Result! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+			System.out.println("\tEnd of testeCase");
+
+		} catch (Exception e) {
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.println();
+			if (!expected) {
+				System.out.println("\tExpected Error! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+		} finally {
+			System.out.println("_____________________________________________________________________");
+		}
+
+	}
+	public static void testClearAllPast() {
+
+		System.out.println("\nTESTING THE THE clearAllPast METHOD FROM RESERVATIONLISTDB CLASS");
+		System.out.println("-----------------------------------------------------------------------------");
+		testClearAllPast("Case 1: Removing all Reservations whose checkout date is before the current date ", true);
+	}
+
+	public static void testClearAllPast(String testCase, boolean expected){
+		String roomsFile = "datafiles/database/rooms.txt";
+		String customersFile = "datafiles/database/customers.txt";
+		String reservListFile = "datafiles/database/reservations.txt";
+
+		try {
+			System.out.println("   " + testCase);
+			
+			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			System.out.println("\tThe ListPersistenceObject instance was created");
+
+			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
+			System.out.println("\tList of Reservations before Clearing All Past before current date");
+			System.out.println("\t-----------------------------------------------------------------");
+			System.out.println(ListDB.toString());
+			ListDB.clearAllPast();
+			System.out.println("\tList of Reservations After Clearing All Past before current date");
+			System.out.println("\t-----------------------------------------------------------------");
+			System.out.println(ListDB.toString());
+			System.out.println("\t-----------------------------------------------------------------");
+			if (expected) {
+				System.out.println("\tExpected Result! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+			System.out.println("\tEnd of testeCase");
+
+		} catch (Exception e) {
+			System.out.print("\tUNEXPECTED EXCEPTION TYPE! " + e.getClass() + " " + e.getMessage());
+			System.out.println();
+			if (!expected) {
+				System.out.println("\tExpected Error! TEST OK");
+			} else {
+				System.out.println("\n\tUnexpected Error==== FAILED TEST ====");
+			}
+
+		} finally {
+			System.out.println("_____________________________________________________________________");
+		}
+		
+	}
+
+	public static <E> void printObject(List<E> obj) {
+
+		if (obj.isEmpty()) {
+			System.out.println("\tNo room found!");
+		} else if (obj.size() == 1) {
+			System.out.println("\t" + obj.get(0) + " ");
+		} else {
+			for (int i = 0; i < obj.size(); i++) {
+				if (i == 0) {
+					System.out.print("\t" + obj.get(i) + " ");
+					i++;
+				}
+				if (i % 4 != 0) {
+					System.out.print("\t" + obj.get(i) + " ");
+				} else {
+					System.out.print("\n\t" + obj.get(i) + " ");
+				}
+
+			}
+
+			System.out.println();
+		}
+
 	}
 
 }

@@ -126,6 +126,193 @@ public class ReservationListDB implements ReservationDAO {
 		insertToOrderedList(copyReserv, this.database);
 	}
 	
+	
+
+	/**
+	 * This method takes an input a customer and checks the
+	 * database for that customer if it is found it will add 
+	 * all the reservations of that customer to an ArrayList if
+	 * not it will return an empty arrayList
+	 * @param Customer Cust (the customer we are looking for)
+	 * @return ArrayList reservList (filed of reservations or empty)
+	 * @author Lyrene Labor, Ali Dali
+	 */
+	@Override
+	public List<Reservation> getReservations(Customer cust) {
+		
+		ArrayList<Reservation> reservList = new ArrayList<>();
+		//loop through database to check if reservation of cust exists
+		for(int i = 0; i < database.size(); i++){
+			//if reservations of cust found, add it to the array list
+			if(database.get(i).getCustomer().equals(cust)){
+				reservList.add(database.get(i));
+			}
+		}
+		return reservList;
+	}//end of getReservations method
+
+	
+	/**
+	 * This method method will look through the database for
+	 * the specified Reservation and if found it will remove it
+	 * if not it will throw a NonExistingReservationException
+	 * @param Reservation reserv (the Reservation we want to remove)
+	 * @throws  NonExistingReservationException if Reservation not 
+	 * 			found.
+	 * @author Lyrene Labor, Ali Dali
+	 */
+	@Override
+	public void cancel(Reservation reserv) 
+			throws NonExistingReservationException {
+
+		boolean found = false;
+		//loop through the database to check if reserv exists
+		for(int i = 0; i < database.size(); i++){
+			if(database.get(i).equals(reserv)){
+				//remove if reserv exists in database
+				database.remove(i);
+				found = true;
+			}
+		}if(!found){
+			//if not found, throw an exception
+			throw new NonExistingReservationException();
+		}
+	}//end of cancel method
+	
+	
+	/**
+	 * The disconnect method is implement to make the reservation 
+	 * database transactions persistent. This method will save the database 
+	 * to disk and will then assign null to the database field.
+	 * @throws IOException - if any error occurs when saving database
+	 * 							to a file.
+	 * @author Lyrene Labor						
+	 */
+	@Override
+	public void disconnect() throws IOException {	 
+		this.listPersistenceObject.saveReservationDatabase(this.database);
+	}//end of disconnect method
+
+	
+	/**
+	 * The getReservedRooms method checks for all reserved rooms overlapping 
+	 * during the time period. It checks if an existing reservation has a room
+	 * that has been reserved with the Check In date of the reservation before 
+	 * the Check Out date provided, and the Check Out date of the reservation 
+	 * is after the Check In date provided. All reserved rooms are included in
+	 *  list Only once.
+	 * 
+	 * @param LocalDate checkin The Check In Date provided for the search period.
+	 * @param LocalDate checkout The Check Out Date provided for the search period.
+	 * @return ArrayList Room The List of all reserved Rooms overlapping during the
+	 * time period or an empty ArrayList of Rooms if there is no reserved rooms in 
+	 * the period provided.
+	 * 
+	 * @author Daniel Cavalcanti
+	 */
+	@Override
+	public List<Room> getReservedRooms(LocalDate checkin,
+			LocalDate checkout) {
+		validateDates(checkin, checkout);
+		
+		ArrayList<Room> reservedRooms = new ArrayList<Room>();
+
+		for(int i = 0; i<this.database.size(); i++){
+			if(this.database.get(i).getCheckInDate().isBefore(checkout)){
+				if(this.database.get(i).getCheckOutDate().isAfter(checkin)){
+					reservedRooms.add(this.database.get(i).getRoom());
+				}
+			}
+		}
+		HashSet<Room> listToSet = new HashSet<Room>(reservedRooms);
+		List<Room> listWithoutDuplicates = new ArrayList<Room>(listToSet);
+		Collections.sort(listWithoutDuplicates);
+
+		return listWithoutDuplicates;
+	}
+	
+	
+	/**
+	 * The getFreeRooms method checks for all unreserved rooms overlapping 
+	 * during the time period provided. It checks for all rooms that are not
+	 * returned by getReservedRooms method.
+	 * 
+	 * @param LocalDate checkin The Check In Date provided for the search period.
+	 * @param LocalDate checkout The Check Out Date provided for the search period.
+	 * @return ArrayList Room The List of all unreserved Rooms overlapping during the
+	 * time period or an empty ArrayList of Rooms if there is no unreserved rooms in 
+	 * the period provided.
+	 * 
+	 * @author Daniel Cavalcanti
+	 */
+	@Override
+	public List<Room> getFreeRooms(LocalDate checkin,
+			LocalDate checkout) {
+		validateDates(checkin, checkout);
+		
+		List<Room> reservedRoomstemp = getReservedRooms(checkin, checkout);
+		List<Room> freeRooms = this.allRooms;
+		freeRooms.removeAll(reservedRoomstemp);	
+
+		return freeRooms;
+	}
+	
+	
+
+	/**
+	 * The overloaded getFreeRooms method checks for all unreserved rooms with 
+	 * the given room type overlapping during the time period provided. It checks
+	 * for all rooms with the given room type that are not returned by getReservedRooms
+	 * method.
+	 * 
+	 * @param LocalDate checkin The Check In Date provided for the search period.
+	 * @param LocalDate checkout The Check Out Date provided for the search period.
+	 * @param RoomType roomType The Room Type we are looking for.
+	 * @return ArrayList Room The List of all unreserved Rooms with the given room type
+	 * overlapping during the time period or an empty ArrayList of Rooms if there is no 
+	 * unreserved rooms with the room type specified in the period provided.
+	 * 
+	 * @author Daniel Cavalcanti
+	 */
+	@Override
+	public List<Room> getFreeRooms(LocalDate checkin,
+			LocalDate checkout, RoomType roomType) {
+		validateDates(checkin, checkout);
+
+		List<Room> unreservedRoomtemp = getFreeRooms(checkin,checkout);
+		List<Room> freeRoomsByType = new ArrayList<Room>();
+
+		for(int i = 0; i<unreservedRoomtemp.size(); i++){
+			if(unreservedRoomtemp.get(i).getRoomType().compareTo(roomType) == 0){
+				freeRoomsByType.add(unreservedRoomtemp.get(i));
+			}
+		}
+
+		return freeRoomsByType;
+	}
+	
+	
+
+	/**
+	 * This method removes all Reservations whose checkout date is 
+	 * before the current date,as returned by LocalDate.now().
+	 *
+	 * @author Daniel Cavalcanti
+	 */
+	@Override
+	public void clearAllPast() {
+
+		LocalDate currentDate = LocalDate.now();
+		for (int i = 0; i < this.database.size(); i++) {
+			if (this.database.get(i).getCheckOutDate().isBefore(currentDate)) {
+				this.database.remove(i);
+				i--;
+			}
+		}
+
+	}
+	
+	
 	/**
 	 * The insertToOrderedList method takes 2 input: a reservation
 	 * object and a List of reservations. The method will add the 
@@ -194,146 +381,26 @@ public class ReservationListDB implements ReservationDAO {
 	
 	
 	/**
-	 * This method takes an input a customer and checks the
-	 * database for that customer if it is found it will add 
-	 * all the reservations of that customer to an ArrayList if
-	 * not it will return an empty arrayList
-	 * @param Customer Cust (the customer we are looking for)
-	 * @return ArrayList reservList (filed of reservations or empty)
-	 * @author Lyrene Labor, Ali Dali
-	 */
-	@Override
-	public List<Reservation> getReservations(Customer cust) {
-		
-		ArrayList<Reservation> reservList = new ArrayList<>();
-		//loop through database to check if reservation of cust exists
-		for(int i = 0; i < database.size(); i++){
-			//if reservations of cust found, add it to the array list
-			if(database.get(i).getCustomer().equals(cust)){
-				reservList.add(database.get(i));
-			}
-		}
-		return reservList;
-	}//end of getReservations method
-
-	
-	/**
-	 * This method method will look through the database for
-	 * the specified Reservation and if found it will remove it
-	 * if not it will throw a NonExistingReservationException
-	 * @param Reservation reserv (the Reservation we want to remove)
-	 * @throws  NonExistingReservationException if Reservation not 
-	 * 			found.
-	 * @author Lyrene Labor, Ali Dali
-	 */
-	@Override
-	public void cancel(Reservation reserv) 
-			throws NonExistingReservationException {
-
-		boolean found = false;
-		//loop through the database to check if reserv exists
-		for(int i = 0; i < database.size(); i++){
-			if(database.get(i).equals(reserv)){
-				//remove if reserv exists in database
-				database.remove(i);
-				found = true;
-			}
-		}if(!found){
-			//if not found, throw an exception
-			throw new NonExistingReservationException();
-		}
-	}//end of cancel method
-	
-	
-	/**
-	 * The disconnect method is implement to make the reservation 
-	 * database transactions persistent. This method will save the database 
-	 * to disk and will then assign null to the database field.
-	 * @throws IOException - if any error occurs when saving database
-	 * 							to a file.
-	 * @author Lyrene Labor						
-	 */
-	@Override
-	public void disconnect() throws IOException {	 
-		this.listPersistenceObject.saveReservationDatabase(this.database);
-	}//end of disconnect method
-
-	
-	/**
+	 * The validateDates method checks if Check In Date is after Check Out Date. 
+	 * The Method was created to be used only inside of this class.
+	 *
+	 * @param LocalDate checkin
+	 *            Check In date provided for the search period.
+	 * @param LocalDate checkout
+	 *            Check Out date provided for the search period.
+	 * @throws IllegalArgumentException
+	 *             if Check In Date is after Check Out Date
 	 * 
 	 * @author Daniel Cavalcanti
 	 */
-	@Override
-	public List<Room> getReservedRooms(LocalDate checkin,
+	private static void validateDates(LocalDate checkin,
 			LocalDate checkout) {
-		ArrayList<Room> reservedRooms = new ArrayList<Room>();
-
-		for(int i = 0; i<this.database.size(); i++){
-			if(this.database.get(i).getCheckInDate().isBefore(checkout)){
-				if(this.database.get(i).getCheckOutDate().isAfter(checkin)){
-					reservedRooms.add(this.database.get(i).getRoom());
-				}
-			}
+		// validating the dates
+		if(checkin.isAfter(checkout)){
+				throw new IllegalArgumentException("Error found! Check "
+						+ "In Date can not be after Check Out Date");
 		}
-		HashSet<Room> listToSet = new HashSet<Room>(reservedRooms);
-		List<Room> listWithoutDuplicates = new ArrayList<Room>(listToSet);
-		Collections.sort(listWithoutDuplicates);
-
-		return listWithoutDuplicates;
-	}
-	
-	
-	/**
-	 * 
-	 * @author Daniel Cavalcanti
-	 */
-	@Override
-	public List<Room> getFreeRooms(LocalDate checkin,
-			LocalDate checkout) {
 		
-		List<Room> reservedRoomstemp = getReservedRooms(checkin, checkout);
-		List<Room> freeRooms = this.allRooms;
-		freeRooms.removeAll(reservedRoomstemp);	
-
-		return freeRooms;
-	}
-
-	/**
-	 * 
-	 * @author Daniel Cavalcanti
-	 */
-	@Override
-	public List<Room> getFreeRooms(LocalDate checkin,
-			LocalDate checkout, RoomType roomType) {
-
-		List<Room> unreservedRoomtemp = getFreeRooms(checkin,checkout);
-		List<Room> freeRoomsByType = new ArrayList<Room>();
-
-		for(int i = 0; i<unreservedRoomtemp.size(); i++){
-			if(unreservedRoomtemp.get(i).getRoomType().compareTo(roomType) == 0){
-				freeRoomsByType.add(unreservedRoomtemp.get(i));
-			}
-		}
-
-		return freeRoomsByType;
-
-	}
-
-	/**
-	 * 
-	 * @author Daniel Cavalcanti
-	 */
-	@Override
-	public void clearAllPast() {
-
-		LocalDate currentDate = LocalDate.now();
-		for (int i = 0; i < this.database.size(); i++) {
-			if (this.database.get(i).getCheckOutDate().isBefore(currentDate)) {
-				this.database.remove(i);
-				i--;
-			}
-		}
-
 	}
 
 }
