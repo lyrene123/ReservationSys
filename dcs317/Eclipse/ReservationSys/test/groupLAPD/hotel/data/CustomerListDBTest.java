@@ -21,8 +21,8 @@ public class CustomerListDBTest {
 	public static void main(String[] args) {
 
 		//testToString();
-		testAdd();
-		//testDisconnect();
+		//testAdd();
+		testDisconnect();
 		//testGetCustomer();
 		//testUpdate();
 	}
