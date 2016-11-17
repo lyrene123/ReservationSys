@@ -2,6 +2,8 @@ package groupLAPD.hotel.business;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +25,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 	@Override
 	public Optional<Room> getAvailableRoom(LocalDate checkin, LocalDate checkout, RoomType roomType) {
 		
-		if(this.getAvailableFloor(checkin, checkout, roomType) == null)		
+		if(this.getAvailableFloor(checkin, checkout, roomType) == null)	
 			return Optional.empty();
 		
 		List<Room> freeFloor = this.getAvailableFloor(checkin, checkout, roomType);
@@ -45,33 +47,54 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		List<Room> floor7 = new ArrayList<>();
 		List<Room> floor8 = new ArrayList<>();
 		for(Room room : freeRoom){
-			switch (room.getFloor()){
-				case 1:
-					floor1.add(room);
-					break;
-				case 2:
-					floor2.add(room);
-					break;
-				case 3:
-					floor3.add(room);
-					break;
-				case 4:
-					floor4.add(room);
-					break;
-				case 5:
-					floor5.add(room);
-					break;
-				case 6:
-					floor6.add(room);
-					break;
-				case 7:
-					floor7.add(room);
-					break;
-				case 8:
-					floor8.add(room);
-					break;
+			if(room.getRoomType().equals(RoomType.NORMAL)){
+				switch (room.getFloor()){
+					case 1:
+						floor1.add(room);
+						break;
+					case 2:
+						floor2.add(room);
+						break;
+					case 3:
+						floor3.add(room);
+						break;
+					case 4:
+						floor4.add(room);
+						break;
+					case 5:
+						floor5.add(room);
+						break;
+					case 6:
+						floor6.add(room);
+						break;
+					case 7:
+						floor7.add(room);
+						break;
+					case 8:
+						floor8.add(room);
+						break;
+					}
 				}
 			}
+			
+			
+			ArrayList<List<Room>> NormalfloorSize = new ArrayList<>();
+			NormalfloorSize.add(floor1);
+			NormalfloorSize.add(floor2);
+			NormalfloorSize.add(floor3);
+			NormalfloorSize.add(floor4);
+			NormalfloorSize.add(floor5);
+			
+			ArrayList<Integer> SuitefloorSize = new ArrayList<>();
+			SuitefloorSize.add(floor6.size());
+			SuitefloorSize.add(floor7.size());
+			
+			//List<Room> mostAvailableNormalFloor = Collections.max(NormalfloorSize);
+			//int mostAvailableSuiteFloor =  NormalfloorSize.lastIndexOf(Collections.max(SuitefloorSize));
+			
+			
+			
+			/*
 
 			if(floor1.size() >= floor2.size()){
 				if(floor1.size() >= floor3.size()){
@@ -124,6 +147,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 			}
 			
 			if(floor6.size() >= floor7.size()){
+				//System.out.println(floor6.toString());
 				return floor6;
 			} else if(floor7.size() > floor6.size()){
 				return floor7;
@@ -132,7 +156,16 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 			if(roomType.equals(RoomType.PENTHOUSE))
 				return floor8;
 			
+		//System.out.println(floor6.toString());
+		 * 
+		 */
 		return null;
 	}
 
+	private static <E extends Comparable<E>> E max(List<E> list){
+		
+		
+		return null;
+		
+	}
 }
