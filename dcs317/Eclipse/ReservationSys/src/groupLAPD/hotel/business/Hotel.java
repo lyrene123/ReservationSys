@@ -66,6 +66,7 @@ public class Hotel extends java.util.Observable
 	@Override
 	public void cancelReservation(Reservation reservation) 
 			throws NonExistingReservationException {
+		//the exception will be thrown from the ReservationListDB class
 		this.reservations.cancel(reservation);		
 	}
 
@@ -83,7 +84,7 @@ public class Hotel extends java.util.Observable
 			this.customers.disconnect();
 		}catch(IOException e){
 			throw new IOException("There is a problem closing"
-					+ " the hotel files adn saving the data.");
+					+ " the hotel files and saving the data.");
 		}
 	}
 
