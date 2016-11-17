@@ -8,6 +8,7 @@ import dw317.hotel.business.RoomType;
 
 public interface AllocationPolicy extends Serializable {
 
+	
 	/**
 	 * Returns the availlable room.
 	 * 
