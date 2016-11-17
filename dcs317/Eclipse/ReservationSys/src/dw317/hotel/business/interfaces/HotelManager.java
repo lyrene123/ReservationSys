@@ -35,7 +35,8 @@ public interface HotelManager extends Serializable {
 	 * @param roomType  The requested room type
 	 * @return The Reservation if possible
 	 */
-	Optional<Reservation> createReservation(Customer customer, LocalDate checkin, LocalDate checkout, RoomType roomType);
+	Optional<Reservation> createReservation(Customer customer, 
+			LocalDate checkin, LocalDate checkout, RoomType roomType);
 
 	/**
 	 * Finds and returns a customer record.
@@ -50,7 +51,8 @@ public interface HotelManager extends Serializable {
 	/**
 	 * Finds all reservations made by a customer
 	 * @param customer
-	 * @return List of Reservations. Returns empty list if no reservations can be found.
+	 * @return List of Reservations. Returns empty list if no 
+	 * reservations can be found.
 	 */
 	List<Reservation> findReservations(Customer customer);
 	
@@ -60,7 +62,8 @@ public interface HotelManager extends Serializable {
 	 * @param lastName
 	 * @param email
 	 * @return The Customer object
-	 * @throws DuplicateCustomerException is a customer with same e-mail address exists
+	 * @throws DuplicateCustomerException is a customer with same 
+	 * e-mail address exists
 	 */
 	Customer registerCustomer(String firstName, String lastName, String email)
 			throws DuplicateCustomerException;
