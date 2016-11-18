@@ -16,7 +16,6 @@ public class ObjectSerializedList implements ListPersistenceObject{
 
 
 
-
 	private String roomFile;
 	private String customerFile;
 	private String reservationFile;

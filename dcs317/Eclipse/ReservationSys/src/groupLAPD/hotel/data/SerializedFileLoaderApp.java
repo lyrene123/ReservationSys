@@ -30,7 +30,6 @@ public class SerializedFileLoaderApp {
 
 	}
 
-
 	public static void serializeObj(SequentialTextFileList loaded,File roomFile, File custFile, File resFile){
 		try{
 			Utilities.serializeObject(loaded.getRoomDatabase(), roomFile.toString());
