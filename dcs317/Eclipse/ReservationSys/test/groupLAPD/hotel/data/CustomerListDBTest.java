@@ -47,13 +47,13 @@ public class CustomerListDBTest {
 
 
 		String[] reservs = new String[8];
-		reservs [0] = "raj@aing.ru*2016*9*10*2016*9*15*101";
-		reservs [1] = "joe.mancini@mail.me*2016*10*10*2016*10*20*801";
-		reservs [2] = "aliDali@mail.com*2016*12*5*2016*12*10*601";
-		reservs [3] = "pengkim@abc.ca*2016*10*20*2016*10*30*103";
-		reservs [4] = "daniel.cavalcati@hotmail.com*2016*11*12*2016*11*22*104";
-		reservs [5] = "lyrence.l.labor@yahoo.com*2016*5*10*2016*5*15*602";
-		reservs [6] = "123Jonh.cena@321.com*2016*7*7*2016*7*9*602";
+		reservs [0] = "123Jonh.cena@321.com*2016*7*7*2016*7*9*602";
+		reservs [1] = "pengkim@abc.ca*2016*10*20*2016*10*30*103";
+		reservs [2] = "raj@aing.ru*2016*9*10*2016*9*15*101";
+		reservs [3] = "daniel.cavalcati@hotmail.com*2016*11*12*2016*11*22*104";
+		reservs [4] = "aliDali@mail.com*2016*12*5*2016*12*10*601";
+		reservs [5] = "joe.mancini@mail.me*2016*10*10*2016*10*20*801";
+		reservs [6] = "lyrence.l.labor@yahoo.com*2016*5*10*2016*5*15*602";
  		reservs [7] = "d@zzz.com*2016*10*12*2016*10*15*102";
 
 		File dir = new File("testfiles");

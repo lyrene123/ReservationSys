@@ -3,10 +3,12 @@
  */
 package groupLAPD.hotel.business;
 import dw317.hotel.business.RoomType;
+import dw317.hotel.business.interfaces.AllocationPolicy;
 import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.business.interfaces.HotelFactory;
 import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.business.interfaces.Room;
+import dw317.hotel.data.interfaces.ReservationDAO;
 import dw317.lib.creditcard.CreditCard;
 
 
@@ -38,6 +40,10 @@ public enum DawsonHotelFactory implements HotelFactory {
 	public Reservation getReservationInstance(Customer aCustomer, Room aRoom, 
 			int inYear, int inMonth, int inDay, int outYear, int outMonth, int outDay) {
 		return new DawsonReservation(aCustomer, aRoom, inYear, inMonth, inDay, outYear, outMonth, outDay);
+	}
+	@Override
+	public AllocationPolicy getAllocationPolicy(ReservationDAO reservations){
+	return new DawsonHotelAllocationPolicy(reservations);
 	}
 }
 
