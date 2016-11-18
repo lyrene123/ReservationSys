@@ -129,8 +129,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		suiteFloor.add(floor6);
 		suiteFloor.add(floor7);
 			
-		// findLargestElementsIn2dArrayList method is to find the list with the
-		// largest size.
+		// findLargestElementsIn2dArrayList finds the list with the largest size.
 		if(roomType.equals(RoomType.NORMAL)){
 			if(ListUtilities.findLargestElementsIn2dArrayList(normalFloor).size() != 0)
 				return ListUtilities.findLargestElementsIn2dArrayList(normalFloor);
