@@ -37,20 +37,20 @@ public class Utilities {
 	public static void serializeObject (Object object, String fileSpecification) 
 			throws IOException { 
 		ObjectOutputStream out = null;
-			try {
-				out = new ObjectOutputStream (
-						new FileOutputStream (fileSpecification));
-				out.writeObject (object);
+		try {
+			out = new ObjectOutputStream (
+					new FileOutputStream (fileSpecification));
+			out.writeObject (object);
 
-			}catch (IOException e){
-				//normally the exception would be logged to file then thrown
-				throw new IOException ("Error serializing object to \n" +
-						fileSpecification  + " " + e);
-			}
-			finally {
-				if (out != null)
-					out.close ();
-			} 
+		}catch (IOException e){
+			//normally the exception would be logged to file then thrown
+			throw new IOException ("Error serializing object to \n" +
+					fileSpecification  + " " + e);
+		}
+		finally {
+			if (out != null)
+				out.close ();
+		} 
 	}
 
 
@@ -61,7 +61,7 @@ public class Utilities {
 	 * and using the readObject method we re-construct the object.
 	 *
 	 * @param fileSpecification
-	 * @return
+	 * @return deserialized object
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @author Teacher
@@ -75,7 +75,8 @@ public class Utilities {
 					(new FileInputStream (fileSpecification));
 			if (in != null)
 				obj = in.readObject ();
-			return obj; }
+			return obj;
+		}
 		catch (ClassNotFoundException | IOException e)
 		{
 			//normally the exception would be logged to file then thrown
@@ -84,7 +85,8 @@ public class Utilities {
 		} finally {
 			if (in != null)
 				in.close ();
-		} }
+		} 
+	}
 
 
 }
