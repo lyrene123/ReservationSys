@@ -15,6 +15,7 @@ import dw317.lib.creditcard.Visa;
 import groupLAPD.hotel.business.DawsonCustomer;
 import groupLAPD.hotel.business.DawsonHotelFactory;
 import groupLAPD2016.util.ListUtilities;
+import groupLAPD2016.util.Utilities;
 
 public class CustomerListDBTest {
 
@@ -55,9 +56,13 @@ public class CustomerListDBTest {
 		reservs [5] = "joe.mancini@mail.me*2016*10*10*2016*10*20*801";
 		reservs [6] = "lyrence.l.labor@yahoo.com*2016*5*10*2016*5*15*602";
  		reservs [7] = "d@zzz.com*2016*10*12*2016*10*15*102";
+ 		 			
+ 		
 
 		File dir = new File("testfiles");
+		
 		try{
+			
 			if (!dir.exists()){  
 				dir.mkdirs();
 			}
@@ -67,6 +72,19 @@ public class CustomerListDBTest {
 					"testfiles/testCustomers.txt");
 			ListUtilities.saveListToTextFile(reservs, 
 					"testfiles/testReservations.txt");
+			
+			SequentialTextFileList stfl = new SequentialTextFileList("testfiles/testRooms.txt","testfiles/testCustomers.txt",
+					"testfiles/testReservations.txt");
+			
+			Utilities.serializeObject(stfl.getRoomDatabase(),
+					"testfiles/testRooms.ser");
+			Utilities.serializeObject(stfl.getCustomerDatabase(), 
+					"testfiles/testCustomers.ser");
+			Utilities.serializeObject(stfl.getReservationDatabase(), 
+					"testfiles/testReservations.ser");
+			
+			ObjectSerializedList osl = new ObjectSerializedList
+					("testfiles/testRooms.ser", "testfiles/testCustomers.ser", "testfiles/testReservations.ser");
 		}
 		catch(IOException io){
 			System.out.println("Error creating file in setUp()");
@@ -185,11 +203,11 @@ public class CustomerListDBTest {
 		
 		System.out.println("Testing getCustomer() :");
 		
-		SequentialTextFileList file = new SequentialTextFileList
-				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
-						"testfiles/testReservations.txt");
+				ObjectSerializedList osl = new ObjectSerializedList
+				("testfiles/testRooms.ser", "testfiles/testCustomers.ser", 
+						"testfiles/testReservations.ser");
 		
-		CustomerListDB db = new CustomerListDB(file);
+		CustomerListDB db = new CustomerListDB(osl);
 		
 		Email notMatchedEmail = new Email("halary.clinton@yahoo.com");
 		Email matchedEmail = new Email("raj@aing.ru");

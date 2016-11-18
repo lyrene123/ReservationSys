@@ -6,7 +6,9 @@ import java.util.List;
 
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.Room;
+import dw317.hotel.data.interfaces.ListPersistenceObject;
 import groupLAPD2016.util.ListUtilities;
+import groupLAPD2016.util.Utilities;
 
 public class RoomListDBTest {
 
@@ -55,6 +57,16 @@ public class RoomListDBTest {
 					"testfiles/testCustomers.txt");
 			ListUtilities.saveListToTextFile(reservs, 
 					"testfiles/testReservations.txt");
+			
+			
+			SequentialTextFileList stfl = new SequentialTextFileList
+					("testfiles/testRooms.txt","testfiles/testCustomers.txt",
+					"testfiles/testReservations.txt");
+			
+			Utilities.serializeObject(stfl.getRoomDatabase(), "testfiles/testRooms.ser");
+			Utilities.serializeObject(stfl.getCustomerDatabase(), "testfiles/testCustomers.ser");
+			Utilities.serializeObject(stfl.getRoomDatabase(), "testfiles/testReservations.ser");
+
 		}
 		catch(IOException io){
 			System.out.println
@@ -63,15 +75,15 @@ public class RoomListDBTest {
 	}	
 	
 	private static void teardown() {
-		File theFile = new File("testfiles/testRooms.txt");
+		File theFile = new File("testfiles/testRooms.ser");
 		if (theFile.exists()) {
 			theFile.delete();
 		}
-		theFile = new File("testfiles/testCustomers.txt");
+		theFile = new File("testfiles/testCustomers.ser");
 		if (theFile.exists()) {
 			theFile.delete();
 		}
-		theFile = new File("testfiles/testReservations.txt");
+		theFile = new File("testfiles/testReservations.ser");
 		if (theFile.exists()) {
 			theFile.delete();
 		}
@@ -79,9 +91,15 @@ public class RoomListDBTest {
 
 	private static void testGetRooms() {
 		setup();
+		/*
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
 						"testfiles/testReservations.txt");
+						*/
+		
+		ListPersistenceObject file = new ObjectSerializedList("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+						"testfiles/testReservations.ser");
+
 		RoomListDB db = new RoomListDB(file);
 		
 		System.out.println("Normal rooms:");
@@ -104,9 +122,16 @@ public class RoomListDBTest {
 
 	private static void testToString(){
 		setup();
+		/*
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
 						"testfiles/testReservations.txt");
+						*/
+		ListPersistenceObject file = new ObjectSerializedList
+				("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+						"testfiles/testReservations.ser");
+
+		
 		RoomListDB db = new RoomListDB(file);
 		
 		System.out.println(db.toString());

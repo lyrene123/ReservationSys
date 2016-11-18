@@ -17,6 +17,7 @@ import groupLAPD.hotel.business.DawsonHotelFactory;
 import groupLAPD.hotel.business.DawsonReservation;
 import groupLAPD.hotel.business.DawsonRoom;
 import groupLAPD2016.util.ListUtilities;
+import groupLAPD2016.util.Utilities;
 
 /**
  * 
@@ -52,6 +53,8 @@ public class ReservationListDBTest {
 	}
 	
 	private static void setupReservations(){
+		
+		
 		String[] reservs = new String[5];
 		reservs [0] = "david_ferguson1@google.ca*2015*9*24*2015*9*29*102";
 		reservs [1] = "joe.mancini@mail.me*2016*10*10*2016*10*20*205";
@@ -82,6 +85,18 @@ public class ReservationListDBTest {
 					"testfiles/testReservations2.txt");
 			ListUtilities.saveListToTextFile(reservs3, 
 					"testfiles/testReservations3.txt");
+			
+			SequentialTextFileList stfl1 = new SequentialTextFileList("datafiles/database/rooms.txt","datafiles/database/customers.txt",
+					"testfiles/testReservations.txt");
+			SequentialTextFileList stfl2 = new SequentialTextFileList("datafiles/database/rooms.txt","datafiles/database/customers.txt",
+					"testfiles/testReservations2.txt");
+			SequentialTextFileList stfl3 = new SequentialTextFileList("datafiles/database/rooms.txt","datafiles/database/customers.txt",
+					"testfiles/testReservations3.txt");
+			
+			Utilities.serializeObject(stfl1.getReservationDatabase(), "testfiles/testReservations.ser");
+			Utilities.serializeObject(stfl2.getReservationDatabase(), "testfiles/testReservations2.ser");
+			Utilities.serializeObject(stfl3.getReservationDatabase(), "testfiles/testReservations3.ser");
+			
 		}catch(IOException io){
 			System.out.println
 			("Error creating files in setupReservations()");
@@ -117,7 +132,7 @@ public class ReservationListDBTest {
 				(goodCustomer, goodRoom, 2016, 12, 1, 2016, 12, 26);
 		
 		testCancel("Case 1: The reservation we want to remove exists", reserv1, 
-				"datafiles/database/reservations.txt",true);
+				"datafiles/database/reservations.ser",true);
 		
 		DawsonCustomer customer2 = new DawsonCustomer
 				("Ali","Tremblay","Ali@gmail.com");
@@ -127,7 +142,7 @@ public class ReservationListDBTest {
 		
 		testCancel("Case 2: The reservation we want to remove "
 				+ "does not exist", reserv2, 
-				"datafiles/database/reservations.txt",false);
+				"datafiles/database/reservations.ser",false);
 		
 		DawsonCustomer customer3 = new DawsonCustomer("Joe","Mancini",
 				"joe.mancini@mail.me");
@@ -135,8 +150,8 @@ public class ReservationListDBTest {
 		DawsonReservation reserv3 = new DawsonReservation(customer3, room3, 2016, 
 												10, 10, 2016, 10, 20);
 		testCancel("Case 3: reservation removed from "
-				+ "testFiles/testReservations.txt", reserv3, 
-				"testFiles/testReservations.txt",true);
+				+ "testFiles/testReservations.ser", reserv3, 
+				"testFiles/testReservations.ser",true);
 		
 		teardown();
 		
@@ -147,14 +162,20 @@ public class ReservationListDBTest {
 			boolean expected){
 		System.out.println(testCase);
 
-		String custFile = "datafiles/database/customers.txt";
-		String roomFile = "datafiles/database/rooms.txt";
+		String custFile = "datafiles/database/customers.ser";
+		String roomFile = "datafiles/database/rooms.ser";
 		String reservFile = rfile;
 		ReservationListDB r1 =  null;
 		
 		try{
+			/*
 		ListPersistenceObject file = new 
 				SequentialTextFileList(roomFile,custFile,reservFile);
+				*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(roomFile,custFile,reservFile);
+
+			
 		System.out.println("\tThe ListPersistenceObject instance was created");
 		r1 = new ReservationListDB(file);
 		r1.cancel(reserv);
@@ -185,19 +206,19 @@ public class ReservationListDBTest {
 				("Ginette","Tremblay","tremgin4@alloqc.ca");
 
 		testGetReservations("case 1: customer is availble in databe", 
-				goodCustomer,"datafiles/database/reservations.txt", true);
+				goodCustomer,"datafiles/database/reservations.ser", true);
 
 		DawsonCustomer badCustomer = new DawsonCustomer("Ali","Dali",
 				"ali@hotmail.com");
 
 		testGetReservations("case 2: customer is not availble in databe", 
-				badCustomer,"datafiles/database/reservations.txt", true);	
+				badCustomer,"datafiles/database/reservations.ser", true);	
 		
 		DawsonCustomer customer3 = new DawsonCustomer("Joe","Mancini",
 				"joe.mancini@mail.me");
 		
 		testGetReservations("case 3: customer is availble in databe", 
-				customer3,"testFiles/testReservations.txt", true);	
+				customer3,"testFiles/testReservations.ser", true);	
 		
 		teardown();
 	}
@@ -209,14 +230,19 @@ public class ReservationListDBTest {
 		System.out.println(testCase);
 
 		List<Reservation> reservationList = null;
-		String custFile = "datafiles/database/customers.txt";
-		String roomFile = "datafiles/database/rooms.txt";
+		String custFile = "datafiles/database/customers.ser";
+		String roomFile = "datafiles/database/rooms.ser";
 		String reservFile = rfile;
 		ReservationListDB r1 =  null;
 
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(roomFile,custFile,reservFile);
+					*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(roomFile,custFile,reservFile);
+			
 			System.out.println("\tThe ListPersistenceObject "
 					+ "instance was created");
 			r1 = new ReservationListDB(file);
@@ -243,15 +269,15 @@ public class ReservationListDBTest {
 		setupReservations();
 		testOneParamConst("case 1: testing with good merged reservation file"
 							+ " from datafiles/database folder", 
-							"datafiles/database/rooms.txt",
-							"datafiles/database/customers.txt",
-							"datafiles/database/reservations.txt", true);
+							"datafiles/database/rooms.ser",
+							"datafiles/database/customers.ser",
+							"datafiles/database/reservations.ser", true);
 		testOneParamConst("case 2: testing with another reservation file"
-							+ " testfiles/testReservations.txt"
+							+ " testfiles/testReservations.ser"
 				+ " from datafiles/database folder", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt", true);
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser", true);
 		teardown();				
 	}
 	
@@ -261,8 +287,13 @@ public class ReservationListDBTest {
 			String reserv, boolean expected){
 		System.out.println("   " + test);
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(rooms,cust,reserv);
+					*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(rooms,cust,reserv);
+
 			System.out.println("\tThe ListPersistenceObject instance was created");
 			ReservationListDB r1 = new ReservationListDB(file);
 			System.out.println("\tThe ReservationListDB instance was created");
@@ -287,16 +318,16 @@ public class ReservationListDBTest {
 		setupReservations();
 		testTwoParamConst("case 1: testing with good merged reservation file"
 							+ " from datafiles/database folder", 
-							"datafiles/database/rooms.txt",
-							"datafiles/database/customers.txt",
-							"datafiles/database/reservations.txt",
+							"datafiles/database/rooms.ser",
+							"datafiles/database/customers.ser",
+							"datafiles/database/reservations.ser",
 							DawsonHotelFactory.DAWSON, true);
 		testTwoParamConst("case 2: testing with another reservation file"
-							+ " testfiles/testReservations.txt"
+							+ " testfiles/testReservations.ser"
 				+ " from datafiles/database folder", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				DawsonHotelFactory.DAWSON,true);
 		teardown();				
 	}
@@ -307,8 +338,14 @@ public class ReservationListDBTest {
 			String reserv, HotelFactory fact, boolean expected){
 		System.out.println("   " + test);
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(rooms,cust,reserv);
+					*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(rooms,cust,reserv);
+
+			
 			System.out.println("\tThe ListPersistenceObject instance was created");
 			ReservationListDB r1 = new ReservationListDB(file, fact);
 			System.out.println("\tThe ReservationListDB instance was created");
@@ -332,15 +369,15 @@ public class ReservationListDBTest {
 		setupReservations();
 		testToString("case 1: testing with good merged reservation file"
 							+ " from datafiles/database folder", 
-							"datafiles/database/rooms.txt",
-							"datafiles/database/customers.txt",
-							"datafiles/database/reservations.txt",
+							"datafiles/database/rooms.ser",
+							"datafiles/database/customers.ser",
+							"datafiles/database/reservations.ser",
 							true);
 		testToString("case 2: testing with another reservation file"
-							+ " testfiles/testReservations.txt", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+							+ " testfiles/testReservations.ser", 
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				true);
 		teardown();				
 	}
@@ -351,8 +388,14 @@ public class ReservationListDBTest {
 			String reserv, boolean expected){
 		System.out.println("   " + test);
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(rooms,cust,reserv);
+					*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(rooms,cust,reserv);
+
+			
 			System.out.println("\tThe ListPersistenceObject instance was created");
 			ReservationListDB r1 = new ReservationListDB(file);
 			System.out.println("\tThe ReservationListDB instance was created");
@@ -383,21 +426,21 @@ public class ReservationListDBTest {
 				9, 9, 2010, 9, 10);
 		testAdd("case 1: testing with good merged reservation file"
 				+ " from datafiles/database folder. ADDING AT THE MIDDLE", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"datafiles/database/reservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"datafiles/database/reservations.ser",
 				r1,true);
 		testAdd("case 2: testing with another reservation file"
 				+ " testfiles/testReservations.txt. ADDING AT THE MIDDLE", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				r1,true);
 		testAdd("case 3: testing with another reservation file"
 				+ " testfiles/testReservations2.txt. ADDING AT THE MIDDLE", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations2.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations2.ser",
 				r1,true);
 		
 		DawsonRoom room2 = new DawsonRoom(101, RoomType.NORMAL);
@@ -405,21 +448,21 @@ public class ReservationListDBTest {
 				9, 9, 1990, 9, 10);
 		testAdd("case 4: testing with good merged reservation file"
 				+ " from datafiles/database folder. ADDING AT THE BEGINNING", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"datafiles/database/reservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"datafiles/database/reservations.ser",
 				r2,true);
 		testAdd("case 5: testing with another reservation file"
 				+ " testfiles/testReservations.txt. ADDING AT THE BEGINNING", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				r2,true);
 		testAdd("case 6: testing with another reservation file"
 				+ " testfiles/testReservations2.txt. ADDING AT THE BEGINNING", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations2.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations2.ser",
 				r2,true);
 		
 		DawsonRoom room3 = new DawsonRoom(801, RoomType.PENTHOUSE);
@@ -427,21 +470,21 @@ public class ReservationListDBTest {
 				9, 9, 3000, 9, 10);
 		testAdd("case 7: testing with good merged reservation file"
 				+ " from datafiles/database folder. ADDING AT THE END", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"datafiles/database/reservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"datafiles/database/reservations.ser",
 				r3,true);
 		testAdd("case 8: testing with another reservation file"
 				+ " testfiles/testReservations.txt. ADDING AT THE END", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				r3,true);
 		testAdd("case 9: testing with another reservation file"
 				+ " testfiles/testReservations2.txt. ADDING AT THE END", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations2.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations2.ser",
 				r3,true);
 		
 		DawsonRoom room4 = new DawsonRoom(101, RoomType.NORMAL);
@@ -449,9 +492,9 @@ public class ReservationListDBTest {
 				9, 9, 1990, 9, 10);
 		testAdd("case 10: testing with another reservation file"
 				+ " testfiles/testReservations3.txt. ADDING AT THE BEGINNING", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations3.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations3.ser",
 				r4,true);
 		teardown();				
 	}
@@ -461,8 +504,14 @@ public class ReservationListDBTest {
 			String reserv, Reservation r2, boolean expected){
 		System.out.println("   " + test);
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(rooms,cust,reserv);
+					*/
+			
+			ListPersistenceObject file = new 
+					ObjectSerializedList(rooms,cust,reserv);
+			
 			System.out.println("\tThe ListPersistenceObject instance was created");
 			ReservationListDB r1 = new ReservationListDB(file);
 			System.out.println("\tThe ReservationListDB instance was created");
@@ -501,22 +550,22 @@ public class ReservationListDBTest {
 		
 		testDisconnect("case 1: testing with testReservations.txt file"
 				+ " from testFiles folder.", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations.ser",
 				r1,r2,true);
 		
 		testDisconnect("case 2: testing with testReservations2.txt file"
 				+ " from testFiles folder.", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations2.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations2.ser",
 				r1,r2,true);
 		testDisconnect("case 3: testing with testReservations3.txt file"
 				+ " from testFiles folder.", 
-				"datafiles/database/rooms.txt",
-				"datafiles/database/customers.txt",
-				"testfiles/testReservations3.txt",
+				"datafiles/database/rooms.ser",
+				"datafiles/database/customers.ser",
+				"testfiles/testReservations3.ser",
 				r1,r2,true);
 		teardown();
 	}
@@ -527,8 +576,14 @@ public class ReservationListDBTest {
 			String reserv,Reservation r2, Reservation r3, boolean expected){
 		System.out.println("   " + test);
 		try{
+			/*
 			ListPersistenceObject file = new 
 					SequentialTextFileList(rooms,cust,reserv);
+					*/
+			ListPersistenceObject file = new 
+					ObjectSerializedList(rooms,cust,reserv);
+
+			
 			System.out.println("\n\tThe ListPersistenceObject instance was created");
 			
 			ReservationListDB r1 = new ReservationListDB(file);
@@ -607,9 +662,9 @@ public class ReservationListDBTest {
 
 	public static void testGetReservedRooms(String testCase, LocalDate checkin, LocalDate checkout, boolean expected) {
 
-		String roomsFile = "datafiles/database/rooms.txt";
-		String customersFile = "datafiles/database/customers.txt";
-		String reservListFile = "datafiles/database/reservations.txt";
+		String roomsFile = "datafiles/database/rooms.ser";
+		String customersFile = "datafiles/database/customers.ser";
+		String reservListFile = "datafiles/database/reservations.ser";
 
 		try {
 			System.out.println("   " + testCase);
@@ -696,9 +751,9 @@ public class ReservationListDBTest {
 
 	public static void testGetFreeRooms(String testCase, LocalDate checkin, LocalDate checkout, boolean expected) {
 
-		String roomsFile = "datafiles/database/rooms.txt";
-		String customersFile = "datafiles/database/customers.txt";
-		String reservListFile = "datafiles/database/reservations.txt";
+		String roomsFile = "datafiles/database/rooms.ser";
+		String customersFile = "datafiles/database/customers.ser";
+		String reservListFile = "datafiles/database/reservations.ser";
 
 		try {
 			System.out.println("   " + testCase);
@@ -710,7 +765,9 @@ public class ReservationListDBTest {
 			System.out.println(checkout.toString());
 			System.out.println("\t---------------------------");
 
-			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			//ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			ListPersistenceObject dataBaseFile = new ObjectSerializedList(roomsFile, customersFile, reservListFile);
+
 			System.out.println("\tThe ListPersistenceObject instance was created");
 
 			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
@@ -787,9 +844,9 @@ public class ReservationListDBTest {
 	public static void testOverloadedGeFreeRooms(String testCase, LocalDate checkin, LocalDate checkout,
 			RoomType roomType, boolean expected) {
 
-		String roomsFile = "datafiles/database/rooms.txt";
-		String customersFile = "datafiles/database/customers.txt";
-		String reservListFile = "datafiles/database/reservations.txt";
+		String roomsFile = "datafiles/database/rooms.ser";
+		String customersFile = "datafiles/database/customers.ser";
+		String reservListFile = "datafiles/database/reservations.ser";
 
 		try {
 			System.out.println("   " + testCase);
@@ -803,7 +860,9 @@ public class ReservationListDBTest {
 			System.out.println(roomType.toString());
 			System.out.println("\t---------------------------");
 
-			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			//ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			ListPersistenceObject dataBaseFile = new ObjectSerializedList(roomsFile, customersFile, reservListFile);
+
 			System.out.println("\tThe ListPersistenceObject instance was created");
 
 			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
@@ -843,14 +902,16 @@ public class ReservationListDBTest {
 	}
 
 	public static void testClearAllPast(String testCase, boolean expected){
-		String roomsFile = "datafiles/database/rooms.txt";
-		String customersFile = "datafiles/database/customers.txt";
-		String reservListFile = "datafiles/database/reservations.txt";
+		String roomsFile = "datafiles/database/rooms.ser";
+		String customersFile = "datafiles/database/customers.ser";
+		String reservListFile = "datafiles/database/reservations.ser";
 
 		try {
 			System.out.println("   " + testCase);
 			
-			ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			//ListPersistenceObject dataBaseFile = new SequentialTextFileList(roomsFile, customersFile, reservListFile);
+			ListPersistenceObject dataBaseFile = new ObjectSerializedList(roomsFile, customersFile, reservListFile);
+
 			System.out.println("\tThe ListPersistenceObject instance was created");
 
 			ReservationListDB ListDB = new ReservationListDB(dataBaseFile);
