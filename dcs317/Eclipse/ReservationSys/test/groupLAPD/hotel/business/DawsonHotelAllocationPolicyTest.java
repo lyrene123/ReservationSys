@@ -88,6 +88,16 @@ public class DawsonHotelAllocationPolicyTest {
 		reservs3 [2] = "pengkim@abc.ca*2016*10*12*2016*10*20*303";
 		reservs3 [3] = "daniel.cavalcati@hotmail.com*2016*10*12*2016*10*22*404";
 		
+		String[] reservs4 = new String[8];
+		reservs4 [0] = "raj@aing.ru*2016*10*10*2016*10*15*601";
+ 		reservs4 [1] = "d@zzz.com*2016*10*12*2016*10*15*602";
+		reservs4 [2] = "pengkim@abc.ca*2016*10*12*2016*10*20*603";
+		reservs4 [3] = "daniel.cavalcati@hotmail.com*2016*10*12*2016*10*22*604";
+		reservs4 [4] = "aliDali@mail.com*2016*10*5*2016*10*10*701";
+		reservs4 [5] = "lyrence.l.labor@yahoo.com*2016*10*10*2016*10*15*702";
+		reservs4 [6] = "123Jonh.cena@321.com*2016*10*7*2016*10*9*703";
+		reservs4 [7] = "joe.mancini@mail.me*2016*10*10*2016*10*20*704";
+
 		File dir = new File("testfiles");
 		try{
 			if (!dir.exists()){  
@@ -110,7 +120,10 @@ public class DawsonHotelAllocationPolicyTest {
 			} else if(testCase.equalsIgnoreCase("reservs3")){
 				ListUtilities.saveListToTextFile(reservs3, 
 						"testfiles/testReservations.txt");
-			}		
+			} else if(testCase.equalsIgnoreCase("reservs4")){
+				ListUtilities.saveListToTextFile(reservs4, 
+						"testfiles/testReservations.txt");
+			}	
 		}
 		catch(IOException io){
 			System.out.println("Error creating file in setUp()");
@@ -157,7 +170,7 @@ public class DawsonHotelAllocationPolicyTest {
 				, RoomType.NORMAL, allocationPolicy);		
 		testGetAvailableRoom("Case 2: Expect room to be on 7th floor", checkin, checkout
 				, RoomType.SUITE, allocationPolicy);		
-		testGetAvailableRoom("Case 3: Expect Optional.empty", checkin, checkout
+		testGetAvailableRoom("Case 3: Penthous is full", checkin, checkout
 				, RoomType.PENTHOUSE, allocationPolicy);
 		
 		allocationPolicy = setupAllocationPolicy("reservs1");		
@@ -176,6 +189,9 @@ public class DawsonHotelAllocationPolicyTest {
 		testGetAvailableRoom("Case 8: Expect room to be on 5th floor", checkin, checkout
 				, RoomType.NORMAL, allocationPolicy);	
 		
+		allocationPolicy = setupAllocationPolicy("reservs4");		
+		testGetAvailableRoom("Case 9: All suites are full", checkin, checkout
+				, RoomType.SUITE, allocationPolicy);
 		teardown();
 		System.out.println();
 	}

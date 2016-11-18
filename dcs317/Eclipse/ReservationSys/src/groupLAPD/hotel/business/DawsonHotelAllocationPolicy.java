@@ -72,37 +72,39 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 				case 8:
 					floor8.add(room);
 					break;
-				}				
-			}			
+			}				
+		}			
 			
-			ArrayList<List<Room>> normalFloor = new ArrayList<>();
-			normalFloor.add(floor1);
-			normalFloor.add(floor2);
-			normalFloor.add(floor3);
-			normalFloor.add(floor4);
-			normalFloor.add(floor5);
+		ArrayList<List<Room>> normalFloor = new ArrayList<>();
+		normalFloor.add(floor1);
+		normalFloor.add(floor2);
+		normalFloor.add(floor3);
+		normalFloor.add(floor4);
+		normalFloor.add(floor5);
 			
-			ArrayList<List<Room>> suiteFloor = new ArrayList<>();
-			suiteFloor.add(floor6);
-			suiteFloor.add(floor7);
+		ArrayList<List<Room>> suiteFloor = new ArrayList<>();
+		suiteFloor.add(floor6);
+		suiteFloor.add(floor7);
 			
-			if(roomType.equals(RoomType.NORMAL)){
-				return max(normalFloor);
-			}
+		if(roomType.equals(RoomType.NORMAL)){
+			if(findArrayWithTheBiggestSize(normalFloor).size() != 0)
+				return findArrayWithTheBiggestSize(normalFloor);
+		}
 			
-			if(roomType.equals(RoomType.SUITE)){
-				return max(suiteFloor);
-			}
+		if(roomType.equals(RoomType.SUITE)){
+			if(findArrayWithTheBiggestSize(suiteFloor).size() != 0)
+				return findArrayWithTheBiggestSize(suiteFloor);
+		}
 
-			if(roomType.equals(RoomType.PENTHOUSE)){
-				if(floor8.size() != 0)
-					return floor8;
-			}
+		if(roomType.equals(RoomType.PENTHOUSE)){
+			if(floor8.size() != 0)
+				return floor8;
+		}
 
 		return null;
 	}
 
-	private static <E extends Comparable<E>> List<E> max(ArrayList<List<E>> list){		
+	private static <E extends Comparable<E>> List<E> findArrayWithTheBiggestSize(ArrayList<List<E>> list){		
 		List<E> max = list.get(0);
 		
 		for(int i=0; i<list.size(); i++){
