@@ -78,7 +78,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 	 */
 	private List<Room> getAvailableFloor(LocalDate checkin, LocalDate checkout, RoomType roomType){
 		
-		List<Room> freeRoom = this.reservation.getFreeRooms(checkin, checkout);
+		List<Room> allAvailabeRooms = this.reservation.getFreeRooms(checkin, checkout);
 		
 		List<Room> floor1 = new ArrayList<>();
 		List<Room> floor2 = new ArrayList<>();
@@ -89,7 +89,8 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		List<Room> floor7 = new ArrayList<>();
 		List<Room> floor8 = new ArrayList<>();
 		
-		for(Room room : freeRoom){
+		// This will assigns all the available rooms to its respective floor.
+		for(Room room : allAvailabeRooms){
 			switch (room.getFloor()){
 				case 1:
 					floor1.add(room);
@@ -118,6 +119,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 			}				
 		}			
 			
+		// This will put all normal rooms of each floor into an ArrayList.
 		ArrayList<List<Room>> normalFloor = new ArrayList<>();
 		normalFloor.add(floor1);
 		normalFloor.add(floor2);
@@ -125,21 +127,29 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		normalFloor.add(floor4);
 		normalFloor.add(floor5);
 			
+		// This will put all suite rooms of each floor into an ArrayList.
 		ArrayList<List<Room>> suiteFloor = new ArrayList<>();
 		suiteFloor.add(floor6);
 		suiteFloor.add(floor7);
 			
+		// Check if the roomType is normal, if yes, find the floor with the most 
+		// available normal rooms and return that floor.
 		// findLargestElementsIn2dArrayList finds the list with the largest size.
 		if(roomType.equals(RoomType.NORMAL)){
 			if(ListUtilities.findLargestElementsIn2dArrayList(normalFloor).size() != 0)
 				return ListUtilities.findLargestElementsIn2dArrayList(normalFloor);
 		}
 			
+		// Check if the roomType is suite, if yes, find the floor with the most 
+		// available suite rooms and return that floor.
+		// findLargestElementsIn2dArrayList finds the list with the largest size.
 		if(roomType.equals(RoomType.SUITE)){
 			if(ListUtilities.findLargestElementsIn2dArrayList(suiteFloor).size() != 0)
 				return ListUtilities.findLargestElementsIn2dArrayList(suiteFloor);
 		}
 
+		// Check if the roomType is penthouse, if yes, check if it's available, if yes,
+		// return 8th floor.
 		if(roomType.equals(RoomType.PENTHOUSE)){
 			if(floor8.size() != 0)
 				return floor8;
