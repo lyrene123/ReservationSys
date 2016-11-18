@@ -13,7 +13,9 @@ import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.business.interfaces.HotelFactory;
 import dw317.hotel.business.interfaces.HotelManager;
 import dw317.hotel.business.interfaces.Reservation;
+import dw317.hotel.business.interfaces.Room;
 import dw317.hotel.data.DuplicateCustomerException;
+import dw317.hotel.data.DuplicateReservationException;
 import dw317.hotel.data.NonExistingCustomerException;
 import dw317.hotel.data.NonExistingReservationException;
 import dw317.hotel.data.interfaces.CustomerDAO;
@@ -27,7 +29,11 @@ import dw317.lib.creditcard.Visa;
 import groupLAPD.hotel.data.ReservationListDB;
 
 /**
- * 
+ * The Hotel class is the concrete class that implements the Hotel
+ * Manager interface and it also extends the Observable class.
+ * All Hotel objects allow a hotel frontdesk to query the system, 
+ * about customers and about reservations. The Hotel class will ensure
+ * that all business rules are respected for the particular hotel.
  * @author Lyrene Labor
  * @version November 2016
  *
@@ -42,10 +48,12 @@ public class Hotel extends java.util.Observable
 	
 	
 	/**
-	 * 
-	 * @param factory
-	 * @param customers
-	 * @param reservations
+	 * The constructor will take as input a HotelFactory Object,
+	 * a ReservationDAO Object and a CustomerDAO Object and will
+	 * use those input to fill up the class' fields
+	 * @param factory - a HotelFactory Object
+	 * @param customers -  a CustomerDAO Object
+	 * @param reservations - a ReservationDAO Object
 	 */
 	public Hotel(HotelFactory factory, 
 			CustomerDAO customers,ReservationDAO reservations){
@@ -102,9 +110,32 @@ public class Hotel extends java.util.Observable
 	public Optional<Reservation> createReservation
 	(Customer customer, LocalDate checkin, LocalDate checkout,
 			RoomType roomType) {
-		
-		
-		return null;
+		DawsonHotelAllocationPolicy policy = 
+				new DawsonHotelAllocationPolicy(this.reservations);
+		//generate a room available based on checkin checkout and roomtype 
+		Optional<Room> randomRoom = policy.getAvailableRoom(checkin,
+											checkout, roomType);	
+		Reservation custReserv = null;
+		//if there is a room available do the following:
+		if(randomRoom.isPresent()){
+			Room allocatedRoom = randomRoom.get();
+			//create reservation
+			custReserv = this.factory.getReservationInstance(customer, 
+					allocatedRoom, checkin.getYear(), checkin.getMonthValue(), 
+					checkin.getDayOfMonth(), checkout.getYear(), 
+					checkout.getMonthValue(), checkout.getDayOfMonth());		
+			try{
+				//add reservation
+				this.reservations.add(custReserv);
+			}
+			catch(DuplicateReservationException e){
+				System.out.println(e.getMessage());
+			}
+			//return created reservation
+			return Optional.of(custReserv);
+		}
+		//if no room available, return an empty reservation
+		return Optional.empty();
 	}
 
 	
@@ -180,8 +211,13 @@ public class Hotel extends java.util.Observable
 	public Customer updateCreditCard(String email, String cardType,
 			String cardnumber)throws NonExistingCustomerException {
 		
+		//if email invalid, an IllegalArgumentException will be thrown with
+		//this statement
 		Email custEmail = new Email(email);
+		//if customer doesn't exist, the following statement will throw
+		//NonExistingCustomerException
 		Customer customer = this.customers.getCustomer(custEmail);
+		
 		//if number is invalid, an IllegalArgumentException will be thrown 
 		CreditCard custCard = this.factory.getCard(cardType, cardnumber);
 		
