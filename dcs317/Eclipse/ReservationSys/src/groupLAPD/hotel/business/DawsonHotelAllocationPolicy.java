@@ -10,17 +10,47 @@ import dw317.hotel.business.interfaces.AllocationPolicy;
 import dw317.hotel.business.interfaces.Room;
 import dw317.hotel.data.interfaces.ReservationDAO;
 import groupLAPD.hotel.data.ReservationListDB;
+import groupLAPD2016.util.ListUtilities;
 
+/**
+ * The DawsonHotelAllocationPolicy class that implements the AllocationPolicy 
+ * interface. It gets a ReservationDAO object in its constructor
+ * and it keeps a reference to this object as an instance variable.
+ * 
+ * @version November 2016
+ * 
+ * @author Pengkim Sy
+ * @author Daniel Cavalcanti
+ */
 public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 	
 	private static final long serialVersionUID = 42031768871L;
 
 	ReservationDAO reservation;
 	
+	/**
+	 * The DawsonHotelAllocationPolicy constructor gets a ReservationDAO object
+	 * and keeps a reference to this object as an instance variable.
+	 * 
+	 * @param ReservationDAO reservation
+	 */
 	public DawsonHotelAllocationPolicy(ReservationDAO reservation){
 		this.reservation = reservation;
 	}
 	
+	/**
+	 * The getAvailableRoom method checks for an available room of the given room 
+	 * type during the desired period. If multiple rooms have the same positive 
+	 * number of available rooms it chooses the lowest floor. If there are no 
+	 * free rooms available with the search criteria, return an empty Optional.
+	 * 
+	 * @param LocalDate checkin - The Check In Date provided for the search period.
+	 * @param LocalDate checkout - The Check Out Date provided for the search period.
+	 * @param RoomType roomType - a room type (Normal, Suite or Penthouse)
+	 * 
+	 * @return Optional<Room> - if there's an available room.
+	 * @return Optional.empty - if there's no available room.
+	 */	
 	@Override
 	public Optional<Room> getAvailableRoom(LocalDate checkin, LocalDate checkout, RoomType roomType) {
 		
@@ -33,6 +63,19 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		return Optional.of(availableFloor.get(randomRoom));
 	}
 	
+	/**
+	 * The getAvailableFloor method checks the floor with the most number of free rooms
+	 * of the given room type during the desired period. If multiple rooms have the same
+	 * positive number of available rooms it chooses the lowest floor. If there are no 
+	 * free rooms available with the search criteria, return null.
+	 * 
+	 * @param LocalDate checkin - Checkin date
+	 * @param LocalDate checkout - Checkout date
+	 * @param RoomType roomType - a room type (Normal, Suite or Penthouse)
+	 * 
+	 * @return List<Room> - a floor that has the most availabe rooms
+	 * @return null - If there's no available room, it returns null.
+	 */
 	private List<Room> getAvailableFloor(LocalDate checkin, LocalDate checkout, RoomType roomType){
 		
 		List<Room> freeRoom = this.reservation.getFreeRooms(checkin, checkout);
@@ -87,13 +130,13 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		suiteFloor.add(floor7);
 			
 		if(roomType.equals(RoomType.NORMAL)){
-			if(findArrayWithTheBiggestSize(normalFloor).size() != 0)
-				return findArrayWithTheBiggestSize(normalFloor);
+			if(ListUtilities.findLargestElementsIn2dArrayList(normalFloor).size() != 0)
+				return ListUtilities.findLargestElementsIn2dArrayList(normalFloor);
 		}
 			
 		if(roomType.equals(RoomType.SUITE)){
-			if(findArrayWithTheBiggestSize(suiteFloor).size() != 0)
-				return findArrayWithTheBiggestSize(suiteFloor);
+			if(ListUtilities.findLargestElementsIn2dArrayList(suiteFloor).size() != 0)
+				return ListUtilities.findLargestElementsIn2dArrayList(suiteFloor);
 		}
 
 		if(roomType.equals(RoomType.PENTHOUSE)){
@@ -104,13 +147,4 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		return null;
 	}
 
-	private static <E extends Comparable<E>> List<E> findArrayWithTheBiggestSize(ArrayList<List<E>> list){		
-		List<E> max = list.get(0);
-		
-		for(int i=0; i<list.size(); i++){
-			if(list.get(i).size() > max.size())
-				max = list.get(i);
-		}
-		return max;		
-	}
 }

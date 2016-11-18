@@ -4,8 +4,10 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * The ListUtilities class is a non instantiable class that contains a set of
@@ -564,5 +566,22 @@ public class ListUtilities {
 			// if the list is null, then throw the nullpointerexception
 			throw new NullPointerException("Error found! Can't handle empty or null arrays.");
 		}
+	}
+	
+	/**
+	 * findLargestElementsIn2dArrayList method compares the size of the list in ArrayList
+	 * base on their size. It returns a list with the biggest size.
+	 * 
+	 * @param list - 2 dimentional array list
+	 * @return List<E> - the list with the biggest size
+	 */
+	public static <E> List<E> findLargestElementsIn2dArrayList(ArrayList<List<E>> list){		
+		List<E> max = list.get(0);
+		
+		for(int i=0; i<list.size(); i++){
+			if(list.get(i).size() > max.size())
+				max = list.get(i);
+		}
+		return max;		
 	}
 }
