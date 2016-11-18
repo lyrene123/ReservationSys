@@ -22,10 +22,10 @@ public class DawsonHotelAllocationPolicyTest {
 	public static void main(String[] args) {
 		
 		testGetAvailableRoom();
-		//testMax();
+
 	}
 
-	private static void setup()
+	private static void setup(String testCase)
 	{
 		String roomPath = "datafiles" + File.separator + "rooms.txt";
 		File roomTxt = new File(roomPath);
@@ -66,7 +66,28 @@ public class DawsonHotelAllocationPolicyTest {
 		reservs [6] = "123Jonh.cena@321.com*2016*10*7*2016*10*9*603";
 		reservs [7] = "joe.mancini@mail.me*2016*10*10*2016*10*20*801";
 
+		String[] reservs1 = new String[8];
+		reservs1 [0] = "raj@aing.ru*2016*10*10*2016*10*15*201";
+ 		reservs1 [1] = "d@zzz.com*2016*10*12*2016*10*15*202";
+		reservs1 [2] = "pengkim@abc.ca*2016*10*12*2016*10*20*103";
+		reservs1 [3] = "daniel.cavalcati@hotmail.com*2016*10*12*2016*10*22*104";
+		reservs1 [4] = "aliDali@mail.com*2016*10*5*2016*10*10*701";
+		reservs1 [5] = "lyrence.l.labor@yahoo.com*2016*10*10*2016*10*15*702";
+		reservs1 [6] = "123Jonh.cena@321.com*2016*10*7*2016*10*9*603";
+		reservs1 [7] = "joe.mancini@mail.me*2016*10*10*2016*10*20*703";
+		
+		String[] reservs2 = new String[4];
+		reservs2 [0] = "raj@aing.ru*2016*10*10*2016*10*15*101";
+ 		reservs2 [1] = "d@zzz.com*2016*10*12*2016*10*15*202";
+		reservs2 [2] = "pengkim@abc.ca*2016*10*12*2016*10*20*303";
+		reservs2 [3] = "daniel.cavalcati@hotmail.com*2016*10*12*2016*10*22*104";
 
+		String[] reservs3 = new String[4];
+		reservs3 [0] = "raj@aing.ru*2016*10*10*2016*10*15*101";
+ 		reservs3 [1] = "d@zzz.com*2016*10*12*2016*10*15*202";
+		reservs3 [2] = "pengkim@abc.ca*2016*10*12*2016*10*20*303";
+		reservs3 [3] = "daniel.cavalcati@hotmail.com*2016*10*12*2016*10*22*404";
+		
 		File dir = new File("testfiles");
 		try{
 			if (!dir.exists()){  
@@ -76,8 +97,20 @@ public class DawsonHotelAllocationPolicyTest {
 					"testfiles/testRooms.txt");
 			ListUtilities.saveListToTextFile(custs, 
 					"testfiles/testCustomers.txt");
-			ListUtilities.saveListToTextFile(reservs, 
-					"testfiles/testReservations.txt");
+			
+			if(testCase.equalsIgnoreCase("reservs")){
+				ListUtilities.saveListToTextFile(reservs, 
+						"testfiles/testReservations.txt");
+			} else if(testCase.equalsIgnoreCase("reservs1")){
+				ListUtilities.saveListToTextFile(reservs1, 
+						"testfiles/testReservations.txt");
+			} else if(testCase.equalsIgnoreCase("reservs2")){
+				ListUtilities.saveListToTextFile(reservs2, 
+						"testfiles/testReservations.txt");
+			} else if(testCase.equalsIgnoreCase("reservs3")){
+				ListUtilities.saveListToTextFile(reservs3, 
+						"testfiles/testReservations.txt");
+			}		
 		}
 		catch(IOException io){
 			System.out.println("Error creating file in setUp()");
@@ -99,41 +132,65 @@ public class DawsonHotelAllocationPolicyTest {
 		}
 	}
 
-	private static void testGetAvailableRoom() {		
-		setup();
+	private static DawsonHotelAllocationPolicy setupAllocationPolicy(String testCase){
+		setup(testCase);
 		
 		SequentialTextFileList file = new SequentialTextFileList
 				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
 						"testfiles/testReservations.txt");
 		
-		ReservationListDB reservation = new ReservationListDB(file);
-		System.out.println(reservation.toString());
+		ReservationListDB reservation = new ReservationListDB(file);		
+		DawsonHotelAllocationPolicy allocationPolicy = new DawsonHotelAllocationPolicy(reservation);
 		
-		DawsonHotelAllocationPolicy allocation = new DawsonHotelAllocationPolicy(reservation);
-		
+		return allocationPolicy;
+	}
+	private static void testGetAvailableRoom() {	
+
+		System.out.println("Test getAvailableRoom() :");
+
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 		LocalDate checkin = LocalDate.parse("2016-Oct-05", dtf);
 		LocalDate checkout = LocalDate.parse("2016-Oct-15", dtf);
 		
-		testGetAvailableRoom("Case 1: ", checkin, checkout, RoomType.NORMAL, allocation, reservation);
+		DawsonHotelAllocationPolicy allocationPolicy = setupAllocationPolicy("reservs");
+		testGetAvailableRoom("Case 1: Expect room to be on 2nd floor", checkin, checkout
+				, RoomType.NORMAL, allocationPolicy);		
+		testGetAvailableRoom("Case 2: Expect room to be on 7th floor", checkin, checkout
+				, RoomType.SUITE, allocationPolicy);		
+		testGetAvailableRoom("Case 3: Expect Optional.empty", checkin, checkout
+				, RoomType.PENTHOUSE, allocationPolicy);
+		
+		allocationPolicy = setupAllocationPolicy("reservs1");		
+		testGetAvailableRoom("Case 4: Expect room to be on 3rd floor", checkin, checkout
+				, RoomType.NORMAL, allocationPolicy);		
+		testGetAvailableRoom("Case 5: Expect room to be on 6th floor", checkin, checkout
+				, RoomType.SUITE, allocationPolicy);		
+		testGetAvailableRoom("Case 6: Expect a room for penthouse", checkin, checkout
+				, RoomType.PENTHOUSE, allocationPolicy);
+		
+		allocationPolicy = setupAllocationPolicy("reservs2");		
+		testGetAvailableRoom("Case 7: Expect room to be on 4th floor", checkin, checkout
+				, RoomType.NORMAL, allocationPolicy);		
+		
+		allocationPolicy = setupAllocationPolicy("reservs3");		
+		testGetAvailableRoom("Case 8: Expect room to be on 5th floor", checkin, checkout
+				, RoomType.NORMAL, allocationPolicy);	
 		
 		teardown();
+		System.out.println();
 	}
 
 	private static void testGetAvailableRoom(String testCase, LocalDate checkin
 			, LocalDate checkout, RoomType roomType
-			, DawsonHotelAllocationPolicy allocation, ReservationDAO reservation){
+			, DawsonHotelAllocationPolicy allocation){
 		
-		System.out.println();		
+		System.out.println();
 		System.out.println("\t" + testCase);
-				
-		allocation = new DawsonHotelAllocationPolicy(reservation);
+
 		Optional<Room> availableRoom = allocation.getAvailableRoom(checkin, checkout, roomType);
 		
 		System.out.println("\t\t" + "Checkin date : " + checkin);
 		System.out.println("\t\t" + "Checkout date : " + checkout);
 		System.out.println("\t\t" + "Availabe room : " + availableRoom.toString());
-		
-		System.out.println();
 	}
 }

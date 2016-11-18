@@ -15,10 +15,10 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 	
 	private static final long serialVersionUID = 42031768871L;
 
-	ReservationListDB reservation;
+	ReservationDAO reservation;
 	
 	public DawsonHotelAllocationPolicy(ReservationDAO reservation){
-		this.reservation = (ReservationListDB) reservation;
+		this.reservation = reservation;
 	}
 	
 	@Override
@@ -27,10 +27,10 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		if(this.getAvailableFloor(checkin, checkout, roomType) == null)	
 			return Optional.empty();
 		
-		List<Room> freeFloor = this.getAvailableFloor(checkin, checkout, roomType);
+		List<Room> availableFloor = this.getAvailableFloor(checkin, checkout, roomType);
 		
-		int randomRoom = (int)(Math.random()*freeFloor.size());		
-		return Optional.of(freeFloor.get(randomRoom));
+		int randomRoom = (int)(Math.random()*availableFloor.size());		
+		return Optional.of(availableFloor.get(randomRoom));
 	}
 	
 	private List<Room> getAvailableFloor(LocalDate checkin, LocalDate checkout, RoomType roomType){
@@ -102,7 +102,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		return null;
 	}
 
-	public static <E extends Comparable<E>> List<E> max(ArrayList<List<E>> list){		
+	private static <E extends Comparable<E>> List<E> max(ArrayList<List<E>> list){		
 		List<E> max = list.get(0);
 		
 		for(int i=0; i<list.size(); i++){
