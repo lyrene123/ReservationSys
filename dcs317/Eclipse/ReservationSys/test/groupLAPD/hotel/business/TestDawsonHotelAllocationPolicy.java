@@ -103,7 +103,7 @@ public class TestDawsonHotelAllocationPolicy {
 		LocalDate checkin = LocalDate.parse("2016-Oct-12", dtf);
 		LocalDate checkout = LocalDate.parse("2016-Oct-15", dtf);
 		
-		testGetAvailableRoom("Case 1: ", checkin, checkout, RoomType.SUITE, allocation, reservation);
+		testGetAvailableRoom("Case 1: ", checkin, checkout, RoomType.PENTHOUSE, allocation, reservation);
 		
 		teardown();
 	}

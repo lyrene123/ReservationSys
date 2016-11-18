@@ -36,6 +36,7 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 	}
 	
 	private List<Room> getAvailableFloor(LocalDate checkin, LocalDate checkout, RoomType roomType){
+		
 		List<Room> freeRoom = this.reservation.getFreeRooms(checkin, checkout, roomType);
 		
 		List<Room> floor1 = new ArrayList<>();
@@ -46,8 +47,8 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 		List<Room> floor6 = new ArrayList<>();
 		List<Room> floor7 = new ArrayList<>();
 		List<Room> floor8 = new ArrayList<>();
+		
 		for(Room room : freeRoom){
-			if(room.getRoomType().equals(RoomType.NORMAL)){
 				switch (room.getFloor()){
 					case 1:
 						floor1.add(room);
@@ -74,98 +75,44 @@ public class DawsonHotelAllocationPolicy implements AllocationPolicy{
 						floor8.add(room);
 						break;
 					}
-				}
+				
 			}
 			
 			
-			ArrayList<List<Room>> NormalfloorSize = new ArrayList<>();
-			NormalfloorSize.add(floor1);
-			NormalfloorSize.add(floor2);
-			NormalfloorSize.add(floor3);
-			NormalfloorSize.add(floor4);
-			NormalfloorSize.add(floor5);
+			ArrayList<List<Room>> normalFloor = new ArrayList<>();
+			normalFloor.add(floor1);
+			normalFloor.add(floor2);
+			normalFloor.add(floor3);
+			normalFloor.add(floor4);
+			normalFloor.add(floor5);
 			
-			ArrayList<Integer> SuitefloorSize = new ArrayList<>();
-			SuitefloorSize.add(floor6.size());
-			SuitefloorSize.add(floor7.size());
+			ArrayList<List<Room>> suiteFloor = new ArrayList<>();
+			suiteFloor.add(floor6);
+			suiteFloor.add(floor7);
 			
-			//List<Room> mostAvailableNormalFloor = Collections.max(NormalfloorSize);
-			//int mostAvailableSuiteFloor =  NormalfloorSize.lastIndexOf(Collections.max(SuitefloorSize));
+			if(roomType.equals(RoomType.NORMAL)){
+				return max(normalFloor);
+			}
 			
-			
-			
-			/*
-
-			if(floor1.size() >= floor2.size()){
-				if(floor1.size() >= floor3.size()){
-					if(floor1.size() >= floor4.size()){
-						if(floor1.size() >= floor5.size()){
-							return floor1;
-						}
-					}
-				}
+			if(roomType.equals(RoomType.SUITE)){
+				return max(suiteFloor);
 			}
 
-			if(floor2.size() > floor1.size()){
-				if(floor2.size() >= floor3.size()){
-					if(floor2.size() >= floor4.size()){
-						if(floor2.size() >= floor5.size()){
-							return floor2;
-						}
-					}
-				}
+			if(roomType.equals(RoomType.PENTHOUSE)){
+				if(floor8.size() != 0)
+					return floor8;
 			}
 
-			if(floor3.size() > floor1.size()){
-				if(floor3.size() > floor2.size()){
-					if(floor3.size() >= floor4.size()){
-						if(floor3.size() >= floor5.size()){
-							return floor3;
-						}
-					}
-				}
-			}
-
-			if(floor4.size() > floor1.size()){
-				if(floor4.size() > floor2.size()){
-					if(floor4.size() > floor3.size()){
-						if(floor4.size() >= floor5.size()){
-							return floor4;
-						}
-					}
-				}
-			}
-			
-			if(floor5.size() > floor1.size()){
-				if(floor5.size() > floor2.size()){
-					if(floor5.size() > floor3.size()){
-						if(floor5.size() > floor4.size()){
-							return floor5;
-						}
-					}
-				}
-			}
-			
-			if(floor6.size() >= floor7.size()){
-				//System.out.println(floor6.toString());
-				return floor6;
-			} else if(floor7.size() > floor6.size()){
-				return floor7;
-			}
-
-			if(roomType.equals(RoomType.PENTHOUSE))
-				return floor8;
-			
-		//System.out.println(floor6.toString());
-		 * 
-		 */
 		return null;
 	}
 
-	private static <E extends Comparable<E>> E max(List<E> list){
+	private static <E extends Comparable<E>> List<E> max(ArrayList<List<E>> normalFloor){		
+		List<E> max = normalFloor.get(0);
 		
-		
-		return null;
-		
+		for(int i=0; i<normalFloor.size(); i++){
+			if(normalFloor.get(i).size() > max.size())
+				max = normalFloor.get(i);
+		}
+		return max;		
 	}
 }
