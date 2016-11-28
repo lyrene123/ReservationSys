@@ -36,7 +36,6 @@ public class HotelTest {
 		//testFindReservation();
 		//testRegisterCustomer();
 		//testUpdateCreditCard();
-		
 		testCreateReservation();
 		
 		
@@ -495,7 +494,7 @@ public class HotelTest {
 				badEmail, type, number,false);
 		
 		String badNumber = "460303235";
-		testUpdateCreditCard("case 4: testing with not existing customer",
+		testUpdateCreditCard("case 4: testing with invalid credit number",
 				"testfiles/testRooms.txt",
 				"testfiles/testCustomers.txt",
 				"testfiles/testReservations.txt",

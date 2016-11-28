@@ -8,6 +8,7 @@ import java.util.List;
 import dw317.hotel.business.interfaces.Customer;
 import dw317.hotel.data.DuplicateCustomerException;
 import dw317.hotel.data.NonExistingCustomerException;
+import dw317.hotel.data.interfaces.ListPersistenceObject;
 import dw317.lib.Email;
 import dw317.lib.creditcard.Amex;
 import dw317.lib.creditcard.CreditCard;
@@ -111,9 +112,9 @@ public class CustomerListDBTest {
 		
 		System.out.println("Testing toString()");
 		
-		SequentialTextFileList file = new SequentialTextFileList
-				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
-						"testfiles/testReservations.txt");
+		ListPersistenceObject file = new ObjectSerializedList("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+				"testfiles/testReservations.ser");
+
 		
 		CustomerListDB db = new CustomerListDB(file);
 		
@@ -128,9 +129,9 @@ public class CustomerListDBTest {
 		setup();
 		System.out.println("Testing Add() : ");	
 		
-		SequentialTextFileList file = new SequentialTextFileList
-				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
-						"testfiles/testReservations.txt");
+		ListPersistenceObject file = new ObjectSerializedList("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+				"testfiles/testReservations.ser");
+
 		
 		CustomerListDB db = new CustomerListDB(file);
 		
@@ -166,9 +167,9 @@ public class CustomerListDBTest {
 		
 		System.out.println("Testing Diconnect() :");
 		
-		SequentialTextFileList file = new SequentialTextFileList
-				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
-						"testfiles/testReservations.txt");
+		ListPersistenceObject file = new ObjectSerializedList("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+				"testfiles/testReservations.ser");
+
 		
 		CustomerListDB db = new CustomerListDB(file);
 		
@@ -228,9 +229,9 @@ public class CustomerListDBTest {
 		setup();
 		System.out.println("Testing update() :");
 		
-		SequentialTextFileList file = new SequentialTextFileList
-				("testfiles/testRooms.txt", "testfiles/testCustomers.txt",
-						"testfiles/testReservations.txt");
+		ListPersistenceObject file = new ObjectSerializedList("testfiles/testRooms.ser", "testfiles/testCustomers.ser",
+				"testfiles/testReservations.ser");
+
 		
 		CustomerListDB db = new CustomerListDB(file);
 		
