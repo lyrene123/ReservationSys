@@ -110,7 +110,11 @@ public class TextController {
         //get rooms
         RoomType roomType = getRoomType(keyboard);   
         
-	    this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
+        try{
+        	this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
+        } catch(IllegalArgumentException e){
+        	System.out.println(e.getMessage());
+        }
 	}
 
     private void customerInfo(Scanner keyboard) {
@@ -135,8 +139,6 @@ public class TextController {
         try {
      			Customer customer = this.model.findCustomer(email);
      	        this.model.findReservations(customer);
-     	        /*for(Reservation reserv : reservation)
-     	        	System.out.println(reserv.toString());*/
      		} catch (NonExistingCustomerException e) {
      			System.out.println(e.getMessage());
      		}
