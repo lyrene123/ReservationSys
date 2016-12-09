@@ -1,5 +1,6 @@
 package groupLAPD.hotel.ui;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class TextView implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		
-		//reservation
+		//optional reservation
 		if(arg instanceof Optional<?>){
 			displayReservation(arg);
 		}
@@ -31,16 +32,45 @@ public class TextView implements Observer {
 			displayCustomer(arg);
 		}
 		
+		//list of reservations
+		if(arg instanceof List<?>){
+			displayListReservation(arg);
+		}
+		
+	}
+	
+	
+	private void displayListReservation(Object arg){
+		List<Reservation> reservs = (List<Reservation>)arg;
+		System.out.println("\nYou have" + reservs.size() +  "reservations: ");
+		if(!reservs.isEmpty()){
+			for(int i = 0; i<reservs.size(); i++){
+				System.out.println(reservs.get(i).toString());
+			}
+		}
 	}
 	
 	private void displayReservation(Object arg){
-		
+		System.out.println("\nYour reservation is for: ");
 		Optional<Reservation> reserv = (Optional<Reservation>)arg;
 		if(reserv.isPresent()){
 			Reservation dawsonReserv = reserv.get();
-			Customer cust = dawsonReserv.getCustomer();
-			displayCustomer(cust);
-		}	
+			Customer cust = dawsonReserv.getCustomer();			
+			Name name = cust.getName();
+			String fullname = name.getFullName();
+			Email email = cust.getEmail();
+			String emailstr = email.toString();
+			System.out.println(fullname + "\n at email: " + emailstr);
+			System.out.println("Check in on " + dawsonReserv.getCheckInDate());
+			System.out.println("Check out on " + dawsonReserv.getCheckOutDate());
+			System.out.println("Your room: " + dawsonReserv.getRoom().getRoomNumber()
+					+ " is a " + dawsonReserv.getRoom().getRoomType() + " on the " 
+					+ dawsonReserv.getRoom().getFloor() + "floor");
+		}
+		else{
+			System.out.println("No reservation can be provided for your particular "
+					+ "check in, check out dates and room number and room type");
+		}
 	}
 	
 	private void displayCustomer(Object arg){
