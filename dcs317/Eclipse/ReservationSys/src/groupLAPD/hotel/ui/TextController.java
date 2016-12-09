@@ -106,6 +106,7 @@ public class TextController {
         //get customer
         String email = getEmail(keyboard);
         Customer customer;        
+        
 		try {
 			customer = this.model.findCustomer(email);
 	        this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
