@@ -1,10 +1,9 @@
 package groupLAPD.hotel.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import dw317.hotel.business.interfaces.Customer;
+import dw317.hotel.business.interfaces.Reservation;
 import dw317.hotel.data.NonExistingCustomerException;
 import dw317.hotel.data.interfaces.ListPersistenceObject;
 import groupLAPD.hotel.business.DawsonHotelFactory;
@@ -115,14 +115,47 @@ public class GUIViewController extends JFrame implements Observer{
 				JOptionPane.showMessageDialog(GUIViewController.this, "Invalid data!", 
 						"alert", JOptionPane.ERROR_MESSAGE);
 			}
-			resultText.setText(cust.getName().toString());
-			resultPanel.add(resultText);
-			resultText.setText(cust.getEmail().toString());
-			resultPanel.add(resultText);
-			//resultText.setText(cust.getEmail().toString());
+			
+			String details = "Customer details: \n";
+			String email = cust.getEmail().toString() + "\n";
+			String name = cust.getName().toString() + " at " ;
+			String credit ="credit card on file: " + cust.getCreditCard().toString();
+			String result = details + name + email + credit;
+			
+			resultText.setText(result);
 		}
 	}
 	
+	private class buttonPanelListenerRes implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			Customer cust = null;
+			List<Reservation> res = null;
+			try{
+				cust = hotelModel.findCustomer(email.getText());
+				res = hotelModel.findReservations(cust);
+			}catch(NonExistingCustomerException a){
+				JOptionPane.showMessageDialog(GUIViewController.this, "Invalid data!", 
+						"alert", JOptionPane.ERROR_MESSAGE);
+			}
+			String result = null;
+			String details = "Reservation Details: \n";
+			String name = null;
+			String checks = null;
+			if(!res.isEmpty()){
+				name = "Reservations for: "+ cust.getName().toString() +"\n";
+				result = details + name;
+				
+				for(int i = 0; i<res.size(); i++){
+					checks = res.get(i).getRoom().toString() + " checking in on " 
+				+ res.get(i).getCheckInDate() + " for " + res.get(i).getNumberOfDays() + "\n";
+					
+					result += checks;
+				}
+			}
+			
+			resultText.setText(result);
+		}
+	}
 	
 	private JPanel getCenterPanel() {
 		JPanel centerPanel = new JPanel();
@@ -150,6 +183,7 @@ public class GUIViewController extends JFrame implements Observer{
 
 		resultText = new JTextArea();
 		resultPanel.add(resultText);
+						
 
 		return centerPanel;
 	}
@@ -166,6 +200,7 @@ public class GUIViewController extends JFrame implements Observer{
 		buttonPanel.add(resInfo);
 
 		custInfo.addActionListener(new buttonPanelListener());;
+		resInfo.addActionListener(new buttonPanelListenerRes());
 		
 		return buttonPanel;
 	}
@@ -182,6 +217,7 @@ public class GUIViewController extends JFrame implements Observer{
 
 		return bottomPanel;
 	}
+
 
 	@Override
 	public void update(Observable o, Object arg) {
