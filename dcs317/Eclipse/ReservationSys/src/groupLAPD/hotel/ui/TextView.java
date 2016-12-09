@@ -48,7 +48,7 @@ public class TextView implements Observer {
 				System.out.println(reservs.get(i).toString());
 			}
 		}
-	}//
+	}////
 	
 	private void displayReservation(Object arg){
 		System.out.println("\nYour reservation is for: ");
