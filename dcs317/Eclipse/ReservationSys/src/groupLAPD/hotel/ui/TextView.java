@@ -81,12 +81,13 @@ public class TextView implements Observer {
 		Email email = cust.getEmail();
 		String emailstr = email.toString();
 		Optional<CreditCard> card = cust.getCreditCard();
-		AbstractCreditCard creditCard = (AbstractCreditCard) card.get();			
+		
 		
 		System.out.println("Name: " + fullname);
 		System.out.println("Email: " + emailstr);
 		
 		if(card.isPresent()){
+			AbstractCreditCard creditCard = (AbstractCreditCard) card.get();			
 			System.out.println("Credit Card: " + creditCard.toString());
 		}
 		else{
