@@ -10,6 +10,9 @@ import java.util.Scanner;
 import dw317.hotel.data.*;
 import dw317.lib.Email;
 import dw317.lib.creditcard.CreditCard;
+import groupLAPD.hotel.business.DawsonCustomer;
+import groupLAPD.hotel.business.DawsonReservation;
+import groupLAPD.hotel.business.DawsonRoom;
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.*;
 
@@ -80,33 +83,82 @@ public class TextController {
 		//get email
     	String email = getEmail(keyboard);
 
-//TODO
-		
+    	//Customer customer = new DawsonCustomer(firstName, lastName, email);
+		try {
+			this.model.registerCustomer(firstName, lastName, email);
+		} catch (DuplicateCustomerException e) {
+			System.out.println(e.getMessage());
+		}
 	}
     
     private void newReservation(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
-//TODO
-		
+        //get rooms
+        int roomNumber = getInt(keyboard, "/nPlease enter the room number: "); 
+        RoomType roomType = getRoomType(keyboard);        
+        Room room = new DawsonRoom(roomNumber, roomType);
+        
+        //get dates
+        LocalDate checkinDate = getDate(keyboard, "Please enter the checkin date: ");
+        LocalDate checkoutDate = getDate(keyboard, "Please enter the checout date: ");
+        
+        //get customer
+        String email = getEmail(keyboard);
+        Customer customer;        
+		try {
+			customer = this.model.findCustomer(email);
+	        this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
+		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
     private void customerInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
-//TODO
+        //get customer's email
+        String email = getEmail(keyboard);
+        
+        try {
+			Customer customer = this.model.findCustomer(email);
+			System.out.println(customer.toString());
+		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
+		}
     }
     
     private void reservationInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
-//TODO
+        //get customer's email
+        String email = getEmail(keyboard);
+        
+        try {
+     			Customer customer = this.model.findCustomer(email);
+     	        List<Reservation> reservation = this.model.findReservations(customer);
+     	        for(Reservation reserv : reservation)
+     	        	System.out.println(reserv.toString());
+     		} catch (NonExistingCustomerException e) {
+     			System.out.println(e.getMessage());
+     		}
     }
     
     private void updateCard (Scanner keyboard) {
     	keyboard.nextLine();
 
-//TODO
+    	//get credit card
+    	CreditCard.CardType cardType = getCardType(keyboard);
+    	String cardNumber = getInput(keyboard, "/nPlease enter the credit card number: ");
+    	
+    	//get customer's email
+        String email = getEmail(keyboard);
+
+    	try {
+			this.model.updateCreditCard(email, cardType.toString(), cardNumber);
+		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
+		}
     }
     
     
