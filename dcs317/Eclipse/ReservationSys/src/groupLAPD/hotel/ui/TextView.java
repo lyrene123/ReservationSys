@@ -42,7 +42,7 @@ public class TextView implements Observer {
 	
 	private void displayListReservation(Object arg){
 		List<Reservation> reservs = (List<Reservation>)arg;
-		System.out.println("\nYou have" + reservs.size() +  "reservations: ");
+		System.out.println("\nYou have " + reservs.size() +  " reservations: ");
 		if(!reservs.isEmpty()){
 			for(int i = 0; i<reservs.size(); i++){
 				System.out.println(reservs.get(i).toString());
