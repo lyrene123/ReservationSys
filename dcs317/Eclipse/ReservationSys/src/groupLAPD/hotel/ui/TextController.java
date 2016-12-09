@@ -98,14 +98,14 @@ public class TextController {
         String email = getEmail(keyboard);
         Customer customer = null;        
         try {
-			this.model.findCustomer(email);
+			customer = this.model.findCustomer(email);
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
         
         //get dates
-        LocalDate checkinDate = getDate(keyboard, "Please enter the checkin date: ");
-        LocalDate checkoutDate = getDate(keyboard, "Please enter the checout date: ");
+        LocalDate checkinDate = getDate(keyboard, "Please enter the checkin date.");
+        LocalDate checkoutDate = getDate(keyboard, "Please enter the checout date.");
         
         //get rooms
         RoomType roomType = getRoomType(keyboard);   
@@ -134,9 +134,9 @@ public class TextController {
         
         try {
      			Customer customer = this.model.findCustomer(email);
-     	        List<Reservation> reservation = this.model.findReservations(customer);
-     	        for(Reservation reserv : reservation)
-     	        	System.out.println(reserv.toString());
+     	        this.model.findReservations(customer);
+     	        /*for(Reservation reserv : reservation)
+     	        	System.out.println(reserv.toString());*/
      		} catch (NonExistingCustomerException e) {
      			System.out.println(e.getMessage());
      		}
@@ -149,7 +149,7 @@ public class TextController {
         String email = getEmail(keyboard);
 
         //get card's number
-    	String cardNumber = getInput(keyboard, "/nPlease enter the credit card number: ");
+    	String cardNumber = getInput(keyboard, "\nPlease enter the credit card number: ");
 
     	//get credit card
     	CreditCard.CardType cardType = getCardType(keyboard);
