@@ -87,7 +87,9 @@ public class TextController {
 			this.model.registerCustomer(firstName, lastName, email);
 		} catch (DuplicateCustomerException e) {
 			System.out.println(e.getMessage());
-		} 
+		} catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());	
+		}
 		
 	}
     
