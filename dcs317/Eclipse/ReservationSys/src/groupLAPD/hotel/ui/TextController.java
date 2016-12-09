@@ -136,7 +136,6 @@ public class TextController {
         	System.out.println(e.getMessage());
         }
 	}
-    
 
     /**
      * customerInfo is to check the information of a customer based on
