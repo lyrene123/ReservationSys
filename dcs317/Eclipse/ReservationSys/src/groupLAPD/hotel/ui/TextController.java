@@ -83,55 +83,44 @@ public class TextController {
 		//get email
     	String email = getEmail(keyboard);
 
-    	//Customer customer = new DawsonCustomer(firstName, lastName, email);
 		try {
 			this.model.registerCustomer(firstName, lastName, email);
-			System.out.println(this.model.findCustomer(email));
 		} catch (DuplicateCustomerException e) {
 			System.out.println(e.getMessage());
-		} catch (NonExistingCustomerException e) {
-			System.out.println(e.getMessage());
-		}
+		} 
 		
 	}
     
     private void newReservation(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
-        //get rooms
-        int roomNumber = getInt(keyboard, "/nPlease enter the room number: "); 
-        RoomType roomType = getRoomType(keyboard);        
-        Room room = new DawsonRoom(roomNumber, roomType);
+        //get customer
+        String email = getEmail(keyboard);
+        Customer customer = null;        
+        try {
+			this.model.findCustomer(email);
+		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
+		}
         
         //get dates
         LocalDate checkinDate = getDate(keyboard, "Please enter the checkin date: ");
         LocalDate checkoutDate = getDate(keyboard, "Please enter the checout date: ");
         
-        //get customer
-        String email = getEmail(keyboard);
-        Customer customer = null;        
+        //get rooms
+        RoomType roomType = getRoomType(keyboard);   
         
-		try {
-			customer = this.model.findCustomer(email);
-	        this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
-		} catch (NonExistingCustomerException e) {
-			System.out.println(e.getMessage());
-		}
-		
-        System.out.println("Customer Information");
-       // System.out.println(customer.toString());
+	    this.model.createReservation(customer, checkinDate, checkoutDate, roomType);
 	}
 
     private void customerInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
+        
         //get customer's email
         String email = getEmail(keyboard);
         
         try {
-            System.out.println("Customer Information");
             this.model.findCustomer(email);
-			//Customer customer = this.model.findCustomer(email);
-			//System.out.println(this.model.findCustomer(email).toString());
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
@@ -156,16 +145,20 @@ public class TextController {
     private void updateCard (Scanner keyboard) {
     	keyboard.nextLine();
 
-    	//get credit card
-    	CreditCard.CardType cardType = getCardType(keyboard);
-    	String cardNumber = getInput(keyboard, "/nPlease enter the credit card number: ");
-    	
     	//get customer's email
         String email = getEmail(keyboard);
 
+        //get card's number
+    	String cardNumber = getInput(keyboard, "/nPlease enter the credit card number: ");
+
+    	//get credit card
+    	CreditCard.CardType cardType = getCardType(keyboard);
+    	
     	try {
 			this.model.updateCreditCard(email, cardType.toString(), cardNumber);
 		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
+		} catch (IllegalArgumentException e){
 			System.out.println(e.getMessage());
 		}
     }
