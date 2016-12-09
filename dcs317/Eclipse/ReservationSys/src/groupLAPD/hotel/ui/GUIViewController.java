@@ -2,26 +2,42 @@ package groupLAPD.hotel.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import dw317.hotel.business.interfaces.Customer;
+import dw317.hotel.data.NonExistingCustomerException;
+import dw317.hotel.data.interfaces.ListPersistenceObject;
+import groupLAPD.hotel.business.DawsonHotelFactory;
+import groupLAPD.hotel.business.Hotel;
+import groupLAPD.hotel.data.CustomerListDB;
+import groupLAPD.hotel.data.ReservationListDB;
+import groupLAPD.hotel.data.SequentialTextFileList;
+
 import java.awt.*;
 
 
-public class GUIViewController extends JFrame {
+public class GUIViewController extends JFrame implements Observer{
 
 	private JPanel contentPane;
 	private JPanel resultPanel;
 	private JTextArea resultText;
 	private JPanel getEmailPanel;
 	private JTextField email;
-
+	private Hotel hotelModel;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -29,7 +45,20 @@ public class GUIViewController extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUIViewController frame = new GUIViewController();
+					String rooms = "datafiles"+File.separator+"database"+File.separator+"rooms.txt";
+					String cust = "datafiles"+File.separator+"database"+File.separator+"customers.txt";
+					String reserv = "datafiles"+File.separator+"database"+File.separator+"reservations.txt";
+					ListPersistenceObject file = new 
+							SequentialTextFileList(rooms,cust,reserv);
+					System.out.println("\tThe ListPersistenceObject instance was created");
+					ReservationListDB r1 = new ReservationListDB(file, DawsonHotelFactory.DAWSON);
+					System.out.println("\tThe ReservationListDB instance was created");
+					CustomerListDB c1 = new CustomerListDB(file, DawsonHotelFactory.DAWSON);
+					System.out.println("\tThe CustomerListDB instance was created");
+					
+					Hotel hotel = new Hotel(DawsonHotelFactory.DAWSON, c1, r1);
+					
+					GUIViewController frame = new GUIViewController(hotel);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,7 +70,15 @@ public class GUIViewController extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GUIViewController() {
+	public GUIViewController(Hotel hotelModel) {
+		
+		if(hotelModel == null){
+			throw new IllegalArgumentException("Cannot create Hotel view controller" + 
+		"with a null Hotel");
+		}
+		this.hotelModel = hotelModel;
+		hotelModel.addObserver(this);
+		
 		setResizable(false);
 		setTitle("Dawson Hotel");
 
@@ -68,6 +105,25 @@ public class GUIViewController extends JFrame {
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		return titlePanel;
 	}
+	
+	private class buttonPanelListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			Customer cust = null;
+			try{
+				cust = hotelModel.findCustomer(email.getText());
+			}catch(NonExistingCustomerException a){
+				JOptionPane.showMessageDialog(GUIViewController.this, "Invalid data!", 
+						"alert", JOptionPane.ERROR_MESSAGE);
+			}
+			resultText.setText(cust.getName().toString());
+			resultPanel.add(resultText);
+			resultText.setText(cust.getEmail().toString());
+			resultPanel.add(resultText);
+			//resultText.setText(cust.getEmail().toString());
+		}
+	}
+	
+	
 	private JPanel getCenterPanel() {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new GridLayout(2, 0, 0, 0));
@@ -109,6 +165,8 @@ public class GUIViewController extends JFrame {
 		JButton resInfo = new JButton("Reservation Info");
 		buttonPanel.add(resInfo);
 
+		custInfo.addActionListener(new buttonPanelListener());;
+		
 		return buttonPanel;
 	}
 	
@@ -123,6 +181,12 @@ public class GUIViewController extends JFrame {
 		panel.add(exit);
 
 		return bottomPanel;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
