@@ -16,7 +16,11 @@ import groupLAPD.hotel.business.DawsonRoom;
 import dw317.hotel.business.RoomType;
 import dw317.hotel.business.interfaces.*;
 
-
+/**
+ * Partial code was provided.
+ * 
+ * @author Pengkim Sy
+ */
 public class TextController {
 	private HotelManager model;  
 	
@@ -73,6 +77,13 @@ public class TextController {
 	}
 	
 
+	/**
+	 * newCustomer is to register a new customer to the database. This will ask
+	 * for the first name, last name, and an email. 
+	 * 
+	 * @author Pengkim Sy
+	 * @param keyboard
+	 */
     private void newCustomer(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value
         
@@ -92,6 +103,14 @@ public class TextController {
 		
 	}
     
+    /**
+     * newReservation is to book a reservation for the customer. This
+     * will ask for the customer's email and assign that customer to
+     * a reservation.
+     * 
+     * @author Pengkim Sy
+     * @param keyboard
+     */
     private void newReservation(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
@@ -106,7 +125,7 @@ public class TextController {
         
         //get dates
         LocalDate checkinDate = getDate(keyboard, "Please enter the checkin date.");
-        LocalDate checkoutDate = getDate(keyboard, "Please enter the checout date.");
+        LocalDate checkoutDate = getDate(keyboard, "Please enter the checkout date.");
         
         //get rooms
         RoomType roomType = getRoomType(keyboard);   
@@ -118,6 +137,13 @@ public class TextController {
         }
 	}
 
+    /**
+     * customerInfo is to check the information of a customer based on
+     * the email input.
+     * 
+     * @author Pengkim Sy
+     * @param keyboard
+     */
     private void customerInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
         
@@ -131,6 +157,11 @@ public class TextController {
 		}
     }
     
+    /**
+     * reservationInfo is to the reservation information of a customer
+     * based the input email.
+     * @param keyboard
+     */
     private void reservationInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
 
@@ -145,6 +176,14 @@ public class TextController {
      		}
     }
     
+    /**
+     * updateCard will ask for a customer email and card number, and it 
+     * will update the credit card of the customer based on the input email
+     * and card number.
+     * 
+     * @author Pengkim Sy
+     * @param keyboard
+     */
     private void updateCard (Scanner keyboard) {
     	keyboard.nextLine();
 
