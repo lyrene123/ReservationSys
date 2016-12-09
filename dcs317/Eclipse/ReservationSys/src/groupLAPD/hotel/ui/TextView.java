@@ -31,7 +31,7 @@ public class TextView implements Observer {
 		if(arg instanceof Customer){
 			displayCustomer(arg);
 		}
-		
+		//
 		//list of reservations
 		if(arg instanceof List<?>){
 			displayListReservation(arg);
