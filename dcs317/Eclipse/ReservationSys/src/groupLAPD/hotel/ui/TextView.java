@@ -26,7 +26,7 @@ public class TextView implements Observer {
 		if(arg instanceof Optional<?>){
 			displayReservation(arg);
 		}
-		
+		//
 		//customer
 		if(arg instanceof Customer){
 			displayCustomer(arg);
