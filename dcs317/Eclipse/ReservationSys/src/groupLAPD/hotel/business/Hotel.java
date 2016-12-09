@@ -131,6 +131,10 @@ public class Hotel extends java.util.Observable
 			catch(DuplicateReservationException e){
 				System.out.println(e.getMessage());
 			}
+			
+			setChanged();
+			notifyObservers(Optional.of(custReserv));
+			
 			//return created reservation
 			return Optional.of(custReserv);
 		}
@@ -155,7 +159,10 @@ public class Hotel extends java.util.Observable
 			cust = this.customers.getCustomer(custEmail);
 		}catch(NonExistingCustomerException e){
 			throw new NonExistingCustomerException();
-		}		
+		}
+		
+		setChanged();
+		notifyObservers(cust);
 		return cust;	
 	}
 
@@ -169,6 +176,8 @@ public class Hotel extends java.util.Observable
 	 */
 	@Override
 	public List<Reservation> findReservations(Customer customer) {
+		setChanged();
+		notifyObservers(this.reservations.getReservations(customer));
 		return this.reservations.getReservations(customer);
 	}
 
@@ -193,6 +202,9 @@ public class Hotel extends java.util.Observable
 		}catch(DuplicateCustomerException e){
 			throw new DuplicateCustomerException();
 		}
+		
+		setChanged();
+		notifyObservers(customer);
 		return customer;
 	}
 
@@ -224,6 +236,9 @@ public class Hotel extends java.util.Observable
 		//if the the cardType doesn't match mastercard, visa or amex 
 		//then the credit card will be set to null
 		customer.setCreditCard(Optional.of(custCard));
+		
+		setChanged();
+		notifyObservers(customer);
 		return customer;
 	}
 
