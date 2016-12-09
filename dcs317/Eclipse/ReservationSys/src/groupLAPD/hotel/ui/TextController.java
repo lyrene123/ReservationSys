@@ -86,9 +86,13 @@ public class TextController {
     	//Customer customer = new DawsonCustomer(firstName, lastName, email);
 		try {
 			this.model.registerCustomer(firstName, lastName, email);
+			System.out.println(this.model.findCustomer(email));
 		} catch (DuplicateCustomerException e) {
 			System.out.println(e.getMessage());
+		} catch (NonExistingCustomerException e) {
+			System.out.println(e.getMessage());
 		}
+		
 	}
     
     private void newReservation(Scanner keyboard) {
@@ -105,7 +109,7 @@ public class TextController {
         
         //get customer
         String email = getEmail(keyboard);
-        Customer customer;        
+        Customer customer = null;        
         
 		try {
 			customer = this.model.findCustomer(email);
@@ -113,17 +117,21 @@ public class TextController {
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
+		
+        System.out.println("Customer Information");
+       // System.out.println(customer.toString());
 	}
 
     private void customerInfo(Scanner keyboard) {
         keyboard.nextLine (); //consume any previous value   
-
         //get customer's email
         String email = getEmail(keyboard);
         
         try {
-			Customer customer = this.model.findCustomer(email);
-			System.out.println(customer.toString());
+            System.out.println("Customer Information");
+            this.model.findCustomer(email);
+			//Customer customer = this.model.findCustomer(email);
+			//System.out.println(this.model.findCustomer(email).toString());
 		} catch (NonExistingCustomerException e) {
 			System.out.println(e.getMessage());
 		}
