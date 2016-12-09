@@ -12,13 +12,31 @@ import dw317.lib.Name;
 import dw317.lib.creditcard.AbstractCreditCard;
 import dw317.lib.creditcard.CreditCard;
 
+/**
+ * TextView class which implements the Observer interface 
+ * handles the display of all Hotel data and information queries
+ * of a user made in the TextController class
+ * @author Lyrene Labor
+ * @version December 2016
+ */
 public class TextView implements Observer {
 
+	/**
+	 * The constructor takes as input an Observable object
+	 * and adds this instance into the observer list of the
+	 * Observable model
+	 * @param model - an Observable object
+	 */
 	public TextView(Observable model) {
 		model.addObserver(this); //register
 	}
 	
-	
+	/**
+	 * The update method is called automatically when the model that this
+	 * instance is observering updates itself and notifies all its observers
+	 * (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		
@@ -39,7 +57,12 @@ public class TextView implements Observer {
 		
 	}
 	
-	
+	/**
+	 * displayListReservation method takes as input an Object object
+	 * and uses that object to display a number of reservations and
+	 * a list of reservation
+	 * @param arg - an Object object
+	 */
 	private void displayListReservation(Object arg){
 		List<Reservation> reservs = (List<Reservation>)arg;
 		System.out.println("\nYou have " + reservs.size() +  " reservations: ");
@@ -50,6 +73,11 @@ public class TextView implements Observer {
 		}
 	}////
 	
+	/**
+	 * displayReservation method takes as input an Object object
+	 * and uses it to display a reservation
+	 * @param arg - an Object object
+	 */
 	private void displayReservation(Object arg){
 		System.out.println("\nYour reservation is for: ");
 		Optional<Reservation> reserv = (Optional<Reservation>)arg;
@@ -73,6 +101,11 @@ public class TextView implements Observer {
 		}
 	}
 	
+	/**
+	 * displayCustomer method takes as input an Object object
+	 * and uses it to display a customer information
+	 * @param arg - an Object object
+	 */
 	private void displayCustomer(Object arg){
 		System.out.println("\nCustomer information");
 		Customer cust = (Customer)arg;
