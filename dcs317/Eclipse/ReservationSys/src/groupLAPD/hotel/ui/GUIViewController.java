@@ -23,6 +23,7 @@ import dw317.hotel.data.interfaces.ListPersistenceObject;
 import groupLAPD.hotel.business.DawsonHotelFactory;
 import groupLAPD.hotel.business.Hotel;
 import groupLAPD.hotel.data.CustomerListDB;
+import groupLAPD.hotel.data.ObjectSerializedList;
 import groupLAPD.hotel.data.ReservationListDB;
 import groupLAPD.hotel.data.SequentialTextFileList;
 
@@ -45,11 +46,11 @@ public class GUIViewController extends JFrame implements Observer{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					String rooms = "datafiles"+File.separator+"database"+File.separator+"rooms.txt";
-					String cust = "datafiles"+File.separator+"database"+File.separator+"customers.txt";
-					String reserv = "datafiles"+File.separator+"database"+File.separator+"reservations.txt";
-					ListPersistenceObject file = new 
-							SequentialTextFileList(rooms,cust,reserv);
+					String rooms = "datafiles"+File.separator+"database"+File.separator+"rooms.ser";
+					String cust = "datafiles"+File.separator+"database"+File.separator+"customers.ser";
+					String reserv = "datafiles"+File.separator+"database"+File.separator+"reservations.ser";
+					ObjectSerializedList file = new 
+							ObjectSerializedList(rooms,cust,reserv);
 					System.out.println("\tThe ListPersistenceObject instance was created");
 					ReservationListDB r1 = new ReservationListDB(file, DawsonHotelFactory.DAWSON);
 					System.out.println("\tThe ReservationListDB instance was created");
@@ -61,7 +62,7 @@ public class GUIViewController extends JFrame implements Observer{
 					GUIViewController frame = new GUIViewController(hotel);
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 			}
 		});
@@ -124,6 +125,7 @@ public class GUIViewController extends JFrame implements Observer{
 			
 			resultText.setText(result);
 		}
+	
 	}
 	
 	private class buttonPanelListenerRes implements ActionListener{
@@ -155,6 +157,12 @@ public class GUIViewController extends JFrame implements Observer{
 			
 			resultText.setText(result);
 		}
+	}
+	
+	private class buttonPanelListenerExist implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			System.exit(0);
+	}
 	}
 	
 	private JPanel getCenterPanel() {
@@ -214,9 +222,12 @@ public class GUIViewController extends JFrame implements Observer{
 
 		JButton exit = new JButton("Exit");
 		panel.add(exit);
+		
+		exit.addActionListener(new buttonPanelListenerExist());
 
 		return bottomPanel;
 	}
+
 
 
 	@Override
@@ -224,9 +235,4 @@ public class GUIViewController extends JFrame implements Observer{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
-
 }
